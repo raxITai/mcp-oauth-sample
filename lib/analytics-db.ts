@@ -30,8 +30,8 @@ interface SecurityEvent {
 class OptimizedAnalyticsCollector {
   private requestBatch: RequestAnalytics[] = [];
   private securityBatch: SecurityEvent[] = [];
-  private readonly BATCH_SIZE = 50; // Batch writes for performance
-  private readonly FLUSH_INTERVAL = 30000; // 30 seconds
+  private readonly BATCH_SIZE = 100; // Larger batches for better efficiency
+  private readonly FLUSH_INTERVAL = 15000; // 15 seconds - faster flushing
   private flushTimer: NodeJS.Timeout | null = null;
 
   constructor() {
@@ -69,7 +69,7 @@ class OptimizedAnalyticsCollector {
     }
   }
 
-  // Optimized database write with batching
+  // Optimized database write with batching and connection management
   private async flushRequests() {
     if (this.requestBatch.length === 0) return;
 
@@ -77,28 +77,33 @@ class OptimizedAnalyticsCollector {
     this.requestBatch = [];
 
     try {
-      await prisma.analyticsRequest.createMany({
-        data: batch.map(req => ({
-          timestamp: req.timestamp,
-          endpoint: req.endpoint,
-          method: req.method,
-          statusCode: req.statusCode,
-          responseTime: req.responseTime,
-          clientId: req.clientId,
-          userId: req.userId,
-          ipAddress: req.ipAddress,
-          userAgent: req.userAgent,
-          country: req.country,
-          city: req.city,
-          clientType: req.clientType,
-          platform: req.platform
-        })),
-        skipDuplicates: true // Prevent errors on duplicate inserts
+      // Use transaction for better connection management
+      await prisma.$transaction(async (tx) => {
+        await tx.analyticsRequest.createMany({
+          data: batch.map(req => ({
+            timestamp: req.timestamp,
+            endpoint: req.endpoint,
+            method: req.method,
+            statusCode: req.statusCode,
+            responseTime: req.responseTime,
+            clientId: req.clientId,
+            userId: req.userId,
+            ipAddress: req.ipAddress,
+            userAgent: req.userAgent,
+            country: req.country,
+            city: req.city,
+            clientType: req.clientType,
+            platform: req.platform
+          })),
+          skipDuplicates: true
+        });
       });
     } catch (error) {
       console.error('Failed to flush analytics requests:', error);
-      // Re-add failed batch to retry later
-      this.requestBatch.unshift(...batch);
+      // Re-add failed batch to retry later (with limit to prevent infinite growth)
+      if (this.requestBatch.length < this.BATCH_SIZE * 2) {
+        this.requestBatch.unshift(...batch);
+      }
     }
   }
 
