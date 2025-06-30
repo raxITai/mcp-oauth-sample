@@ -130,10 +130,24 @@ class OptimizedAnalyticsCollector {
     this.securityBatch = [];
 
     try {
+      // Map legacy event types to new enum values
+      const mapLegacyEventType = (eventType: string): 'AUTH_FAILURE' | 'INVALID_TOKEN' | 'SUSPICIOUS_ACTIVITY' => {
+        switch (eventType.toLowerCase()) {
+          case 'auth_failure':
+            return 'AUTH_FAILURE';
+          case 'invalid_token':
+            return 'INVALID_TOKEN';
+          case 'suspicious_activity':
+            return 'SUSPICIOUS_ACTIVITY';
+          default:
+            return 'SUSPICIOUS_ACTIVITY'; // Default fallback
+        }
+      };
+
       await prisma.analyticsSecurity.createMany({
         data: batch.map(event => ({
           timestamp: event.timestamp,
-          eventType: event.eventType as 'AUTH_FAILURE' | 'INVALID_TOKEN' | 'SUSPICIOUS_ACTIVITY',
+          eventType: mapLegacyEventType(event.eventType),
           severity: 'medium', // Default severity for legacy events
           ipAddress: event.ipAddress,
           userAgent: event.userAgent,
