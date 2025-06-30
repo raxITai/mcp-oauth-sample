@@ -298,6 +298,7 @@ const handler = async (req: Request) => {
   // Execute MCP handler and capture response
   const mcpResponse = await createMcpHandler(
     (server) => {
+      // Tool 1: Add Numbers
       server.tool(
         "add_numbers",
         "Adds two numbers together and returns the sum",
@@ -311,6 +312,136 @@ const handler = async (req: Request) => {
               {
                 type: "text",
                 text: `The sum of ${a} and ${b} is ${a + b}`,
+              },
+            ],
+          };
+        }
+      );
+
+      // Tool 2: Calculate Circle Area
+      server.tool(
+        "calculate_circle_area",
+        "Calculates the area of a circle given its radius",
+        {
+          radius: z.number().positive().describe("Radius of the circle"),
+        },
+        async ({ radius }) => {
+          const area = Math.PI * radius * radius;
+          return {
+            content: [
+              {
+                type: "text",
+                text: `A circle with radius ${radius} has an area of ${area.toFixed(2)} square units`,
+              },
+            ],
+          };
+        }
+      );
+
+      // Tool 3: Generate Random Number
+      server.tool(
+        "generate_random_number",
+        "Generates a random number within a specified range",
+        {
+          min: z.number().describe("Minimum value (inclusive)"),
+          max: z.number().describe("Maximum value (inclusive)"),
+        },
+        async ({ min, max }) => {
+          if (min > max) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: "Error: Minimum value cannot be greater than maximum value",
+                },
+              ],
+            };
+          }
+          const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Random number between ${min} and ${max}: ${randomNum}`,
+              },
+            ],
+          };
+        }
+      );
+
+      // Tool 4: Format Text
+      server.tool(
+        "format_text",
+        "Formats text with various options like uppercase, lowercase, or title case",
+        {
+          text: z.string().describe("Text to format"),
+          format: z.enum(["uppercase", "lowercase", "titlecase", "reverse"]).describe("Format type"),
+        },
+        async ({ text, format }) => {
+          let formattedText: string;
+          
+          switch (format) {
+            case "uppercase":
+              formattedText = text.toUpperCase();
+              break;
+            case "lowercase":
+              formattedText = text.toLowerCase();
+              break;
+            case "titlecase":
+              formattedText = text.replace(/\w\S*/g, (txt) => 
+                txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+              );
+              break;
+            case "reverse":
+              formattedText = text.split('').reverse().join('');
+              break;
+            default:
+              formattedText = text;
+          }
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Original: "${text}"\nFormatted (${format}): "${formattedText}"`,
+              },
+            ],
+          };
+        }
+      );
+
+      // Tool 5: Check Prime Number
+      server.tool(
+        "check_prime_number",
+        "Checks if a given number is prime",
+        {
+          number: z.number().int().positive().describe("Number to check for primality"),
+        },
+        async ({ number }) => {
+          if (number < 2) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `${number} is not a prime number (must be 2 or greater)`,
+                },
+              ],
+            };
+          }
+
+          let isPrime = true;
+          for (let i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i === 0) {
+              isPrime = false;
+              break;
+            }
+          }
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: `${number} is ${isPrime ? 'a prime' : 'not a prime'} number`,
               },
             ],
           };
