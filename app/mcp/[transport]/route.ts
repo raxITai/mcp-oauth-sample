@@ -2,7 +2,7 @@ import { createMcpHandler } from "@vercel/mcp-adapter";
 import { z } from "zod";
 import { prisma } from '@/app/prisma';
 import { NextRequest } from 'next/server';
-import { analyticsCollector, getClientIP, extractClientInfo } from '@/lib/analytics';
+import { analyticsCollector, getClientIP } from '@/lib/analytics';
 
 // Authentication helper
 async function authenticateRequest(request: NextRequest) {

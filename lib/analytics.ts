@@ -217,9 +217,14 @@ export async function getLocationFromIP(ip: string) {
   try {
     // Using a free IP geolocation service (ip-api.com)
     // In production, consider using a paid service for better reliability
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+    
     const response = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`, {
-      timeout: 2000 // 2 second timeout
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
     
     if (response.ok) {
       const data = await response.json();
@@ -256,4 +261,4 @@ export function getClientIP(request: NextRequest): string {
   return '127.0.0.1';
 }
 
-export { RequestAnalytics, SecurityEvent };
+export type { RequestAnalytics, SecurityEvent };

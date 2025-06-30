@@ -57,7 +57,14 @@ interface AnalyticsData {
       statusCodeDistribution: Array<{ code: number; count: number }>;
     } | null;
     security: {
-      events: Array<any>;
+      events: Array<{
+        timestamp: Date;
+        type: string;
+        ipAddress: string;
+        userAgent: string;
+        clientId?: string;
+        details: string;
+      }>;
       eventCount: number;
     };
   };
