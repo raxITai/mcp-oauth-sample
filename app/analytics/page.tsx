@@ -1,88 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-interface AnalyticsData {
-  overview: {
-    totalUsers: number;
-    newUsersLast30Days: number;
-    activeSessions: number;
-    activeSessionsLast7Days: number;
-    totalClients: number;
-    clientsLast30Days: number;
-  };
-  tokens: {
-    total: number;
-    active: number;
-    expired: number;
-    createdLast24Hours: number;
-    refreshTokens: {
-      total: number;
-      active: number;
-    };
-  };
-  usage: {
-    topClients: Array<{
-      clientName: string;
-      clientId: string;
-      tokenCount: number;
-    }>;
-    authCodesLast7Days: number;
-    authSuccessRate: number;
-    dailyTokenTrend: Array<{
-      date: string;
-      count: number;
-    }>;
-  };
-  realtime: {
-    geography: {
-      topCountries: Array<{ country: string; count: number }>;
-      topCities: Array<{ city: string; count: number }>;
-    };
-    clientAnalysis: {
-      clientTypes: Array<{ type: string; count: number }>;
-      platforms: Array<{ platform: string; count: number }>;
-      clientPerformance: Array<{ clientId: string; avgResponseTime: number; requestCount: number }>;
-    };
-    usagePatterns: {
-      hourlyPattern: Array<{ hour: number; count: number }>;
-      weeklyPattern: Array<{ day: string; count: number }>;
-      topEndpoints: Array<{ endpoint: string; count: number }>;
-    };
-    performance: {
+export default function AnalyticsPage() {
+  const [data, setData] = useState<{
+    performance?: {
       totalRequests: number;
       avgResponseTime: number;
       p95ResponseTime: number;
       errorRate: number;
-      statusCodeDistribution: Array<{ code: number; count: number }>;
-    } | null;
-    security: {
-      events: Array<{
-        timestamp: Date;
-        type: string;
-        ipAddress: string;
-        userAgent: string;
-        clientId?: string;
-        details: string;
-      }>;
-      eventCount: number;
     };
-  };
-  lastUpdated: string;
-}
-
-export default function AnalyticsPage() {
-  const [data, setData] = useState<AnalyticsData | null>(null);
+    topEndpoints?: { endpoint: string; count: number }[];
+    geography?: { country: string; count: number }[];
+    security?: {
+      eventCount: number;
+      events?: { timestamp: string; eventType: string; ipAddress: string; clientId?: string; details: string }[];
+    };
+    lastUpdated?: string;
+    timeRange?: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [timeRange, setTimeRange] = useState(24);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
-      const response = await fetch('/api/analytics');
+      setLoading(true);
+      const response = await fetch(`/api/analytics?hours=${timeRange}`);
       if (!response.ok) {
         throw new Error('Failed to fetch analytics');
       }
@@ -93,7 +37,11 @@ export default function AnalyticsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [timeRange, fetchAnalytics]);
 
   if (loading) {
     return (
@@ -135,276 +83,147 @@ export default function AnalyticsPage() {
     <div className="container">
       <div className="analytics-header">
         <h1>MCP OAuth Server Analytics</h1>
-        <p>Last updated: {new Date(data.lastUpdated).toLocaleString()}</p>
-        <button onClick={fetchAnalytics} className="button">
-          Refresh Data
-        </button>
+        <div className="header-controls">
+          <div className="control-group">
+            <label>Time Range:</label>
+            <select 
+              value={timeRange} 
+              onChange={(e) => setTimeRange(Number(e.target.value))}
+              className="time-select"
+            >
+              <option value={1}>Last 1 hour</option>
+              <option value={6}>Last 6 hours</option>
+              <option value={24}>Last 24 hours</option>
+              <option value={72}>Last 3 days</option>
+              <option value={168}>Last 7 days</option>
+            </select>
+          </div>
+          <button onClick={fetchAnalytics} className="button">
+            Refresh Data
+          </button>
+        </div>
+        <p>Last updated: {data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : 'Never'} | Time Range: {data.timeRange}</p>
       </div>
 
       <div className="analytics-grid">
-        {/* Overview Cards */}
-        <div className="analytics-section">
-          <h2>User Overview</h2>
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <h3>Total Users</h3>
-              <p className="metric-value">{data.overview.totalUsers}</p>
-            </div>
-            <div className="metric-card">
-              <h3>New Users (30d)</h3>
-              <p className="metric-value">{data.overview.newUsersLast30Days}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Active Sessions</h3>
-              <p className="metric-value">{data.overview.activeSessions}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Active (7d)</h3>
-              <p className="metric-value">{data.overview.activeSessionsLast7Days}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Client Overview */}
-        <div className="analytics-section">
-          <h2>Client Overview</h2>
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <h3>Total Clients</h3>
-              <p className="metric-value">{data.overview.totalClients}</p>
-            </div>
-            <div className="metric-card">
-              <h3>New Clients (30d)</h3>
-              <p className="metric-value">{data.overview.clientsLast30Days}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Token Metrics */}
-        <div className="analytics-section">
-          <h2>Token Analytics</h2>
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <h3>Total Access Tokens</h3>
-              <p className="metric-value">{data.tokens.total}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Active Tokens</h3>
-              <p className="metric-value">{data.tokens.active}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Expired Tokens</h3>
-              <p className="metric-value">{data.tokens.expired}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Created (24h)</h3>
-              <p className="metric-value">{data.tokens.createdLast24Hours}</p>
-            </div>
-          </div>
-          
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <h3>Total Refresh Tokens</h3>
-              <p className="metric-value">{data.tokens.refreshTokens.total}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Active Refresh Tokens</h3>
-              <p className="metric-value">{data.tokens.refreshTokens.active}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Usage Analytics */}
-        <div className="analytics-section">
-          <h2>Usage Analytics</h2>
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <h3>Auth Codes (7d)</h3>
-              <p className="metric-value">{data.usage.authCodesLast7Days}</p>
-            </div>
-            <div className="metric-card">
-              <h3>Auth Success Rate</h3>
-              <p className="metric-value">{data.usage.authSuccessRate}%</p>
-            </div>
-          </div>
-
-          {/* Top Clients */}
-          <div className="top-clients">
-            <h3>Top Active Clients</h3>
-            <div className="client-list">
-              {data.usage.topClients.map((client, index) => (
-                <div key={client.clientId} className="client-item">
-                  <span className="client-rank">#{index + 1}</span>
-                  <div className="client-info">
-                    <strong>{client.clientName}</strong>
-                    <small>{client.clientId}</small>
-                  </div>
-                  <span className="client-tokens">{client.tokenCount} tokens</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Daily Token Trend */}
-          <div className="token-trend">
-            <h3>Daily Token Creation (Last 7 Days)</h3>
-            <div className="trend-chart">
-              {data.usage.dailyTokenTrend.map((day) => (
-                <div key={day.date} className="trend-bar">
-                  <div 
-                    className="bar" 
-                    style={{ 
-                      height: `${Math.max((day.count / Math.max(...data.usage.dailyTokenTrend.map(d => d.count))) * 100, 10)}%` 
-                    }}
-                  ></div>
-                  <small>{new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</small>
-                  <small>{day.count}</small>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Real-time Analytics */}
-        <div className="analytics-section">
-          <h2>Real-time Analytics (24h)</h2>
-          
-          {/* Performance Metrics */}
-          {data.realtime.performance && (
+        {/* Performance Metrics */}
+        {data.performance && (
+          <div className="analytics-section">
+            <h2>📊 Performance Metrics</h2>
             <div className="metrics-grid">
               <div className="metric-card">
                 <h3>Total Requests</h3>
-                <p className="metric-value">{data.realtime.performance.totalRequests}</p>
+                <p className="metric-value">{data.performance.totalRequests}</p>
               </div>
               <div className="metric-card">
-                <h3>Avg Response (ms)</h3>
-                <p className="metric-value">{data.realtime.performance.avgResponseTime}</p>
+                <h3>Avg Response Time</h3>
+                <p className="metric-value">{data.performance.avgResponseTime}ms</p>
               </div>
               <div className="metric-card">
-                <h3>P95 Response (ms)</h3>
-                <p className="metric-value">{data.realtime.performance.p95ResponseTime}</p>
+                <h3>P95 Response Time</h3>
+                <p className="metric-value">{data.performance.p95ResponseTime}ms</p>
               </div>
               <div className="metric-card">
                 <h3>Error Rate</h3>
-                <p className="metric-value">{data.realtime.performance.errorRate}%</p>
+                <p className="metric-value">{data.performance.errorRate}%</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Top Endpoints */}
+        {data.topEndpoints && data.topEndpoints.length > 0 && (
+          <div className="analytics-section">
+            <h2>🔗 Most Popular Endpoints</h2>
+            <div className="endpoint-list">
+              {data.topEndpoints.map((endpoint, index) => (
+                <div key={endpoint.endpoint} className="endpoint-item">
+                  <span className="endpoint-rank">#{index + 1}</span>
+                  <span className="endpoint-path">{endpoint.endpoint}</span>
+                  <span className="endpoint-count">{endpoint.count} requests</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Geographic Distribution */}
+        {data.geography && data.geography.length > 0 && (
+          <div className="analytics-section">
+            <h2>🌍 Geographic Distribution</h2>
+            <div className="geo-list">
+              {data.geography.map((country, index) => (
+                <div key={country.country} className="geo-item">
+                  <span className="geo-rank">#{index + 1}</span>
+                  <span className="geo-name">{country.country}</span>
+                  <span className="geo-count">{country.count} requests</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Security Events */}
+        <div className="analytics-section">
+          <h2>🔒 Security Events</h2>
+          <div className="security-overview">
+            <div className="metric-card security-card">
+              <h4>Total Events</h4>
+              <p className="metric-value">{data.security?.eventCount || 0}</p>
+            </div>
+            {(!data.security?.eventCount || data.security.eventCount === 0) && (
+              <p className="no-events">No security events detected in the selected time range</p>
+            )}
+          </div>
+          {data.security?.events && data.security.events.length > 0 && (
+            <div className="security-events">
+              <h4>Recent Security Events</h4>
+              {data.security.events.slice(0, 10).map((event, index) => (
+                <div key={index} className="security-event">
+                  <div className="event-header">
+                    <span className="event-type">{event.eventType}</span>
+                    <span className="event-time">{new Date(event.timestamp).toLocaleString()}</span>
+                  </div>
+                  <div className="event-details">
+                    <span>IP: {event.ipAddress}</span>
+                    {event.clientId && <span>Client: {event.clientId}</span>}
+                  </div>
+                  <div className="event-description">{event.details}</div>
+                </div>
+              ))}
             </div>
           )}
+        </div>
 
-          {/* Geographic Distribution */}
-          <div className="geographic-section">
-            <h3>Geographic Distribution</h3>
-            <div className="geo-grid">
-              <div className="geo-column">
-                <h4>Top Countries</h4>
-                <div className="geo-list">
-                  {data.realtime.geography.topCountries.map((country, index) => (
-                    <div key={country.country} className="geo-item">
-                      <span className="geo-rank">#{index + 1}</span>
-                      <span className="geo-name">{country.country}</span>
-                      <span className="geo-count">{country.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="geo-column">
-                <h4>Top Cities</h4>
-                <div className="geo-list">
-                  {data.realtime.geography.topCities.map((city, index) => (
-                    <div key={city.city} className="geo-item">
-                      <span className="geo-rank">#{index + 1}</span>
-                      <span className="geo-name">{city.city}</span>
-                      <span className="geo-count">{city.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* System Info */}
+        <div className="analytics-section">
+          <h2>📈 System Information</h2>
+          <div className="info-grid">
+            <div className="info-card">
+              <h4>Database Analytics</h4>
+              <p>✅ Persistent PostgreSQL storage</p>
+              <p>✅ Real-time performance tracking</p>
+              <p>✅ Optimized with batching & indexing</p>
+              <p>✅ Production-ready for Vercel</p>
             </div>
-          </div>
-
-          {/* Client Analysis */}
-          <div className="client-analysis">
-            <h3>Client Analysis</h3>
-            <div className="analysis-grid">
-              <div className="analysis-column">
-                <h4>Client Types</h4>
-                <div className="type-list">
-                  {data.realtime.clientAnalysis.clientTypes.map((type) => (
-                    <div key={type.type} className="type-item">
-                      <span className="type-name">{type.type}</span>
-                      <span className="type-count">{type.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="analysis-column">
-                <h4>Platforms</h4>
-                <div className="type-list">
-                  {data.realtime.clientAnalysis.platforms.map((platform) => (
-                    <div key={platform.platform} className="type-item">
-                      <span className="type-name">{platform.platform}</span>
-                      <span className="type-count">{platform.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Usage Patterns */}
-          <div className="usage-patterns">
-            <h3>Usage Patterns</h3>
-            
-            {/* Hourly Pattern */}
-            <div className="pattern-section">
-              <h4>Hourly Traffic Pattern</h4>
-              <div className="hourly-chart">
-                {data.realtime.usagePatterns.hourlyPattern.map((hour) => (
-                  <div key={hour.hour} className="hourly-bar">
-                    <div 
-                      className="hour-bar" 
-                      style={{ 
-                        height: `${Math.max((hour.count / Math.max(...data.realtime.usagePatterns.hourlyPattern.map(h => h.count))) * 100, 5)}%` 
-                      }}
-                    ></div>
-                    <small>{hour.hour}:00</small>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Top Endpoints */}
-            <div className="endpoints-section">
-              <h4>Most Popular Endpoints</h4>
-              <div className="endpoint-list">
-                {data.realtime.usagePatterns.topEndpoints.map((endpoint, index) => (
-                  <div key={endpoint.endpoint} className="endpoint-item">
-                    <span className="endpoint-rank">#{index + 1}</span>
-                    <span className="endpoint-path">{endpoint.endpoint}</span>
-                    <span className="endpoint-count">{endpoint.count} requests</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Security Events */}
-          <div className="security-section">
-            <h3>Security Events (24h)</h3>
-            <div className="security-overview">
-              <div className="metric-card security-card">
-                <h4>Total Events</h4>
-                <p className="metric-value">{data.realtime.security.eventCount}</p>
-              </div>
-              {data.realtime.security.eventCount === 0 && (
-                <p className="no-events">No security events detected in the last 24 hours</p>
-              )}
+            <div className="info-card">
+              <h4>Data Collection</h4>
+              <p>📊 Request analytics with geographic data</p>
+              <p>🔒 Security event monitoring</p>
+              <p>⚡ Non-blocking collection with batching</p>
+              <p>🗄️ Automatic cleanup after 30 days</p>
             </div>
           </div>
         </div>
       </div>
 
       <style jsx>{`
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 2rem;
+        }
+
         .analytics-header {
           text-align: center;
           margin-bottom: 2rem;
@@ -418,6 +237,49 @@ export default function AnalyticsPage() {
         .analytics-header p {
           color: #666;
           margin-bottom: 1rem;
+        }
+
+        .header-controls {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .control-group {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .control-group label {
+          font-weight: 500;
+          color: #495057;
+        }
+
+        .time-select {
+          padding: 0.5rem;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          background: white;
+          color: #495057;
+        }
+
+        .button {
+          padding: 0.5rem 1rem;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background 0.2s;
+        }
+
+        .button:hover {
+          background: #0056b3;
         }
 
         .analytics-grid {
@@ -454,7 +316,7 @@ export default function AnalyticsPage() {
           border-left: 4px solid #007bff;
         }
 
-        .metric-card h3 {
+        .metric-card h3, .metric-card h4 {
           color: #666;
           font-size: 0.9rem;
           margin-bottom: 0.5rem;
@@ -468,22 +330,13 @@ export default function AnalyticsPage() {
           margin: 0;
         }
 
-        .top-clients {
-          margin-top: 1.5rem;
-        }
-
-        .top-clients h3 {
-          color: #333;
-          margin-bottom: 1rem;
-        }
-
-        .client-list {
+        .endpoint-list, .geo-list {
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
         }
 
-        .client-item {
+        .endpoint-item, .geo-item {
           display: flex;
           align-items: center;
           padding: 0.75rem;
@@ -492,190 +345,26 @@ export default function AnalyticsPage() {
           border-left: 3px solid #28a745;
         }
 
-        .client-rank {
+        .endpoint-rank, .geo-rank {
           font-weight: bold;
           color: #28a745;
           margin-right: 1rem;
           min-width: 30px;
         }
 
-        .client-info {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .client-info strong {
-          color: #333;
-        }
-
-        .client-info small {
-          color: #666;
-          font-family: monospace;
-        }
-
-        .client-tokens {
-          font-weight: bold;
-          color: #007bff;
-        }
-
-        .token-trend {
-          margin-top: 1.5rem;
-        }
-
-        .token-trend h3 {
-          color: #333;
-          margin-bottom: 1rem;
-        }
-
-        .trend-chart {
-          display: flex;
-          align-items: end;
-          gap: 0.5rem;
-          height: 150px;
-          padding: 1rem;
-          background: #f8f9fa;
-          border-radius: 6px;
-        }
-
-        .trend-bar {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          flex: 1;
-          height: 100%;
-        }
-
-        .bar {
-          background: linear-gradient(to top, #007bff, #66b3ff);
-          width: 100%;
-          min-height: 10px;
-          border-radius: 2px 2px 0 0;
-          margin-bottom: auto;
-        }
-
-        .trend-bar small {
-          color: #666;
-          font-size: 0.75rem;
-          margin-top: 0.25rem;
-        }
-
-        .error {
-          color: #dc3545;
-          font-weight: bold;
-        }
-
-        .geographic-section, .client-analysis, .usage-patterns, .security-section {
-          margin-top: 2rem;
-        }
-
-        .geo-grid, .analysis-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
-          margin-top: 1rem;
-        }
-
-        .geo-column, .analysis-column {
-          background: #f8f9fa;
-          padding: 1rem;
-          border-radius: 6px;
-        }
-
-        .geo-column h4, .analysis-column h4 {
-          color: #333;
-          margin-bottom: 1rem;
-          font-size: 1rem;
-        }
-
-        .geo-list, .type-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .geo-item, .type-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0.5rem;
-          background: white;
-          border-radius: 4px;
-          border-left: 3px solid #17a2b8;
-        }
-
-        .geo-rank, .endpoint-rank {
-          font-weight: bold;
-          color: #17a2b8;
-          min-width: 30px;
-        }
-
-        .geo-name, .type-name, .endpoint-path {
+        .endpoint-path, .geo-name {
           flex: 1;
           text-align: left;
           margin: 0 0.5rem;
         }
 
-        .geo-count, .type-count, .endpoint-count {
-          font-weight: bold;
+        .endpoint-path {
+          font-family: monospace;
           color: #495057;
         }
 
-        .hourly-chart {
-          display: flex;
-          align-items: end;
-          gap: 2px;
-          height: 100px;
-          padding: 1rem;
-          background: #f8f9fa;
-          border-radius: 6px;
-          margin-top: 1rem;
-        }
-
-        .hourly-bar {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          flex: 1;
-          height: 100%;
-        }
-
-        .hour-bar {
-          background: linear-gradient(to top, #17a2b8, #85d3e0);
-          width: 100%;
-          min-height: 5px;
-          border-radius: 2px 2px 0 0;
-          margin-bottom: auto;
-        }
-
-        .hourly-bar small {
-          color: #666;
-          font-size: 0.7rem;
-          margin-top: 0.25rem;
-        }
-
-        .endpoints-section {
-          margin-top: 1.5rem;
-        }
-
-        .endpoint-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          margin-top: 1rem;
-        }
-
-        .endpoint-item {
-          display: flex;
-          align-items: center;
-          padding: 0.75rem;
-          background: #f8f9fa;
-          border-radius: 6px;
-          border-left: 3px solid #ffc107;
-        }
-
-        .endpoint-path {
-          font-family: monospace;
+        .endpoint-count, .geo-count {
+          font-weight: bold;
           color: #495057;
         }
 
@@ -696,25 +385,98 @@ export default function AnalyticsPage() {
           margin: 0;
         }
 
+        .security-events {
+          margin-top: 1rem;
+        }
+
+        .security-event {
+          background: #f8f9fa;
+          border-left: 4px solid #dc3545;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+          border-radius: 0 6px 6px 0;
+        }
+
+        .event-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+        }
+
+        .event-type {
+          background: #dc3545;
+          color: white;
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          font-weight: bold;
+        }
+
+        .event-time {
+          color: #666;
+          font-size: 0.8rem;
+        }
+
+        .event-details {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 0.5rem;
+          font-size: 0.9rem;
+        }
+
+        .event-details span {
+          background: #e9ecef;
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          font-family: monospace;
+        }
+
+        .event-description {
+          color: #495057;
+          font-style: italic;
+        }
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 1rem;
+          margin-top: 1rem;
+        }
+
+        .info-card {
+          background: #f8f9fa;
+          padding: 1rem;
+          border-radius: 6px;
+          border-left: 4px solid #17a2b8;
+        }
+
+        .info-card h4 {
+          color: #333;
+          margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+          margin: 0.25rem 0;
+          color: #495057;
+          font-size: 0.9rem;
+        }
+
+        .error {
+          color: #dc3545;
+          font-weight: bold;
+        }
+
         @media (max-width: 768px) {
           .metrics-grid {
             grid-template-columns: 1fr;
           }
           
-          .trend-chart, .hourly-chart {
-            height: 120px;
-          }
-          
-          .client-item, .geo-grid, .analysis-grid {
-            grid-template-columns: 1fr;
-          }
-          
-          .client-item {
+          .header-controls {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
+            gap: 1rem;
           }
-
+          
           .security-overview {
             flex-direction: column;
             align-items: flex-start;
