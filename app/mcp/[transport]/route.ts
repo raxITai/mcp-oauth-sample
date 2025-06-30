@@ -2,14 +2,28 @@ import { createMcpHandler } from "@vercel/mcp-adapter";
 import { z } from "zod";
 import { prisma } from '@/app/prisma';
 import { NextRequest } from 'next/server';
+import { analyticsCollector, getClientIP, extractClientInfo } from '@/lib/analytics';
 
 // Authentication helper
 async function authenticateRequest(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
+  const ip = getClientIP(request);
+  const userAgent = request.headers.get('user-agent') || '';
+  
   console.log('[MCP] Auth header present:', !!authHeader);
   
   if (!authHeader) {
     console.log('[MCP] No auth header, returning 401');
+    
+    // Log security event for missing auth
+    analyticsCollector.logSecurityEvent({
+      timestamp: new Date(),
+      type: 'auth_failure',
+      ipAddress: ip,
+      userAgent,
+      details: 'Missing authorization header'
+    });
+    
     return null;
   }
 
@@ -18,6 +32,16 @@ async function authenticateRequest(request: NextRequest) {
   
   if (!token) {
     console.log('[MCP] No token, returning 401');
+    
+    // Log security event for malformed auth header
+    analyticsCollector.logSecurityEvent({
+      timestamp: new Date(),
+      type: 'auth_failure',
+      ipAddress: ip,
+      userAgent,
+      details: 'Malformed authorization header'
+    });
+    
     return null;
   }
 
@@ -25,12 +49,26 @@ async function authenticateRequest(request: NextRequest) {
     console.log('[MCP] Looking up access token in database');
     const accessToken = await prisma.accessToken.findUnique({
       where: { token },
+      include: {
+        client: true,
+        user: true
+      }
     });
 
     console.log('[MCP] Access token found:', !!accessToken);
     
     if (!accessToken) {
       console.log('[MCP] No access token found, returning 401');
+      
+      // Log security event for invalid token
+      analyticsCollector.logSecurityEvent({
+        timestamp: new Date(),
+        type: 'invalid_token',
+        ipAddress: ip,
+        userAgent,
+        details: 'Invalid access token provided'
+      });
+      
       return null;
     }
 
@@ -39,6 +77,17 @@ async function authenticateRequest(request: NextRequest) {
     
     if (accessToken.expiresAt < new Date()) {
       console.log('[MCP] Token expired, returning 401');
+      
+      // Log security event for expired token
+      analyticsCollector.logSecurityEvent({
+        timestamp: new Date(),
+        type: 'invalid_token',
+        ipAddress: ip,
+        userAgent,
+        clientId: accessToken.clientId,
+        details: 'Expired access token used'
+      });
+      
       return null;
     }
 
@@ -49,6 +98,17 @@ async function authenticateRequest(request: NextRequest) {
     
     if (accessToken.resource && accessToken.resource !== currentResource) {
       console.log('[MCP] Token audience mismatch. Expected:', currentResource, 'Got:', accessToken.resource);
+      
+      // Log security event for audience mismatch
+      analyticsCollector.logSecurityEvent({
+        timestamp: new Date(),
+        type: 'suspicious_activity',
+        ipAddress: ip,
+        userAgent,
+        clientId: accessToken.clientId,
+        details: `Token audience mismatch. Expected: ${currentResource}, Got: ${accessToken.resource}`
+      });
+      
       return null;
     }
 
@@ -56,6 +116,16 @@ async function authenticateRequest(request: NextRequest) {
     return accessToken;
   } catch (e) {
     console.error('[MCP] Error validating token:', e);
+    
+    // Log security event for authentication error
+    analyticsCollector.logSecurityEvent({
+      timestamp: new Date(),
+      type: 'auth_failure',
+      ipAddress: ip,
+      userAgent,
+      details: `Authentication error: ${e instanceof Error ? e.message : 'Unknown error'}`
+    });
+    
     return null;
   }
 }
