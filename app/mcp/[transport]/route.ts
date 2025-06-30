@@ -447,6 +447,83 @@ const handler = async (req: Request) => {
           };
         }
       );
+
+      // Tool 6: Trigger Security Events (for testing)
+      server.tool(
+        "trigger_security_events",
+        "Triggers various security events for testing the security monitoring system",
+        {
+          eventType: z.enum([
+            "AUTH_FAILURE",
+            "INVALID_TOKEN", 
+            "SUSPICIOUS_ACTIVITY",
+            "RATE_LIMIT_EXCEEDED",
+            "UNAUTHORIZED_ACCESS",
+            "TOKEN_REUSE",
+            "UNUSUAL_LOCATION",
+            "PRIVILEGE_ESCALATION",
+            "MALFORMED_REQUEST",
+            "BRUTE_FORCE_ATTEMPT"
+          ]).describe("Type of security event to trigger"),
+          count: z.number().int().min(1).max(10).default(1).describe("Number of events to generate (1-10)"),
+          severity: z.enum(["low", "medium", "high", "critical"]).optional().describe("Override severity level")
+        },
+        async ({ eventType, count, severity }) => {
+          try {
+            // Convert event type to lowercase format expected by logSecurityEvent
+            const legacyEventType = eventType.toLowerCase().replace(/_/g, '_');
+            
+            // Log security event through the existing security monitoring system
+            await logSecurityEvent(
+              nextReq, 
+              legacyEventType, 
+              `Test ${eventType} event triggered via MCP tool (count: ${count})`,
+              accessToken?.clientId
+            );
+
+            // Also trigger through the test API for batch generation
+            const host = nextReq.headers.get('host');
+            const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+            const baseUrl = `${protocol}://${host}`;
+
+            const response = await fetch(`${baseUrl}/api/test/security-events`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ 
+                eventType, 
+                count: count - 1, // Subtract 1 since we already logged one above
+                severity
+              })
+            });
+
+            let apiResult = "API call failed";
+            if (response.ok) {
+              const result = await response.json();
+              apiResult = result.message || "Additional events generated successfully";
+            }
+
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `🚨 Security Event Test Triggered\n\nEvent Type: ${eventType}\nCount: ${count}\nSeverity: ${severity || 'default'}\n\nEvents have been generated for testing the security monitoring system.\n\nAPI Response: ${apiResult}\n\n⚠️ This tool is for testing purposes only. Check the analytics dashboard to see the generated events.`,
+                },
+              ],
+            };
+          } catch (error) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `❌ Failed to trigger security events: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                },
+              ],
+            };
+          }
+        }
+      );
     },
     {
       // Optionally add server capabilities here

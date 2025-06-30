@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const mockContext = {
-      userId: 'test-user-123',
+      userId: undefined, // Don't use fake userId that doesn't exist in database
       clientId: 'test-client-456',
       ipAddress: request.headers.get('x-forwarded-for') || '127.0.0.1',
       userAgent: request.headers.get('user-agent') || 'Test Agent',
