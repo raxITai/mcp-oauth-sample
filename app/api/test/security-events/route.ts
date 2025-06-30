@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { securityMonitor } from '@/lib/security-monitor';
+import { prisma } from '@/app/prisma';
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,15 +26,29 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    // Get real data from database instead of using fake IDs
+    const recentUser = await prisma.user.findFirst({
+      select: { id: true }
+    });
+    
+    const recentClient = await prisma.client.findFirst({
+      orderBy: { createdAt: 'desc' },
+      select: { id: true }
+    });
+    
+    const recentMCPServer = await prisma.mCPServer.findFirst({
+      select: { id: true }
+    });
+
     const mockContext = {
-      userId: undefined, // Don't use fake userId that doesn't exist in database
-      clientId: 'test-client-456',
+      userId: recentUser?.id, // Use real user ID or undefined
+      clientId: recentClient?.id, // Use real client ID or undefined
       ipAddress: request.headers.get('x-forwarded-for') || '127.0.0.1',
       userAgent: request.headers.get('user-agent') || 'Test Agent',
       endpoint: '/test/security-events',
       organization: 'Test Organization',
       ssoProvider: 'google',
-      mcpServerId: 'test-mcp-server'
+      mcpServerId: recentMCPServer?.id // Use real MCP server ID or undefined
     };
 
     const events = [];
