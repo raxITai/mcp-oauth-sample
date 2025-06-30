@@ -1,6 +1,25 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { analyticsDB, getClientIP } from './lib/analytics-db';
+
+// Utility function for Edge Runtime
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  
+  const realIP = request.headers.get('x-real-ip');
+  if (realIP) {
+    return realIP;
+  }
+  
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  return '127.0.0.1';
+}
 
 export async function middleware(request: NextRequest) {
   const startTime = Date.now();
@@ -8,7 +27,8 @@ export async function middleware(request: NextRequest) {
   // Let the request proceed
   const response = NextResponse.next();
   
-  // Collect analytics data after response (optimized, non-blocking)
+  // For Edge Runtime, we'll send analytics data to our API endpoint
+  // This avoids Prisma issues in middleware
   Promise.resolve().then(async () => {
     try {
       const endTime = Date.now();
@@ -21,9 +41,9 @@ export async function middleware(request: NextRequest) {
       let clientId: string | undefined;
       let userId: string | undefined;
       
-      // Quick, lightweight analytics logging with batching
-      await analyticsDB.logRequest({
-        timestamp: new Date(startTime),
+      // Send analytics data to our API endpoint (Edge Runtime compatible)
+      const analyticsData = {
+        timestamp: new Date(startTime).toISOString(),
         endpoint: request.nextUrl.pathname,
         method: request.method,
         statusCode: response.status,
@@ -32,8 +52,24 @@ export async function middleware(request: NextRequest) {
         userId,
         ipAddress: ip,
         userAgent
-        // Geographic data will be enriched asynchronously
+      };
+
+      // Make a fetch call to our analytics API endpoint
+      // This runs in Edge Runtime and sends data to Node.js runtime
+      const host = request.headers.get('host');
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      const baseUrl = `${protocol}://${host}`;
+      
+      await fetch(`${baseUrl}/api/analytics/collect`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(analyticsData)
+      }).catch(() => {
+        // Silent fail - analytics shouldn't break the main request
       });
+      
     } catch (error) {
       console.warn('Analytics collection failed:', error);
     }

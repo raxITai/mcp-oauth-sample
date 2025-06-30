@@ -2,13 +2,60 @@ import { createMcpHandler } from "@vercel/mcp-adapter";
 import { z } from "zod";
 import { prisma } from '@/app/prisma';
 import { NextRequest } from 'next/server';
-import { analyticsDB, getClientIP } from '@/lib/analytics-db';
+
+// Utility function for getting client IP
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  
+  const realIP = request.headers.get('x-real-ip');
+  if (realIP) {
+    return realIP;
+  }
+  
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  return '127.0.0.1';
+}
+
+// Helper function to log security events (Edge Runtime compatible)
+async function logSecurityEvent(request: NextRequest, eventType: string, details: string, clientId?: string) {
+  try {
+    const host = request.headers.get('host');
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const baseUrl = `${protocol}://${host}`;
+    
+    const securityData = {
+      timestamp: new Date().toISOString(),
+      eventType,
+      ipAddress: getClientIP(request),
+      userAgent: request.headers.get('user-agent') || '',
+      clientId,
+      details
+    };
+
+    await fetch(`${baseUrl}/api/analytics/security`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(securityData)
+    }).catch(() => {
+      // Silent fail - security logging shouldn't break auth
+    });
+  } catch (error) {
+    console.warn('Security event logging failed:', error);
+  }
+}
 
 // Authentication helper
 async function authenticateRequest(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
-  const ip = getClientIP(request);
-  const userAgent = request.headers.get('user-agent') || '';
   
   console.log('[MCP] Auth header present:', !!authHeader);
   
@@ -16,13 +63,7 @@ async function authenticateRequest(request: NextRequest) {
     console.log('[MCP] No auth header, returning 401');
     
     // Log security event for missing auth
-    analyticsDB.logSecurityEvent({
-      timestamp: new Date(),
-      eventType: 'auth_failure',
-      ipAddress: ip,
-      userAgent,
-      details: 'Missing authorization header'
-    });
+    await logSecurityEvent(request, 'auth_failure', 'Missing authorization header');
     
     return null;
   }
@@ -34,13 +75,7 @@ async function authenticateRequest(request: NextRequest) {
     console.log('[MCP] No token, returning 401');
     
     // Log security event for malformed auth header
-    analyticsDB.logSecurityEvent({
-      timestamp: new Date(),
-      eventType: 'auth_failure',
-      ipAddress: ip,
-      userAgent,
-      details: 'Malformed authorization header'
-    });
+    await logSecurityEvent(request, 'auth_failure', 'Malformed authorization header');
     
     return null;
   }
@@ -61,13 +96,7 @@ async function authenticateRequest(request: NextRequest) {
       console.log('[MCP] No access token found, returning 401');
       
       // Log security event for invalid token
-      analyticsDB.logSecurityEvent({
-        timestamp: new Date(),
-        eventType: 'invalid_token',
-        ipAddress: ip,
-        userAgent,
-        details: 'Invalid access token provided'
-      });
+      await logSecurityEvent(request, 'invalid_token', 'Invalid access token provided');
       
       return null;
     }
@@ -79,14 +108,7 @@ async function authenticateRequest(request: NextRequest) {
       console.log('[MCP] Token expired, returning 401');
       
       // Log security event for expired token
-      analyticsDB.logSecurityEvent({
-        timestamp: new Date(),
-        eventType: 'invalid_token',
-        ipAddress: ip,
-        userAgent,
-        clientId: accessToken.clientId,
-        details: 'Expired access token used'
-      });
+      await logSecurityEvent(request, 'invalid_token', 'Expired access token used', accessToken.clientId);
       
       return null;
     }
@@ -100,14 +122,9 @@ async function authenticateRequest(request: NextRequest) {
       console.log('[MCP] Token audience mismatch. Expected:', currentResource, 'Got:', accessToken.resource);
       
       // Log security event for audience mismatch
-      analyticsDB.logSecurityEvent({
-        timestamp: new Date(),
-        eventType: 'suspicious_activity',
-        ipAddress: ip,
-        userAgent,
-        clientId: accessToken.clientId,
-        details: `Token audience mismatch. Expected: ${currentResource}, Got: ${accessToken.resource}`
-      });
+      await logSecurityEvent(request, 'suspicious_activity', 
+        `Token audience mismatch. Expected: ${currentResource}, Got: ${accessToken.resource}`, 
+        accessToken.clientId);
       
       return null;
     }
@@ -118,13 +135,8 @@ async function authenticateRequest(request: NextRequest) {
     console.error('[MCP] Error validating token:', e);
     
     // Log security event for authentication error
-    analyticsDB.logSecurityEvent({
-      timestamp: new Date(),
-      eventType: 'auth_failure',
-      ipAddress: ip,
-      userAgent,
-      details: `Authentication error: ${e instanceof Error ? e.message : 'Unknown error'}`
-    });
+    await logSecurityEvent(request, 'auth_failure', 
+      `Authentication error: ${e instanceof Error ? e.message : 'Unknown error'}`);
     
     return null;
   }
