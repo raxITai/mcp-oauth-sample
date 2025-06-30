@@ -265,7 +265,10 @@ class OptimizedAnalyticsCollector {
         COUNT(*) as total_requests,
         AVG("responseTime") as avg_response_time,
         PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY "responseTime") as p95_response_time,
-        COUNT(CASE WHEN "statusCode" >= 400 THEN 1 END) * 100.0 / COUNT(*) as error_rate
+        CASE 
+          WHEN COUNT(*) = 0 THEN 0
+          ELSE COUNT(CASE WHEN "statusCode" >= 400 THEN 1 END) * 100.0 / COUNT(*)
+        END as error_rate
       FROM "AnalyticsRequest"
       WHERE timestamp >= ${cutoff}
     ` as Array<{
@@ -277,11 +280,16 @@ class OptimizedAnalyticsCollector {
 
     const metrics = result[0];
     return metrics ? {
-      totalRequests: Number(metrics.total_requests),
+      totalRequests: Number(metrics.total_requests || 0),
       avgResponseTime: Math.round(metrics.avg_response_time || 0),
       p95ResponseTime: Math.round(metrics.p95_response_time || 0),
       errorRate: Math.round((metrics.error_rate || 0) * 100) / 100
-    } : null;
+    } : {
+      totalRequests: 0,
+      avgResponseTime: 0,
+      p95ResponseTime: 0,
+      errorRate: 0
+    };
   }
 
   async getTopEndpoints(hoursBack = 24, limit = 10) {
