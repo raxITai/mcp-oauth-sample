@@ -3,6 +3,13 @@ import type { NextRequest } from 'next/server';
 import { prisma } from '@/app/prisma';
 import { randomBytes } from 'crypto';
 
+// Type for client object
+interface ClientType {
+  id: string;
+  clientId: string;
+  clientSecret: string | null;
+}
+
 // Helper function to create response headers
 function getCorsHeaders() {
   return {
@@ -52,7 +59,7 @@ async function createTokens(clientId: string, userId: string, resource?: string)
 // Handle refresh token grant
 async function handleRefreshTokenGrant(
   refreshTokenValue: string, 
-  client: any, 
+  client: ClientType, 
   clientSecret: string | undefined, 
   resource?: string
 ) {
@@ -91,7 +98,7 @@ async function handleRefreshTokenGrant(
   }
 
   // Validate client credentials for confidential clients
-  if (client.clientSecret && client.clientSecret !== clientSecret) {
+  if (client.clientSecret && (client.clientSecret ?? undefined) !== clientSecret) {
     console.log('[RefreshToken] Invalid client credentials');
     return NextResponse.json({ error: 'invalid_client' }, { 
       status: 401,
@@ -106,7 +113,7 @@ async function handleRefreshTokenGrant(
   }
 
   // Use existing resource or provided resource
-  const tokenResource = resource || refreshTokenRecord.resource;
+  const tokenResource = resource || refreshTokenRecord.resource || undefined;
 
   // Create new tokens
   const tokens = await createTokens(client.id, refreshTokenRecord.userId, tokenResource);
@@ -178,7 +185,7 @@ export async function POST(request: NextRequest) {
 
     // Handle refresh token grant
     if (grant_type === 'refresh_token') {
-      return await handleRefreshTokenGrant(refresh_token!, client, client_secret || undefined, resource);
+      return await handleRefreshTokenGrant(refresh_token!, client, client_secret ?? undefined, resource);
     }
 
     // Continue with authorization code grant (existing logic)
@@ -232,7 +239,7 @@ export async function POST(request: NextRequest) {
     }
 
     // If PKCE is not present or not valid, require client secret for confidential clients
-    if (!authCode.codeChallenge && client.clientSecret && client.clientSecret !== client_secret) {
+    if (!authCode.codeChallenge && client.clientSecret && client.clientSecret !== (client_secret ?? undefined)) {
       console.log("Invalid client_secret.", { client_id });
       return NextResponse.json({ error: 'invalid_client' }, { 
         status: 401,
@@ -249,7 +256,7 @@ export async function POST(request: NextRequest) {
     const tokens = await createTokens(
       client.id, 
       authCode.userId, 
-      resource || authCode.resource
+      resource || authCode.resource || undefined
     );
 
     console.log("Access token and refresh token created.");
