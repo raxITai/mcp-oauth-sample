@@ -200,6 +200,16 @@ exports.Prisma.RefreshTokenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.MCPServerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  identifier: 'identifier',
+  description: 'description',
+  version: 'version',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AnalyticsRequestScalarFieldEnum = {
   id: 'id',
   timestamp: 'timestamp',
@@ -209,27 +219,50 @@ exports.Prisma.AnalyticsRequestScalarFieldEnum = {
   responseTime: 'responseTime',
   clientId: 'clientId',
   userId: 'userId',
+  mcpServerId: 'mcpServerId',
+  ssoProvider: 'ssoProvider',
+  userRole: 'userRole',
+  scopes: 'scopes',
+  organization: 'organization',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   country: 'country',
   city: 'city',
   clientType: 'clientType',
-  platform: 'platform'
+  platform: 'platform',
+  mcpMethod: 'mcpMethod',
+  toolName: 'toolName'
 };
 
 exports.Prisma.AnalyticsSecurityScalarFieldEnum = {
   id: 'id',
   timestamp: 'timestamp',
   eventType: 'eventType',
+  severity: 'severity',
+  userId: 'userId',
+  clientId: 'clientId',
+  mcpServerId: 'mcpServerId',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  clientId: 'clientId',
-  details: 'details'
+  endpoint: 'endpoint',
+  country: 'country',
+  city: 'city',
+  organization: 'organization',
+  ssoProvider: 'ssoProvider',
+  details: 'details',
+  riskScore: 'riskScore',
+  resolved: 'resolved',
+  resolvedAt: 'resolvedAt',
+  resolvedBy: 'resolvedBy'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -242,6 +275,23 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.SecurityEventType = exports.$Enums.SecurityEventType = {
+  AUTH_FAILURE: 'AUTH_FAILURE',
+  INVALID_TOKEN: 'INVALID_TOKEN',
+  SUSPICIOUS_ACTIVITY: 'SUSPICIOUS_ACTIVITY',
+  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
+  UNAUTHORIZED_ACCESS: 'UNAUTHORIZED_ACCESS',
+  TOKEN_REUSE: 'TOKEN_REUSE',
+  UNUSUAL_LOCATION: 'UNUSUAL_LOCATION',
+  PRIVILEGE_ESCALATION: 'PRIVILEGE_ESCALATION',
+  MALFORMED_REQUEST: 'MALFORMED_REQUEST',
+  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -252,6 +302,7 @@ exports.Prisma.ModelName = {
   AccessToken: 'AccessToken',
   AuthCode: 'AuthCode',
   RefreshToken: 'RefreshToken',
+  MCPServer: 'MCPServer',
   AnalyticsRequest: 'AnalyticsRequest',
   AnalyticsSecurity: 'AnalyticsSecurity'
 };

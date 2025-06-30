@@ -27,6 +27,8 @@ interface SecurityEvent {
   details: string;
 }
 
+// Legacy interface - keeping for backward compatibility
+
 class OptimizedAnalyticsCollector {
   private requestBatch: RequestAnalytics[] = [];
   private securityBatch: SecurityEvent[] = [];
@@ -117,11 +119,12 @@ class OptimizedAnalyticsCollector {
       await prisma.analyticsSecurity.createMany({
         data: batch.map(event => ({
           timestamp: event.timestamp,
-          eventType: event.eventType,
+          eventType: event.eventType as 'AUTH_FAILURE' | 'INVALID_TOKEN' | 'SUSPICIOUS_ACTIVITY',
+          severity: 'medium', // Default severity for legacy events
           ipAddress: event.ipAddress,
           userAgent: event.userAgent,
           clientId: event.clientId,
-          details: event.details
+          details: { legacy: event.details } // Wrap in object for JSON field
         })),
         skipDuplicates: true
       });

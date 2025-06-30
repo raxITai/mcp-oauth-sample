@@ -20,6 +20,10 @@ model User {
   accessTokens  AccessToken[]
   authCodes     AuthCode[]
   refreshTokens RefreshToken[]
+  
+  // Analytics relations
+  analyticsRequests AnalyticsRequest[]
+  securityEvents    AnalyticsSecurity[]
 }
 
 model Account {
@@ -69,6 +73,10 @@ model Client {
   authCodes    AuthCode[]
   refreshTokens RefreshToken[]
 
+  // Analytics relations
+  analyticsRequests AnalyticsRequest[]
+  securityEvents    AnalyticsSecurity[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -115,20 +123,49 @@ model RefreshToken {
   createdAt DateTime @default(now())
 }
 
-// Optimized Analytics Schema for Performance
+// Enhanced Analytics Schema for Enterprise MCP
+model MCPServer {
+  id          String   @id @default(cuid())
+  name        String   // "CRM Server", "Finance API", etc
+  identifier  String   @unique // mcp://crm.company.com
+  description String?
+  version     String?
+  
+  // Relations
+  requests    AnalyticsRequest[]
+  securityEvents AnalyticsSecurity[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([identifier])
+}
+
 model AnalyticsRequest {
   id           String   @id @default(cuid())
   timestamp    DateTime @default(now())
-  endpoint     String   // /api/oauth/token, /mcp/sse, etc
+  endpoint     String   // /mcp/sse, /mcp/mcp, etc
   method       String   // GET, POST, etc
   statusCode   Int
   responseTime Int      // milliseconds
   
-  // Client information
+  // Enhanced client/user tracking with proper relations
   clientId     String?
+  client       Client?  @relation(fields: [clientId], references: [id])
   userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
   
-  // Request metadata (lightweight)
+  // MCP Server context
+  mcpServerId  String?
+  mcpServer    MCPServer? @relation(fields: [mcpServerId], references: [id])
+  
+  // Enterprise SSO context
+  ssoProvider  String?  // "google", "azure-ad", "okta"
+  userRole     String?  // from JWT claims
+  scopes       String[] // OAuth scopes used
+  organization String?  // from SSO claims
+  
+  // Request metadata
   ipAddress    String
   userAgent    String   @db.Text
   
@@ -140,27 +177,86 @@ model AnalyticsRequest {
   clientType   String?  // mcp-client, browser, etc
   platform     String?  // windows, macos, linux
   
+  // MCP-specific tracking
+  mcpMethod    String?  // "tools/list", "tools/call", etc
+  toolName     String?  // specific tool being called
+  
   // Indexes for fast queries
   @@index([timestamp])
   @@index([endpoint])
   @@index([clientId])
+  @@index([userId])
+  @@index([mcpServerId])
   @@index([statusCode])
   @@index([timestamp, endpoint])
   @@index([timestamp, clientId])
+  @@index([timestamp, userId])
+  @@index([organization])
+  @@index([ssoProvider])
+}
+
+enum SecurityEventType {
+  AUTH_FAILURE
+  INVALID_TOKEN
+  SUSPICIOUS_ACTIVITY
+  RATE_LIMIT_EXCEEDED
+  UNAUTHORIZED_ACCESS
+  TOKEN_REUSE
+  UNUSUAL_LOCATION
+  PRIVILEGE_ESCALATION
+  MALFORMED_REQUEST
+  BRUTE_FORCE_ATTEMPT
 }
 
 model AnalyticsSecurity {
   id         String   @id @default(cuid())
   timestamp  DateTime @default(now())
-  eventType  String   // auth_failure, invalid_token, suspicious_activity
-  ipAddress  String
-  userAgent  String   @db.Text
+  eventType  SecurityEventType
+  severity   String   // "low", "medium", "high", "critical"
+  
+  // Enhanced context
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
   clientId   String?
-  details    String   @db.Text
+  client     Client?  @relation(fields: [clientId], references: [id])
+  
+  // MCP Server context
+  mcpServerId String?
+  mcpServer   MCPServer? @relation(fields: [mcpServerId], references: [id])
+  
+  // Request context
+  ipAddress    String
+  userAgent    String   @db.Text
+  endpoint     String?  // endpoint where event occurred
+  
+  // Geographic tracking
+  country      String?
+  city         String?
+  
+  // Enterprise context
+  organization String?
+  ssoProvider  String?
+  
+  // Structured event details
+  details      Json     // structured data instead of text
+  
+  // Risk scoring
+  riskScore    Int      @default(0) // 0-100
+  resolved     Boolean  @default(false)
+  resolvedAt   DateTime?
+  resolvedBy   String?  // admin who resolved
   
   // Indexes for security queries
   @@index([timestamp])
   @@index([eventType])
+  @@index([severity])
   @@index([ipAddress])
+  @@index([userId])
+  @@index([clientId])
+  @@index([mcpServerId])
   @@index([timestamp, eventType])
+  @@index([timestamp, severity])
+  @@index([organization])
+  @@index([resolved])
+  @@index([riskScore])
 }

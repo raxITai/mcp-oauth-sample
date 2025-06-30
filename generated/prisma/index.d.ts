@@ -54,6 +54,11 @@ export type AuthCode = $Result.DefaultSelection<Prisma.$AuthCodePayload>
  */
 export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
 /**
+ * Model MCPServer
+ * 
+ */
+export type MCPServer = $Result.DefaultSelection<Prisma.$MCPServerPayload>
+/**
  * Model AnalyticsRequest
  * 
  */
@@ -63,6 +68,31 @@ export type AnalyticsRequest = $Result.DefaultSelection<Prisma.$AnalyticsRequest
  * 
  */
 export type AnalyticsSecurity = $Result.DefaultSelection<Prisma.$AnalyticsSecurityPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const SecurityEventType: {
+  AUTH_FAILURE: 'AUTH_FAILURE',
+  INVALID_TOKEN: 'INVALID_TOKEN',
+  SUSPICIOUS_ACTIVITY: 'SUSPICIOUS_ACTIVITY',
+  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
+  UNAUTHORIZED_ACCESS: 'UNAUTHORIZED_ACCESS',
+  TOKEN_REUSE: 'TOKEN_REUSE',
+  UNUSUAL_LOCATION: 'UNUSUAL_LOCATION',
+  PRIVILEGE_ESCALATION: 'PRIVILEGE_ESCALATION',
+  MALFORMED_REQUEST: 'MALFORMED_REQUEST',
+  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT'
+};
+
+export type SecurityEventType = (typeof SecurityEventType)[keyof typeof SecurityEventType]
+
+}
+
+export type SecurityEventType = $Enums.SecurityEventType
+
+export const SecurityEventType: typeof $Enums.SecurityEventType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -268,6 +298,16 @@ export class PrismaClient<
     * ```
     */
   get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mCPServer`: Exposes CRUD operations for the **MCPServer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MCPServers
+    * const mCPServers = await prisma.mCPServer.findMany()
+    * ```
+    */
+  get mCPServer(): Prisma.MCPServerDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.analyticsRequest`: Exposes CRUD operations for the **AnalyticsRequest** model.
@@ -736,6 +776,7 @@ export namespace Prisma {
     AccessToken: 'AccessToken',
     AuthCode: 'AuthCode',
     RefreshToken: 'RefreshToken',
+    MCPServer: 'MCPServer',
     AnalyticsRequest: 'AnalyticsRequest',
     AnalyticsSecurity: 'AnalyticsSecurity'
   };
@@ -756,7 +797,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "client" | "accessToken" | "authCode" | "refreshToken" | "analyticsRequest" | "analyticsSecurity"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "client" | "accessToken" | "authCode" | "refreshToken" | "mCPServer" | "analyticsRequest" | "analyticsSecurity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1352,6 +1393,80 @@ export namespace Prisma {
           }
         }
       }
+      MCPServer: {
+        payload: Prisma.$MCPServerPayload<ExtArgs>
+        fields: Prisma.MCPServerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MCPServerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MCPServerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          findFirst: {
+            args: Prisma.MCPServerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MCPServerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          findMany: {
+            args: Prisma.MCPServerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>[]
+          }
+          create: {
+            args: Prisma.MCPServerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          createMany: {
+            args: Prisma.MCPServerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MCPServerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>[]
+          }
+          delete: {
+            args: Prisma.MCPServerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          update: {
+            args: Prisma.MCPServerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          deleteMany: {
+            args: Prisma.MCPServerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MCPServerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MCPServerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>[]
+          }
+          upsert: {
+            args: Prisma.MCPServerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MCPServerPayload>
+          }
+          aggregate: {
+            args: Prisma.MCPServerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMCPServer>
+          }
+          groupBy: {
+            args: Prisma.MCPServerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MCPServerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MCPServerCountArgs<ExtArgs>
+            result: $Utils.Optional<MCPServerCountAggregateOutputType> | number
+          }
+        }
+      }
       AnalyticsRequest: {
         payload: Prisma.$AnalyticsRequestPayload<ExtArgs>
         fields: Prisma.AnalyticsRequestFieldRefs
@@ -1592,6 +1707,7 @@ export namespace Prisma {
     accessToken?: AccessTokenOmit
     authCode?: AuthCodeOmit
     refreshToken?: RefreshTokenOmit
+    mCPServer?: MCPServerOmit
     analyticsRequest?: AnalyticsRequestOmit
     analyticsSecurity?: AnalyticsSecurityOmit
   }
@@ -1694,6 +1810,8 @@ export namespace Prisma {
     accessTokens: number
     authCodes: number
     refreshTokens: number
+    analyticsRequests: number
+    securityEvents: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1703,6 +1821,8 @@ export namespace Prisma {
     accessTokens?: boolean | UserCountOutputTypeCountAccessTokensArgs
     authCodes?: boolean | UserCountOutputTypeCountAuthCodesArgs
     refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+    analyticsRequests?: boolean | UserCountOutputTypeCountAnalyticsRequestsArgs
+    securityEvents?: boolean | UserCountOutputTypeCountSecurityEventsArgs
   }
 
   // Custom InputTypes
@@ -1758,6 +1878,20 @@ export namespace Prisma {
     where?: RefreshTokenWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnalyticsRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSecurityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsSecurityWhereInput
+  }
+
 
   /**
    * Count Type ClientCountOutputType
@@ -1767,12 +1901,16 @@ export namespace Prisma {
     accessTokens: number
     authCodes: number
     refreshTokens: number
+    analyticsRequests: number
+    securityEvents: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accessTokens?: boolean | ClientCountOutputTypeCountAccessTokensArgs
     authCodes?: boolean | ClientCountOutputTypeCountAuthCodesArgs
     refreshTokens?: boolean | ClientCountOutputTypeCountRefreshTokensArgs
+    analyticsRequests?: boolean | ClientCountOutputTypeCountAnalyticsRequestsArgs
+    securityEvents?: boolean | ClientCountOutputTypeCountSecurityEventsArgs
   }
 
   // Custom InputTypes
@@ -1805,6 +1943,60 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountRefreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RefreshTokenWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountAnalyticsRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsRequestWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountSecurityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsSecurityWhereInput
+  }
+
+
+  /**
+   * Count Type MCPServerCountOutputType
+   */
+
+  export type MCPServerCountOutputType = {
+    requests: number
+    securityEvents: number
+  }
+
+  export type MCPServerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requests?: boolean | MCPServerCountOutputTypeCountRequestsArgs
+    securityEvents?: boolean | MCPServerCountOutputTypeCountSecurityEventsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MCPServerCountOutputType without action
+   */
+  export type MCPServerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServerCountOutputType
+     */
+    select?: MCPServerCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MCPServerCountOutputType without action
+   */
+  export type MCPServerCountOutputTypeCountRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsRequestWhereInput
+  }
+
+  /**
+   * MCPServerCountOutputType without action
+   */
+  export type MCPServerCountOutputTypeCountSecurityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsSecurityWhereInput
   }
 
 
@@ -1982,6 +2174,8 @@ export namespace Prisma {
     accessTokens?: boolean | User$accessTokensArgs<ExtArgs>
     authCodes?: boolean | User$authCodesArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    analyticsRequests?: boolean | User$analyticsRequestsArgs<ExtArgs>
+    securityEvents?: boolean | User$securityEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2017,6 +2211,8 @@ export namespace Prisma {
     accessTokens?: boolean | User$accessTokensArgs<ExtArgs>
     authCodes?: boolean | User$authCodesArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    analyticsRequests?: boolean | User$analyticsRequestsArgs<ExtArgs>
+    securityEvents?: boolean | User$securityEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2031,6 +2227,8 @@ export namespace Prisma {
       accessTokens: Prisma.$AccessTokenPayload<ExtArgs>[]
       authCodes: Prisma.$AuthCodePayload<ExtArgs>[]
       refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+      analyticsRequests: Prisma.$AnalyticsRequestPayload<ExtArgs>[]
+      securityEvents: Prisma.$AnalyticsSecurityPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2438,6 +2636,8 @@ export namespace Prisma {
     accessTokens<T extends User$accessTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$accessTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     authCodes<T extends User$authCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$authCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    analyticsRequests<T extends User$analyticsRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$analyticsRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    securityEvents<T extends User$securityEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$securityEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3001,6 +3201,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.analyticsRequests
+   */
+  export type User$analyticsRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    where?: AnalyticsRequestWhereInput
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    cursor?: AnalyticsRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.securityEvents
+   */
+  export type User$securityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    where?: AnalyticsSecurityWhereInput
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
   }
 
   /**
@@ -6407,6 +6655,8 @@ export namespace Prisma {
     accessTokens?: boolean | Client$accessTokensArgs<ExtArgs>
     authCodes?: boolean | Client$authCodesArgs<ExtArgs>
     refreshTokens?: boolean | Client$refreshTokensArgs<ExtArgs>
+    analyticsRequests?: boolean | Client$analyticsRequestsArgs<ExtArgs>
+    securityEvents?: boolean | Client$securityEventsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -6451,6 +6701,8 @@ export namespace Prisma {
     accessTokens?: boolean | Client$accessTokensArgs<ExtArgs>
     authCodes?: boolean | Client$authCodesArgs<ExtArgs>
     refreshTokens?: boolean | Client$refreshTokensArgs<ExtArgs>
+    analyticsRequests?: boolean | Client$analyticsRequestsArgs<ExtArgs>
+    securityEvents?: boolean | Client$securityEventsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6467,6 +6719,8 @@ export namespace Prisma {
       accessTokens: Prisma.$AccessTokenPayload<ExtArgs>[]
       authCodes: Prisma.$AuthCodePayload<ExtArgs>[]
       refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+      analyticsRequests: Prisma.$AnalyticsRequestPayload<ExtArgs>[]
+      securityEvents: Prisma.$AnalyticsSecurityPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6875,6 +7129,8 @@ export namespace Prisma {
     accessTokens<T extends Client$accessTokensArgs<ExtArgs> = {}>(args?: Subset<T, Client$accessTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccessTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     authCodes<T extends Client$authCodesArgs<ExtArgs> = {}>(args?: Subset<T, Client$authCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     refreshTokens<T extends Client$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, Client$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    analyticsRequests<T extends Client$analyticsRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Client$analyticsRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    securityEvents<T extends Client$securityEventsArgs<ExtArgs> = {}>(args?: Subset<T, Client$securityEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7396,6 +7652,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * Client.analyticsRequests
+   */
+  export type Client$analyticsRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    where?: AnalyticsRequestWhereInput
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    cursor?: AnalyticsRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * Client.securityEvents
+   */
+  export type Client$securityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    where?: AnalyticsSecurityWhereInput
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
   }
 
   /**
@@ -10733,6 +11037,1130 @@ export namespace Prisma {
 
 
   /**
+   * Model MCPServer
+   */
+
+  export type AggregateMCPServer = {
+    _count: MCPServerCountAggregateOutputType | null
+    _min: MCPServerMinAggregateOutputType | null
+    _max: MCPServerMaxAggregateOutputType | null
+  }
+
+  export type MCPServerMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    identifier: string | null
+    description: string | null
+    version: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MCPServerMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    identifier: string | null
+    description: string | null
+    version: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MCPServerCountAggregateOutputType = {
+    id: number
+    name: number
+    identifier: number
+    description: number
+    version: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MCPServerMinAggregateInputType = {
+    id?: true
+    name?: true
+    identifier?: true
+    description?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MCPServerMaxAggregateInputType = {
+    id?: true
+    name?: true
+    identifier?: true
+    description?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MCPServerCountAggregateInputType = {
+    id?: true
+    name?: true
+    identifier?: true
+    description?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MCPServerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MCPServer to aggregate.
+     */
+    where?: MCPServerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MCPServers to fetch.
+     */
+    orderBy?: MCPServerOrderByWithRelationInput | MCPServerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MCPServerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MCPServers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MCPServers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MCPServers
+    **/
+    _count?: true | MCPServerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MCPServerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MCPServerMaxAggregateInputType
+  }
+
+  export type GetMCPServerAggregateType<T extends MCPServerAggregateArgs> = {
+        [P in keyof T & keyof AggregateMCPServer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMCPServer[P]>
+      : GetScalarType<T[P], AggregateMCPServer[P]>
+  }
+
+
+
+
+  export type MCPServerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MCPServerWhereInput
+    orderBy?: MCPServerOrderByWithAggregationInput | MCPServerOrderByWithAggregationInput[]
+    by: MCPServerScalarFieldEnum[] | MCPServerScalarFieldEnum
+    having?: MCPServerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MCPServerCountAggregateInputType | true
+    _min?: MCPServerMinAggregateInputType
+    _max?: MCPServerMaxAggregateInputType
+  }
+
+  export type MCPServerGroupByOutputType = {
+    id: string
+    name: string
+    identifier: string
+    description: string | null
+    version: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MCPServerCountAggregateOutputType | null
+    _min: MCPServerMinAggregateOutputType | null
+    _max: MCPServerMaxAggregateOutputType | null
+  }
+
+  type GetMCPServerGroupByPayload<T extends MCPServerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MCPServerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MCPServerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MCPServerGroupByOutputType[P]>
+            : GetScalarType<T[P], MCPServerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MCPServerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    identifier?: boolean
+    description?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    requests?: boolean | MCPServer$requestsArgs<ExtArgs>
+    securityEvents?: boolean | MCPServer$securityEventsArgs<ExtArgs>
+    _count?: boolean | MCPServerCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mCPServer"]>
+
+  export type MCPServerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    identifier?: boolean
+    description?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["mCPServer"]>
+
+  export type MCPServerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    identifier?: boolean
+    description?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["mCPServer"]>
+
+  export type MCPServerSelectScalar = {
+    id?: boolean
+    name?: boolean
+    identifier?: boolean
+    description?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MCPServerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "identifier" | "description" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["mCPServer"]>
+  export type MCPServerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requests?: boolean | MCPServer$requestsArgs<ExtArgs>
+    securityEvents?: boolean | MCPServer$securityEventsArgs<ExtArgs>
+    _count?: boolean | MCPServerCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MCPServerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type MCPServerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $MCPServerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MCPServer"
+    objects: {
+      requests: Prisma.$AnalyticsRequestPayload<ExtArgs>[]
+      securityEvents: Prisma.$AnalyticsSecurityPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      identifier: string
+      description: string | null
+      version: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["mCPServer"]>
+    composites: {}
+  }
+
+  type MCPServerGetPayload<S extends boolean | null | undefined | MCPServerDefaultArgs> = $Result.GetResult<Prisma.$MCPServerPayload, S>
+
+  type MCPServerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MCPServerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MCPServerCountAggregateInputType | true
+    }
+
+  export interface MCPServerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MCPServer'], meta: { name: 'MCPServer' } }
+    /**
+     * Find zero or one MCPServer that matches the filter.
+     * @param {MCPServerFindUniqueArgs} args - Arguments to find a MCPServer
+     * @example
+     * // Get one MCPServer
+     * const mCPServer = await prisma.mCPServer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MCPServerFindUniqueArgs>(args: SelectSubset<T, MCPServerFindUniqueArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MCPServer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MCPServerFindUniqueOrThrowArgs} args - Arguments to find a MCPServer
+     * @example
+     * // Get one MCPServer
+     * const mCPServer = await prisma.mCPServer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MCPServerFindUniqueOrThrowArgs>(args: SelectSubset<T, MCPServerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MCPServer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerFindFirstArgs} args - Arguments to find a MCPServer
+     * @example
+     * // Get one MCPServer
+     * const mCPServer = await prisma.mCPServer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MCPServerFindFirstArgs>(args?: SelectSubset<T, MCPServerFindFirstArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MCPServer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerFindFirstOrThrowArgs} args - Arguments to find a MCPServer
+     * @example
+     * // Get one MCPServer
+     * const mCPServer = await prisma.mCPServer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MCPServerFindFirstOrThrowArgs>(args?: SelectSubset<T, MCPServerFindFirstOrThrowArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MCPServers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MCPServers
+     * const mCPServers = await prisma.mCPServer.findMany()
+     * 
+     * // Get first 10 MCPServers
+     * const mCPServers = await prisma.mCPServer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mCPServerWithIdOnly = await prisma.mCPServer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MCPServerFindManyArgs>(args?: SelectSubset<T, MCPServerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MCPServer.
+     * @param {MCPServerCreateArgs} args - Arguments to create a MCPServer.
+     * @example
+     * // Create one MCPServer
+     * const MCPServer = await prisma.mCPServer.create({
+     *   data: {
+     *     // ... data to create a MCPServer
+     *   }
+     * })
+     * 
+     */
+    create<T extends MCPServerCreateArgs>(args: SelectSubset<T, MCPServerCreateArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MCPServers.
+     * @param {MCPServerCreateManyArgs} args - Arguments to create many MCPServers.
+     * @example
+     * // Create many MCPServers
+     * const mCPServer = await prisma.mCPServer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MCPServerCreateManyArgs>(args?: SelectSubset<T, MCPServerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MCPServers and returns the data saved in the database.
+     * @param {MCPServerCreateManyAndReturnArgs} args - Arguments to create many MCPServers.
+     * @example
+     * // Create many MCPServers
+     * const mCPServer = await prisma.mCPServer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MCPServers and only return the `id`
+     * const mCPServerWithIdOnly = await prisma.mCPServer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MCPServerCreateManyAndReturnArgs>(args?: SelectSubset<T, MCPServerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MCPServer.
+     * @param {MCPServerDeleteArgs} args - Arguments to delete one MCPServer.
+     * @example
+     * // Delete one MCPServer
+     * const MCPServer = await prisma.mCPServer.delete({
+     *   where: {
+     *     // ... filter to delete one MCPServer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MCPServerDeleteArgs>(args: SelectSubset<T, MCPServerDeleteArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MCPServer.
+     * @param {MCPServerUpdateArgs} args - Arguments to update one MCPServer.
+     * @example
+     * // Update one MCPServer
+     * const mCPServer = await prisma.mCPServer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MCPServerUpdateArgs>(args: SelectSubset<T, MCPServerUpdateArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MCPServers.
+     * @param {MCPServerDeleteManyArgs} args - Arguments to filter MCPServers to delete.
+     * @example
+     * // Delete a few MCPServers
+     * const { count } = await prisma.mCPServer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MCPServerDeleteManyArgs>(args?: SelectSubset<T, MCPServerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MCPServers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MCPServers
+     * const mCPServer = await prisma.mCPServer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MCPServerUpdateManyArgs>(args: SelectSubset<T, MCPServerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MCPServers and returns the data updated in the database.
+     * @param {MCPServerUpdateManyAndReturnArgs} args - Arguments to update many MCPServers.
+     * @example
+     * // Update many MCPServers
+     * const mCPServer = await prisma.mCPServer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MCPServers and only return the `id`
+     * const mCPServerWithIdOnly = await prisma.mCPServer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MCPServerUpdateManyAndReturnArgs>(args: SelectSubset<T, MCPServerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MCPServer.
+     * @param {MCPServerUpsertArgs} args - Arguments to update or create a MCPServer.
+     * @example
+     * // Update or create a MCPServer
+     * const mCPServer = await prisma.mCPServer.upsert({
+     *   create: {
+     *     // ... data to create a MCPServer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MCPServer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MCPServerUpsertArgs>(args: SelectSubset<T, MCPServerUpsertArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MCPServers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerCountArgs} args - Arguments to filter MCPServers to count.
+     * @example
+     * // Count the number of MCPServers
+     * const count = await prisma.mCPServer.count({
+     *   where: {
+     *     // ... the filter for the MCPServers we want to count
+     *   }
+     * })
+    **/
+    count<T extends MCPServerCountArgs>(
+      args?: Subset<T, MCPServerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MCPServerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MCPServer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MCPServerAggregateArgs>(args: Subset<T, MCPServerAggregateArgs>): Prisma.PrismaPromise<GetMCPServerAggregateType<T>>
+
+    /**
+     * Group by MCPServer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MCPServerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MCPServerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MCPServerGroupByArgs['orderBy'] }
+        : { orderBy?: MCPServerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MCPServerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMCPServerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MCPServer model
+   */
+  readonly fields: MCPServerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MCPServer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MCPServerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    requests<T extends MCPServer$requestsArgs<ExtArgs> = {}>(args?: Subset<T, MCPServer$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    securityEvents<T extends MCPServer$securityEventsArgs<ExtArgs> = {}>(args?: Subset<T, MCPServer$securityEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MCPServer model
+   */
+  interface MCPServerFieldRefs {
+    readonly id: FieldRef<"MCPServer", 'String'>
+    readonly name: FieldRef<"MCPServer", 'String'>
+    readonly identifier: FieldRef<"MCPServer", 'String'>
+    readonly description: FieldRef<"MCPServer", 'String'>
+    readonly version: FieldRef<"MCPServer", 'String'>
+    readonly createdAt: FieldRef<"MCPServer", 'DateTime'>
+    readonly updatedAt: FieldRef<"MCPServer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MCPServer findUnique
+   */
+  export type MCPServerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter, which MCPServer to fetch.
+     */
+    where: MCPServerWhereUniqueInput
+  }
+
+  /**
+   * MCPServer findUniqueOrThrow
+   */
+  export type MCPServerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter, which MCPServer to fetch.
+     */
+    where: MCPServerWhereUniqueInput
+  }
+
+  /**
+   * MCPServer findFirst
+   */
+  export type MCPServerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter, which MCPServer to fetch.
+     */
+    where?: MCPServerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MCPServers to fetch.
+     */
+    orderBy?: MCPServerOrderByWithRelationInput | MCPServerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MCPServers.
+     */
+    cursor?: MCPServerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MCPServers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MCPServers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MCPServers.
+     */
+    distinct?: MCPServerScalarFieldEnum | MCPServerScalarFieldEnum[]
+  }
+
+  /**
+   * MCPServer findFirstOrThrow
+   */
+  export type MCPServerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter, which MCPServer to fetch.
+     */
+    where?: MCPServerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MCPServers to fetch.
+     */
+    orderBy?: MCPServerOrderByWithRelationInput | MCPServerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MCPServers.
+     */
+    cursor?: MCPServerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MCPServers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MCPServers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MCPServers.
+     */
+    distinct?: MCPServerScalarFieldEnum | MCPServerScalarFieldEnum[]
+  }
+
+  /**
+   * MCPServer findMany
+   */
+  export type MCPServerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter, which MCPServers to fetch.
+     */
+    where?: MCPServerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MCPServers to fetch.
+     */
+    orderBy?: MCPServerOrderByWithRelationInput | MCPServerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MCPServers.
+     */
+    cursor?: MCPServerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MCPServers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MCPServers.
+     */
+    skip?: number
+    distinct?: MCPServerScalarFieldEnum | MCPServerScalarFieldEnum[]
+  }
+
+  /**
+   * MCPServer create
+   */
+  export type MCPServerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MCPServer.
+     */
+    data: XOR<MCPServerCreateInput, MCPServerUncheckedCreateInput>
+  }
+
+  /**
+   * MCPServer createMany
+   */
+  export type MCPServerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MCPServers.
+     */
+    data: MCPServerCreateManyInput | MCPServerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MCPServer createManyAndReturn
+   */
+  export type MCPServerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * The data used to create many MCPServers.
+     */
+    data: MCPServerCreateManyInput | MCPServerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MCPServer update
+   */
+  export type MCPServerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MCPServer.
+     */
+    data: XOR<MCPServerUpdateInput, MCPServerUncheckedUpdateInput>
+    /**
+     * Choose, which MCPServer to update.
+     */
+    where: MCPServerWhereUniqueInput
+  }
+
+  /**
+   * MCPServer updateMany
+   */
+  export type MCPServerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MCPServers.
+     */
+    data: XOR<MCPServerUpdateManyMutationInput, MCPServerUncheckedUpdateManyInput>
+    /**
+     * Filter which MCPServers to update
+     */
+    where?: MCPServerWhereInput
+    /**
+     * Limit how many MCPServers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MCPServer updateManyAndReturn
+   */
+  export type MCPServerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * The data used to update MCPServers.
+     */
+    data: XOR<MCPServerUpdateManyMutationInput, MCPServerUncheckedUpdateManyInput>
+    /**
+     * Filter which MCPServers to update
+     */
+    where?: MCPServerWhereInput
+    /**
+     * Limit how many MCPServers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MCPServer upsert
+   */
+  export type MCPServerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MCPServer to update in case it exists.
+     */
+    where: MCPServerWhereUniqueInput
+    /**
+     * In case the MCPServer found by the `where` argument doesn't exist, create a new MCPServer with this data.
+     */
+    create: XOR<MCPServerCreateInput, MCPServerUncheckedCreateInput>
+    /**
+     * In case the MCPServer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MCPServerUpdateInput, MCPServerUncheckedUpdateInput>
+  }
+
+  /**
+   * MCPServer delete
+   */
+  export type MCPServerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    /**
+     * Filter which MCPServer to delete.
+     */
+    where: MCPServerWhereUniqueInput
+  }
+
+  /**
+   * MCPServer deleteMany
+   */
+  export type MCPServerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MCPServers to delete
+     */
+    where?: MCPServerWhereInput
+    /**
+     * Limit how many MCPServers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MCPServer.requests
+   */
+  export type MCPServer$requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    where?: AnalyticsRequestWhereInput
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    cursor?: AnalyticsRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MCPServer.securityEvents
+   */
+  export type MCPServer$securityEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    where?: AnalyticsSecurityWhereInput
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
+  }
+
+  /**
+   * MCPServer without action
+   */
+  export type MCPServerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AnalyticsRequest
    */
 
@@ -10763,12 +12191,18 @@ export namespace Prisma {
     responseTime: number | null
     clientId: string | null
     userId: string | null
+    mcpServerId: string | null
+    ssoProvider: string | null
+    userRole: string | null
+    organization: string | null
     ipAddress: string | null
     userAgent: string | null
     country: string | null
     city: string | null
     clientType: string | null
     platform: string | null
+    mcpMethod: string | null
+    toolName: string | null
   }
 
   export type AnalyticsRequestMaxAggregateOutputType = {
@@ -10780,12 +12214,18 @@ export namespace Prisma {
     responseTime: number | null
     clientId: string | null
     userId: string | null
+    mcpServerId: string | null
+    ssoProvider: string | null
+    userRole: string | null
+    organization: string | null
     ipAddress: string | null
     userAgent: string | null
     country: string | null
     city: string | null
     clientType: string | null
     platform: string | null
+    mcpMethod: string | null
+    toolName: string | null
   }
 
   export type AnalyticsRequestCountAggregateOutputType = {
@@ -10797,12 +12237,19 @@ export namespace Prisma {
     responseTime: number
     clientId: number
     userId: number
+    mcpServerId: number
+    ssoProvider: number
+    userRole: number
+    scopes: number
+    organization: number
     ipAddress: number
     userAgent: number
     country: number
     city: number
     clientType: number
     platform: number
+    mcpMethod: number
+    toolName: number
     _all: number
   }
 
@@ -10826,12 +12273,18 @@ export namespace Prisma {
     responseTime?: true
     clientId?: true
     userId?: true
+    mcpServerId?: true
+    ssoProvider?: true
+    userRole?: true
+    organization?: true
     ipAddress?: true
     userAgent?: true
     country?: true
     city?: true
     clientType?: true
     platform?: true
+    mcpMethod?: true
+    toolName?: true
   }
 
   export type AnalyticsRequestMaxAggregateInputType = {
@@ -10843,12 +12296,18 @@ export namespace Prisma {
     responseTime?: true
     clientId?: true
     userId?: true
+    mcpServerId?: true
+    ssoProvider?: true
+    userRole?: true
+    organization?: true
     ipAddress?: true
     userAgent?: true
     country?: true
     city?: true
     clientType?: true
     platform?: true
+    mcpMethod?: true
+    toolName?: true
   }
 
   export type AnalyticsRequestCountAggregateInputType = {
@@ -10860,12 +12319,19 @@ export namespace Prisma {
     responseTime?: true
     clientId?: true
     userId?: true
+    mcpServerId?: true
+    ssoProvider?: true
+    userRole?: true
+    scopes?: true
+    organization?: true
     ipAddress?: true
     userAgent?: true
     country?: true
     city?: true
     clientType?: true
     platform?: true
+    mcpMethod?: true
+    toolName?: true
     _all?: true
   }
 
@@ -10964,12 +12430,19 @@ export namespace Prisma {
     responseTime: number
     clientId: string | null
     userId: string | null
+    mcpServerId: string | null
+    ssoProvider: string | null
+    userRole: string | null
+    scopes: string[]
+    organization: string | null
     ipAddress: string
     userAgent: string
     country: string | null
     city: string | null
     clientType: string | null
     platform: string | null
+    mcpMethod: string | null
+    toolName: string | null
     _count: AnalyticsRequestCountAggregateOutputType | null
     _avg: AnalyticsRequestAvgAggregateOutputType | null
     _sum: AnalyticsRequestSumAggregateOutputType | null
@@ -11000,12 +12473,22 @@ export namespace Prisma {
     responseTime?: boolean
     clientId?: boolean
     userId?: boolean
+    mcpServerId?: boolean
+    ssoProvider?: boolean
+    userRole?: boolean
+    scopes?: boolean
+    organization?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     country?: boolean
     city?: boolean
     clientType?: boolean
     platform?: boolean
+    mcpMethod?: boolean
+    toolName?: boolean
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsRequest"]>
 
   export type AnalyticsRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11017,12 +12500,22 @@ export namespace Prisma {
     responseTime?: boolean
     clientId?: boolean
     userId?: boolean
+    mcpServerId?: boolean
+    ssoProvider?: boolean
+    userRole?: boolean
+    scopes?: boolean
+    organization?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     country?: boolean
     city?: boolean
     clientType?: boolean
     platform?: boolean
+    mcpMethod?: boolean
+    toolName?: boolean
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsRequest"]>
 
   export type AnalyticsRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11034,12 +12527,22 @@ export namespace Prisma {
     responseTime?: boolean
     clientId?: boolean
     userId?: boolean
+    mcpServerId?: boolean
+    ssoProvider?: boolean
+    userRole?: boolean
+    scopes?: boolean
+    organization?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     country?: boolean
     city?: boolean
     clientType?: boolean
     platform?: boolean
+    mcpMethod?: boolean
+    toolName?: boolean
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsRequest"]>
 
   export type AnalyticsRequestSelectScalar = {
@@ -11051,19 +12554,45 @@ export namespace Prisma {
     responseTime?: boolean
     clientId?: boolean
     userId?: boolean
+    mcpServerId?: boolean
+    ssoProvider?: boolean
+    userRole?: boolean
+    scopes?: boolean
+    organization?: boolean
     ipAddress?: boolean
     userAgent?: boolean
     country?: boolean
     city?: boolean
     clientType?: boolean
     platform?: boolean
+    mcpMethod?: boolean
+    toolName?: boolean
   }
 
-  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform", ExtArgs["result"]["analyticsRequest"]>
+  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "mcpServerId" | "ssoProvider" | "userRole" | "scopes" | "organization" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform" | "mcpMethod" | "toolName", ExtArgs["result"]["analyticsRequest"]>
+  export type AnalyticsRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
+  }
+  export type AnalyticsRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
+  }
+  export type AnalyticsRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
+    user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
+  }
 
   export type $AnalyticsRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AnalyticsRequest"
-    objects: {}
+    objects: {
+      client: Prisma.$ClientPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
+      mcpServer: Prisma.$MCPServerPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       timestamp: Date
@@ -11073,12 +12602,19 @@ export namespace Prisma {
       responseTime: number
       clientId: string | null
       userId: string | null
+      mcpServerId: string | null
+      ssoProvider: string | null
+      userRole: string | null
+      scopes: string[]
+      organization: string | null
       ipAddress: string
       userAgent: string
       country: string | null
       city: string | null
       clientType: string | null
       platform: string | null
+      mcpMethod: string | null
+      toolName: string | null
     }, ExtArgs["result"]["analyticsRequest"]>
     composites: {}
   }
@@ -11473,6 +13009,9 @@ export namespace Prisma {
    */
   export interface Prisma__AnalyticsRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends AnalyticsRequest$clientArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsRequest$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends AnalyticsRequest$userArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsRequest$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mcpServer<T extends AnalyticsRequest$mcpServerArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsRequest$mcpServerArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11510,12 +13049,19 @@ export namespace Prisma {
     readonly responseTime: FieldRef<"AnalyticsRequest", 'Int'>
     readonly clientId: FieldRef<"AnalyticsRequest", 'String'>
     readonly userId: FieldRef<"AnalyticsRequest", 'String'>
+    readonly mcpServerId: FieldRef<"AnalyticsRequest", 'String'>
+    readonly ssoProvider: FieldRef<"AnalyticsRequest", 'String'>
+    readonly userRole: FieldRef<"AnalyticsRequest", 'String'>
+    readonly scopes: FieldRef<"AnalyticsRequest", 'String[]'>
+    readonly organization: FieldRef<"AnalyticsRequest", 'String'>
     readonly ipAddress: FieldRef<"AnalyticsRequest", 'String'>
     readonly userAgent: FieldRef<"AnalyticsRequest", 'String'>
     readonly country: FieldRef<"AnalyticsRequest", 'String'>
     readonly city: FieldRef<"AnalyticsRequest", 'String'>
     readonly clientType: FieldRef<"AnalyticsRequest", 'String'>
     readonly platform: FieldRef<"AnalyticsRequest", 'String'>
+    readonly mcpMethod: FieldRef<"AnalyticsRequest", 'String'>
+    readonly toolName: FieldRef<"AnalyticsRequest", 'String'>
   }
     
 
@@ -11532,6 +13078,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsRequest
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
     /**
      * Filter, which AnalyticsRequest to fetch.
      */
@@ -11551,6 +13101,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsRequest to fetch.
      */
     where: AnalyticsRequestWhereUniqueInput
@@ -11568,6 +13122,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsRequest
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
     /**
      * Filter, which AnalyticsRequest to fetch.
      */
@@ -11617,6 +13175,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsRequest to fetch.
      */
     where?: AnalyticsRequestWhereInput
@@ -11665,6 +13227,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsRequests to fetch.
      */
     where?: AnalyticsRequestWhereInput
@@ -11708,6 +13274,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    /**
      * The data needed to create a AnalyticsRequest.
      */
     data: XOR<AnalyticsRequestCreateInput, AnalyticsRequestUncheckedCreateInput>
@@ -11741,6 +13311,10 @@ export namespace Prisma {
      */
     data: AnalyticsRequestCreateManyInput | AnalyticsRequestCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11755,6 +13329,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsRequest
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
     /**
      * The data needed to update a AnalyticsRequest.
      */
@@ -11807,6 +13385,10 @@ export namespace Prisma {
      * Limit how many AnalyticsRequests to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11821,6 +13403,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsRequest
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
     /**
      * The filter to search for the AnalyticsRequest to update in case it exists.
      */
@@ -11848,6 +13434,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
+    /**
      * Filter which AnalyticsRequest to delete.
      */
     where: AnalyticsRequestWhereUniqueInput
@@ -11868,6 +13458,63 @@ export namespace Prisma {
   }
 
   /**
+   * AnalyticsRequest.client
+   */
+  export type AnalyticsRequest$clientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
+  }
+
+  /**
+   * AnalyticsRequest.user
+   */
+  export type AnalyticsRequest$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AnalyticsRequest.mcpServer
+   */
+  export type AnalyticsRequest$mcpServerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    where?: MCPServerWhereInput
+  }
+
+  /**
    * AnalyticsRequest without action
    */
   export type AnalyticsRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11879,6 +13526,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsRequest
      */
     omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsRequestInclude<ExtArgs> | null
   }
 
 
@@ -11888,70 +13539,156 @@ export namespace Prisma {
 
   export type AggregateAnalyticsSecurity = {
     _count: AnalyticsSecurityCountAggregateOutputType | null
+    _avg: AnalyticsSecurityAvgAggregateOutputType | null
+    _sum: AnalyticsSecuritySumAggregateOutputType | null
     _min: AnalyticsSecurityMinAggregateOutputType | null
     _max: AnalyticsSecurityMaxAggregateOutputType | null
+  }
+
+  export type AnalyticsSecurityAvgAggregateOutputType = {
+    riskScore: number | null
+  }
+
+  export type AnalyticsSecuritySumAggregateOutputType = {
+    riskScore: number | null
   }
 
   export type AnalyticsSecurityMinAggregateOutputType = {
     id: string | null
     timestamp: Date | null
-    eventType: string | null
+    eventType: $Enums.SecurityEventType | null
+    severity: string | null
+    userId: string | null
+    clientId: string | null
+    mcpServerId: string | null
     ipAddress: string | null
     userAgent: string | null
-    clientId: string | null
-    details: string | null
+    endpoint: string | null
+    country: string | null
+    city: string | null
+    organization: string | null
+    ssoProvider: string | null
+    riskScore: number | null
+    resolved: boolean | null
+    resolvedAt: Date | null
+    resolvedBy: string | null
   }
 
   export type AnalyticsSecurityMaxAggregateOutputType = {
     id: string | null
     timestamp: Date | null
-    eventType: string | null
+    eventType: $Enums.SecurityEventType | null
+    severity: string | null
+    userId: string | null
+    clientId: string | null
+    mcpServerId: string | null
     ipAddress: string | null
     userAgent: string | null
-    clientId: string | null
-    details: string | null
+    endpoint: string | null
+    country: string | null
+    city: string | null
+    organization: string | null
+    ssoProvider: string | null
+    riskScore: number | null
+    resolved: boolean | null
+    resolvedAt: Date | null
+    resolvedBy: string | null
   }
 
   export type AnalyticsSecurityCountAggregateOutputType = {
     id: number
     timestamp: number
     eventType: number
+    severity: number
+    userId: number
+    clientId: number
+    mcpServerId: number
     ipAddress: number
     userAgent: number
-    clientId: number
+    endpoint: number
+    country: number
+    city: number
+    organization: number
+    ssoProvider: number
     details: number
+    riskScore: number
+    resolved: number
+    resolvedAt: number
+    resolvedBy: number
     _all: number
   }
 
+
+  export type AnalyticsSecurityAvgAggregateInputType = {
+    riskScore?: true
+  }
+
+  export type AnalyticsSecuritySumAggregateInputType = {
+    riskScore?: true
+  }
 
   export type AnalyticsSecurityMinAggregateInputType = {
     id?: true
     timestamp?: true
     eventType?: true
+    severity?: true
+    userId?: true
+    clientId?: true
+    mcpServerId?: true
     ipAddress?: true
     userAgent?: true
-    clientId?: true
-    details?: true
+    endpoint?: true
+    country?: true
+    city?: true
+    organization?: true
+    ssoProvider?: true
+    riskScore?: true
+    resolved?: true
+    resolvedAt?: true
+    resolvedBy?: true
   }
 
   export type AnalyticsSecurityMaxAggregateInputType = {
     id?: true
     timestamp?: true
     eventType?: true
+    severity?: true
+    userId?: true
+    clientId?: true
+    mcpServerId?: true
     ipAddress?: true
     userAgent?: true
-    clientId?: true
-    details?: true
+    endpoint?: true
+    country?: true
+    city?: true
+    organization?: true
+    ssoProvider?: true
+    riskScore?: true
+    resolved?: true
+    resolvedAt?: true
+    resolvedBy?: true
   }
 
   export type AnalyticsSecurityCountAggregateInputType = {
     id?: true
     timestamp?: true
     eventType?: true
+    severity?: true
+    userId?: true
+    clientId?: true
+    mcpServerId?: true
     ipAddress?: true
     userAgent?: true
-    clientId?: true
+    endpoint?: true
+    country?: true
+    city?: true
+    organization?: true
+    ssoProvider?: true
     details?: true
+    riskScore?: true
+    resolved?: true
+    resolvedAt?: true
+    resolvedBy?: true
     _all?: true
   }
 
@@ -11993,6 +13730,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AnalyticsSecurityAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AnalyticsSecuritySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AnalyticsSecurityMinAggregateInputType
@@ -12023,6 +13772,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AnalyticsSecurityCountAggregateInputType | true
+    _avg?: AnalyticsSecurityAvgAggregateInputType
+    _sum?: AnalyticsSecuritySumAggregateInputType
     _min?: AnalyticsSecurityMinAggregateInputType
     _max?: AnalyticsSecurityMaxAggregateInputType
   }
@@ -12030,12 +13781,26 @@ export namespace Prisma {
   export type AnalyticsSecurityGroupByOutputType = {
     id: string
     timestamp: Date
-    eventType: string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId: string | null
+    clientId: string | null
+    mcpServerId: string | null
     ipAddress: string
     userAgent: string
-    clientId: string | null
-    details: string
+    endpoint: string | null
+    country: string | null
+    city: string | null
+    organization: string | null
+    ssoProvider: string | null
+    details: JsonValue
+    riskScore: number
+    resolved: boolean
+    resolvedAt: Date | null
+    resolvedBy: string | null
     _count: AnalyticsSecurityCountAggregateOutputType | null
+    _avg: AnalyticsSecurityAvgAggregateOutputType | null
+    _sum: AnalyticsSecuritySumAggregateOutputType | null
     _min: AnalyticsSecurityMinAggregateOutputType | null
     _max: AnalyticsSecurityMaxAggregateOutputType | null
   }
@@ -12058,55 +13823,143 @@ export namespace Prisma {
     id?: boolean
     timestamp?: boolean
     eventType?: boolean
+    severity?: boolean
+    userId?: boolean
+    clientId?: boolean
+    mcpServerId?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    clientId?: boolean
+    endpoint?: boolean
+    country?: boolean
+    city?: boolean
+    organization?: boolean
+    ssoProvider?: boolean
     details?: boolean
+    riskScore?: boolean
+    resolved?: boolean
+    resolvedAt?: boolean
+    resolvedBy?: boolean
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsSecurity"]>
 
   export type AnalyticsSecuritySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     timestamp?: boolean
     eventType?: boolean
+    severity?: boolean
+    userId?: boolean
+    clientId?: boolean
+    mcpServerId?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    clientId?: boolean
+    endpoint?: boolean
+    country?: boolean
+    city?: boolean
+    organization?: boolean
+    ssoProvider?: boolean
     details?: boolean
+    riskScore?: boolean
+    resolved?: boolean
+    resolvedAt?: boolean
+    resolvedBy?: boolean
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsSecurity"]>
 
   export type AnalyticsSecuritySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     timestamp?: boolean
     eventType?: boolean
+    severity?: boolean
+    userId?: boolean
+    clientId?: boolean
+    mcpServerId?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    clientId?: boolean
+    endpoint?: boolean
+    country?: boolean
+    city?: boolean
+    organization?: boolean
+    ssoProvider?: boolean
     details?: boolean
+    riskScore?: boolean
+    resolved?: boolean
+    resolvedAt?: boolean
+    resolvedBy?: boolean
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
   }, ExtArgs["result"]["analyticsSecurity"]>
 
   export type AnalyticsSecuritySelectScalar = {
     id?: boolean
     timestamp?: boolean
     eventType?: boolean
+    severity?: boolean
+    userId?: boolean
+    clientId?: boolean
+    mcpServerId?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    clientId?: boolean
+    endpoint?: boolean
+    country?: boolean
+    city?: boolean
+    organization?: boolean
+    ssoProvider?: boolean
     details?: boolean
+    riskScore?: boolean
+    resolved?: boolean
+    resolvedAt?: boolean
+    resolvedBy?: boolean
   }
 
-  export type AnalyticsSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "eventType" | "ipAddress" | "userAgent" | "clientId" | "details", ExtArgs["result"]["analyticsSecurity"]>
+  export type AnalyticsSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "eventType" | "severity" | "userId" | "clientId" | "mcpServerId" | "ipAddress" | "userAgent" | "endpoint" | "country" | "city" | "organization" | "ssoProvider" | "details" | "riskScore" | "resolved" | "resolvedAt" | "resolvedBy", ExtArgs["result"]["analyticsSecurity"]>
+  export type AnalyticsSecurityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
+  }
+  export type AnalyticsSecurityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
+  }
+  export type AnalyticsSecurityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
+    client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
+    mcpServer?: boolean | AnalyticsSecurity$mcpServerArgs<ExtArgs>
+  }
 
   export type $AnalyticsSecurityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AnalyticsSecurity"
-    objects: {}
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+      client: Prisma.$ClientPayload<ExtArgs> | null
+      mcpServer: Prisma.$MCPServerPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       timestamp: Date
-      eventType: string
+      eventType: $Enums.SecurityEventType
+      severity: string
+      userId: string | null
+      clientId: string | null
+      mcpServerId: string | null
       ipAddress: string
       userAgent: string
-      clientId: string | null
-      details: string
+      endpoint: string | null
+      country: string | null
+      city: string | null
+      organization: string | null
+      ssoProvider: string | null
+      details: Prisma.JsonValue
+      riskScore: number
+      resolved: boolean
+      resolvedAt: Date | null
+      resolvedBy: string | null
     }, ExtArgs["result"]["analyticsSecurity"]>
     composites: {}
   }
@@ -12501,6 +14354,9 @@ export namespace Prisma {
    */
   export interface Prisma__AnalyticsSecurityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends AnalyticsSecurity$userArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsSecurity$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    client<T extends AnalyticsSecurity$clientArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsSecurity$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mcpServer<T extends AnalyticsSecurity$mcpServerArgs<ExtArgs> = {}>(args?: Subset<T, AnalyticsSecurity$mcpServerArgs<ExtArgs>>): Prisma__MCPServerClient<$Result.GetResult<Prisma.$MCPServerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12532,11 +14388,23 @@ export namespace Prisma {
   interface AnalyticsSecurityFieldRefs {
     readonly id: FieldRef<"AnalyticsSecurity", 'String'>
     readonly timestamp: FieldRef<"AnalyticsSecurity", 'DateTime'>
-    readonly eventType: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly eventType: FieldRef<"AnalyticsSecurity", 'SecurityEventType'>
+    readonly severity: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly userId: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly clientId: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly mcpServerId: FieldRef<"AnalyticsSecurity", 'String'>
     readonly ipAddress: FieldRef<"AnalyticsSecurity", 'String'>
     readonly userAgent: FieldRef<"AnalyticsSecurity", 'String'>
-    readonly clientId: FieldRef<"AnalyticsSecurity", 'String'>
-    readonly details: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly endpoint: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly country: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly city: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly organization: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly ssoProvider: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly details: FieldRef<"AnalyticsSecurity", 'Json'>
+    readonly riskScore: FieldRef<"AnalyticsSecurity", 'Int'>
+    readonly resolved: FieldRef<"AnalyticsSecurity", 'Boolean'>
+    readonly resolvedAt: FieldRef<"AnalyticsSecurity", 'DateTime'>
+    readonly resolvedBy: FieldRef<"AnalyticsSecurity", 'String'>
   }
     
 
@@ -12553,6 +14421,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsSecurity
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
     /**
      * Filter, which AnalyticsSecurity to fetch.
      */
@@ -12572,6 +14444,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsSecurity to fetch.
      */
     where: AnalyticsSecurityWhereUniqueInput
@@ -12589,6 +14465,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsSecurity
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
     /**
      * Filter, which AnalyticsSecurity to fetch.
      */
@@ -12638,6 +14518,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsSecurity to fetch.
      */
     where?: AnalyticsSecurityWhereInput
@@ -12686,6 +14570,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    /**
      * Filter, which AnalyticsSecurities to fetch.
      */
     where?: AnalyticsSecurityWhereInput
@@ -12729,6 +14617,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    /**
      * The data needed to create a AnalyticsSecurity.
      */
     data: XOR<AnalyticsSecurityCreateInput, AnalyticsSecurityUncheckedCreateInput>
@@ -12762,6 +14654,10 @@ export namespace Prisma {
      */
     data: AnalyticsSecurityCreateManyInput | AnalyticsSecurityCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12776,6 +14672,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsSecurity
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
     /**
      * The data needed to update a AnalyticsSecurity.
      */
@@ -12828,6 +14728,10 @@ export namespace Prisma {
      * Limit how many AnalyticsSecurities to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12842,6 +14746,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsSecurity
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
     /**
      * The filter to search for the AnalyticsSecurity to update in case it exists.
      */
@@ -12869,6 +14777,10 @@ export namespace Prisma {
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
+    /**
      * Filter which AnalyticsSecurity to delete.
      */
     where: AnalyticsSecurityWhereUniqueInput
@@ -12889,6 +14801,63 @@ export namespace Prisma {
   }
 
   /**
+   * AnalyticsSecurity.user
+   */
+  export type AnalyticsSecurity$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AnalyticsSecurity.client
+   */
+  export type AnalyticsSecurity$clientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
+  }
+
+  /**
+   * AnalyticsSecurity.mcpServer
+   */
+  export type AnalyticsSecurity$mcpServerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MCPServer
+     */
+    select?: MCPServerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MCPServer
+     */
+    omit?: MCPServerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MCPServerInclude<ExtArgs> | null
+    where?: MCPServerWhereInput
+  }
+
+  /**
    * AnalyticsSecurity without action
    */
   export type AnalyticsSecurityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12900,6 +14869,10 @@ export namespace Prisma {
      * Omit specific fields from the AnalyticsSecurity
      */
     omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalyticsSecurityInclude<ExtArgs> | null
   }
 
 
@@ -13021,6 +14994,19 @@ export namespace Prisma {
   export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+  export const MCPServerScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    identifier: 'identifier',
+    description: 'description',
+    version: 'version',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MCPServerScalarFieldEnum = (typeof MCPServerScalarFieldEnum)[keyof typeof MCPServerScalarFieldEnum]
+
+
   export const AnalyticsRequestScalarFieldEnum: {
     id: 'id',
     timestamp: 'timestamp',
@@ -13030,12 +15016,19 @@ export namespace Prisma {
     responseTime: 'responseTime',
     clientId: 'clientId',
     userId: 'userId',
+    mcpServerId: 'mcpServerId',
+    ssoProvider: 'ssoProvider',
+    userRole: 'userRole',
+    scopes: 'scopes',
+    organization: 'organization',
     ipAddress: 'ipAddress',
     userAgent: 'userAgent',
     country: 'country',
     city: 'city',
     clientType: 'clientType',
-    platform: 'platform'
+    platform: 'platform',
+    mcpMethod: 'mcpMethod',
+    toolName: 'toolName'
   };
 
   export type AnalyticsRequestScalarFieldEnum = (typeof AnalyticsRequestScalarFieldEnum)[keyof typeof AnalyticsRequestScalarFieldEnum]
@@ -13045,10 +15038,22 @@ export namespace Prisma {
     id: 'id',
     timestamp: 'timestamp',
     eventType: 'eventType',
+    severity: 'severity',
+    userId: 'userId',
+    clientId: 'clientId',
+    mcpServerId: 'mcpServerId',
     ipAddress: 'ipAddress',
     userAgent: 'userAgent',
-    clientId: 'clientId',
-    details: 'details'
+    endpoint: 'endpoint',
+    country: 'country',
+    city: 'city',
+    organization: 'organization',
+    ssoProvider: 'ssoProvider',
+    details: 'details',
+    riskScore: 'riskScore',
+    resolved: 'resolved',
+    resolvedAt: 'resolvedAt',
+    resolvedBy: 'resolvedBy'
   };
 
   export type AnalyticsSecurityScalarFieldEnum = (typeof AnalyticsSecurityScalarFieldEnum)[keyof typeof AnalyticsSecurityScalarFieldEnum]
@@ -13060,6 +15065,13 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -13076,6 +15088,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -13126,6 +15147,41 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SecurityEventType'
+   */
+  export type EnumSecurityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecurityEventType'>
+    
+
+
+  /**
+   * Reference to a field of type 'SecurityEventType[]'
+   */
+  export type ListEnumSecurityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecurityEventType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -13157,6 +15213,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenListRelationFilter
     authCodes?: AuthCodeListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    analyticsRequests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13171,6 +15229,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenOrderByRelationAggregateInput
     authCodes?: AuthCodeOrderByRelationAggregateInput
     refreshTokens?: RefreshTokenOrderByRelationAggregateInput
+    analyticsRequests?: AnalyticsRequestOrderByRelationAggregateInput
+    securityEvents?: AnalyticsSecurityOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13188,6 +15248,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenListRelationFilter
     authCodes?: AuthCodeListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    analyticsRequests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13414,6 +15476,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenListRelationFilter
     authCodes?: AuthCodeListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    analyticsRequests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -13429,6 +15493,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenOrderByRelationAggregateInput
     authCodes?: AuthCodeOrderByRelationAggregateInput
     refreshTokens?: RefreshTokenOrderByRelationAggregateInput
+    analyticsRequests?: AnalyticsRequestOrderByRelationAggregateInput
+    securityEvents?: AnalyticsSecurityOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -13447,6 +15513,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenListRelationFilter
     authCodes?: AuthCodeListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    analyticsRequests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
   }, "id" | "clientId">
 
   export type ClientOrderByWithAggregationInput = {
@@ -13696,6 +15764,74 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
+  export type MCPServerWhereInput = {
+    AND?: MCPServerWhereInput | MCPServerWhereInput[]
+    OR?: MCPServerWhereInput[]
+    NOT?: MCPServerWhereInput | MCPServerWhereInput[]
+    id?: StringFilter<"MCPServer"> | string
+    name?: StringFilter<"MCPServer"> | string
+    identifier?: StringFilter<"MCPServer"> | string
+    description?: StringNullableFilter<"MCPServer"> | string | null
+    version?: StringNullableFilter<"MCPServer"> | string | null
+    createdAt?: DateTimeFilter<"MCPServer"> | Date | string
+    updatedAt?: DateTimeFilter<"MCPServer"> | Date | string
+    requests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
+  }
+
+  export type MCPServerOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    identifier?: SortOrder
+    description?: SortOrderInput | SortOrder
+    version?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    requests?: AnalyticsRequestOrderByRelationAggregateInput
+    securityEvents?: AnalyticsSecurityOrderByRelationAggregateInput
+  }
+
+  export type MCPServerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    identifier?: string
+    AND?: MCPServerWhereInput | MCPServerWhereInput[]
+    OR?: MCPServerWhereInput[]
+    NOT?: MCPServerWhereInput | MCPServerWhereInput[]
+    name?: StringFilter<"MCPServer"> | string
+    description?: StringNullableFilter<"MCPServer"> | string | null
+    version?: StringNullableFilter<"MCPServer"> | string | null
+    createdAt?: DateTimeFilter<"MCPServer"> | Date | string
+    updatedAt?: DateTimeFilter<"MCPServer"> | Date | string
+    requests?: AnalyticsRequestListRelationFilter
+    securityEvents?: AnalyticsSecurityListRelationFilter
+  }, "id" | "identifier">
+
+  export type MCPServerOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    identifier?: SortOrder
+    description?: SortOrderInput | SortOrder
+    version?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MCPServerCountOrderByAggregateInput
+    _max?: MCPServerMaxOrderByAggregateInput
+    _min?: MCPServerMinOrderByAggregateInput
+  }
+
+  export type MCPServerScalarWhereWithAggregatesInput = {
+    AND?: MCPServerScalarWhereWithAggregatesInput | MCPServerScalarWhereWithAggregatesInput[]
+    OR?: MCPServerScalarWhereWithAggregatesInput[]
+    NOT?: MCPServerScalarWhereWithAggregatesInput | MCPServerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MCPServer"> | string
+    name?: StringWithAggregatesFilter<"MCPServer"> | string
+    identifier?: StringWithAggregatesFilter<"MCPServer"> | string
+    description?: StringNullableWithAggregatesFilter<"MCPServer"> | string | null
+    version?: StringNullableWithAggregatesFilter<"MCPServer"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MCPServer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MCPServer"> | Date | string
+  }
+
   export type AnalyticsRequestWhereInput = {
     AND?: AnalyticsRequestWhereInput | AnalyticsRequestWhereInput[]
     OR?: AnalyticsRequestWhereInput[]
@@ -13708,12 +15844,22 @@ export namespace Prisma {
     responseTime?: IntFilter<"AnalyticsRequest"> | number
     clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userRole?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    scopes?: StringNullableListFilter<"AnalyticsRequest">
+    organization?: StringNullableFilter<"AnalyticsRequest"> | string | null
     ipAddress?: StringFilter<"AnalyticsRequest"> | string
     userAgent?: StringFilter<"AnalyticsRequest"> | string
     country?: StringNullableFilter<"AnalyticsRequest"> | string | null
     city?: StringNullableFilter<"AnalyticsRequest"> | string | null
     clientType?: StringNullableFilter<"AnalyticsRequest"> | string | null
     platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
   }
 
   export type AnalyticsRequestOrderByWithRelationInput = {
@@ -13725,12 +15871,22 @@ export namespace Prisma {
     responseTime?: SortOrder
     clientId?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
+    mcpServerId?: SortOrderInput | SortOrder
+    ssoProvider?: SortOrderInput | SortOrder
+    userRole?: SortOrderInput | SortOrder
+    scopes?: SortOrder
+    organization?: SortOrderInput | SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     country?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     clientType?: SortOrderInput | SortOrder
     platform?: SortOrderInput | SortOrder
+    mcpMethod?: SortOrderInput | SortOrder
+    toolName?: SortOrderInput | SortOrder
+    client?: ClientOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    mcpServer?: MCPServerOrderByWithRelationInput
   }
 
   export type AnalyticsRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -13745,12 +15901,22 @@ export namespace Prisma {
     responseTime?: IntFilter<"AnalyticsRequest"> | number
     clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userRole?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    scopes?: StringNullableListFilter<"AnalyticsRequest">
+    organization?: StringNullableFilter<"AnalyticsRequest"> | string | null
     ipAddress?: StringFilter<"AnalyticsRequest"> | string
     userAgent?: StringFilter<"AnalyticsRequest"> | string
     country?: StringNullableFilter<"AnalyticsRequest"> | string | null
     city?: StringNullableFilter<"AnalyticsRequest"> | string | null
     clientType?: StringNullableFilter<"AnalyticsRequest"> | string | null
     platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
   }, "id">
 
   export type AnalyticsRequestOrderByWithAggregationInput = {
@@ -13762,12 +15928,19 @@ export namespace Prisma {
     responseTime?: SortOrder
     clientId?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
+    mcpServerId?: SortOrderInput | SortOrder
+    ssoProvider?: SortOrderInput | SortOrder
+    userRole?: SortOrderInput | SortOrder
+    scopes?: SortOrder
+    organization?: SortOrderInput | SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     country?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     clientType?: SortOrderInput | SortOrder
     platform?: SortOrderInput | SortOrder
+    mcpMethod?: SortOrderInput | SortOrder
+    toolName?: SortOrderInput | SortOrder
     _count?: AnalyticsRequestCountOrderByAggregateInput
     _avg?: AnalyticsRequestAvgOrderByAggregateInput
     _max?: AnalyticsRequestMaxOrderByAggregateInput
@@ -13787,12 +15960,19 @@ export namespace Prisma {
     responseTime?: IntWithAggregatesFilter<"AnalyticsRequest"> | number
     clientId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    mcpServerId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    ssoProvider?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    userRole?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    scopes?: StringNullableListFilter<"AnalyticsRequest">
+    organization?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     ipAddress?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
     userAgent?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
     country?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     city?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     clientType?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     platform?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    mcpMethod?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    toolName?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
   }
 
   export type AnalyticsSecurityWhereInput = {
@@ -13801,21 +15981,51 @@ export namespace Prisma {
     NOT?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
     id?: StringFilter<"AnalyticsSecurity"> | string
     timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
-    eventType?: StringFilter<"AnalyticsSecurity"> | string
+    eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
+    severity?: StringFilter<"AnalyticsSecurity"> | string
+    userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     ipAddress?: StringFilter<"AnalyticsSecurity"> | string
     userAgent?: StringFilter<"AnalyticsSecurity"> | string
-    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
-    details?: StringFilter<"AnalyticsSecurity"> | string
+    endpoint?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    country?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    city?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    organization?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    details?: JsonFilter<"AnalyticsSecurity">
+    riskScore?: IntFilter<"AnalyticsSecurity"> | number
+    resolved?: BoolFilter<"AnalyticsSecurity"> | boolean
+    resolvedAt?: DateTimeNullableFilter<"AnalyticsSecurity"> | Date | string | null
+    resolvedBy?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
   }
 
   export type AnalyticsSecurityOrderByWithRelationInput = {
     id?: SortOrder
     timestamp?: SortOrder
     eventType?: SortOrder
+    severity?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
+    mcpServerId?: SortOrderInput | SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    clientId?: SortOrderInput | SortOrder
+    endpoint?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    organization?: SortOrderInput | SortOrder
+    ssoProvider?: SortOrderInput | SortOrder
     details?: SortOrder
+    riskScore?: SortOrder
+    resolved?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    resolvedBy?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    client?: ClientOrderByWithRelationInput
+    mcpServer?: MCPServerOrderByWithRelationInput
   }
 
   export type AnalyticsSecurityWhereUniqueInput = Prisma.AtLeast<{
@@ -13824,24 +16034,53 @@ export namespace Prisma {
     OR?: AnalyticsSecurityWhereInput[]
     NOT?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
     timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
-    eventType?: StringFilter<"AnalyticsSecurity"> | string
+    eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
+    severity?: StringFilter<"AnalyticsSecurity"> | string
+    userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     ipAddress?: StringFilter<"AnalyticsSecurity"> | string
     userAgent?: StringFilter<"AnalyticsSecurity"> | string
-    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
-    details?: StringFilter<"AnalyticsSecurity"> | string
+    endpoint?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    country?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    city?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    organization?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    details?: JsonFilter<"AnalyticsSecurity">
+    riskScore?: IntFilter<"AnalyticsSecurity"> | number
+    resolved?: BoolFilter<"AnalyticsSecurity"> | boolean
+    resolvedAt?: DateTimeNullableFilter<"AnalyticsSecurity"> | Date | string | null
+    resolvedBy?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
   }, "id">
 
   export type AnalyticsSecurityOrderByWithAggregationInput = {
     id?: SortOrder
     timestamp?: SortOrder
     eventType?: SortOrder
+    severity?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
+    mcpServerId?: SortOrderInput | SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    clientId?: SortOrderInput | SortOrder
+    endpoint?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    organization?: SortOrderInput | SortOrder
+    ssoProvider?: SortOrderInput | SortOrder
     details?: SortOrder
+    riskScore?: SortOrder
+    resolved?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    resolvedBy?: SortOrderInput | SortOrder
     _count?: AnalyticsSecurityCountOrderByAggregateInput
+    _avg?: AnalyticsSecurityAvgOrderByAggregateInput
     _max?: AnalyticsSecurityMaxOrderByAggregateInput
     _min?: AnalyticsSecurityMinOrderByAggregateInput
+    _sum?: AnalyticsSecuritySumOrderByAggregateInput
   }
 
   export type AnalyticsSecurityScalarWhereWithAggregatesInput = {
@@ -13850,11 +16089,23 @@ export namespace Prisma {
     NOT?: AnalyticsSecurityScalarWhereWithAggregatesInput | AnalyticsSecurityScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
     timestamp?: DateTimeWithAggregatesFilter<"AnalyticsSecurity"> | Date | string
-    eventType?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    eventType?: EnumSecurityEventTypeWithAggregatesFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
+    severity?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    userId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    clientId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    mcpServerId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
     ipAddress?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
     userAgent?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
-    clientId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
-    details?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    endpoint?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    country?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    city?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    organization?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    ssoProvider?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    details?: JsonWithAggregatesFilter<"AnalyticsSecurity">
+    riskScore?: IntWithAggregatesFilter<"AnalyticsSecurity"> | number
+    resolved?: BoolWithAggregatesFilter<"AnalyticsSecurity"> | boolean
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"AnalyticsSecurity"> | Date | string | null
+    resolvedBy?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
   }
 
   export type UserCreateInput = {
@@ -13869,6 +16120,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -13883,6 +16136,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -13897,6 +16152,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -13911,6 +16168,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14143,6 +16402,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -14157,6 +16418,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -14171,6 +16434,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -14185,6 +16450,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -14444,6 +16711,84 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MCPServerCreateInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: AnalyticsRequestCreateNestedManyWithoutMcpServerInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerUncheckedCreateInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: AnalyticsRequestUncheckedCreateNestedManyWithoutMcpServerInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: AnalyticsRequestUpdateManyWithoutMcpServerNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutMcpServerNestedInput
+  }
+
+  export type MCPServerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: AnalyticsRequestUncheckedUpdateManyWithoutMcpServerNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutMcpServerNestedInput
+  }
+
+  export type MCPServerCreateManyInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MCPServerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MCPServerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AnalyticsRequestCreateInput = {
     id?: string
     timestamp?: Date | string
@@ -14451,14 +16796,21 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
-    clientId?: string | null
-    userId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
     ipAddress: string
     userAgent: string
     country?: string | null
     city?: string | null
     clientType?: string | null
     platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+    client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
+    user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
   }
 
   export type AnalyticsRequestUncheckedCreateInput = {
@@ -14470,12 +16822,19 @@ export namespace Prisma {
     responseTime: number
     clientId?: string | null
     userId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
     ipAddress: string
     userAgent: string
     country?: string | null
     city?: string | null
     clientType?: string | null
     platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
   }
 
   export type AnalyticsRequestUpdateInput = {
@@ -14485,14 +16844,21 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     clientType?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
+    user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
   }
 
   export type AnalyticsRequestUncheckedUpdateInput = {
@@ -14504,12 +16870,19 @@ export namespace Prisma {
     responseTime?: IntFieldUpdateOperationsInput | number
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     clientType?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestCreateManyInput = {
@@ -14521,12 +16894,19 @@ export namespace Prisma {
     responseTime: number
     clientId?: string | null
     userId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
     ipAddress: string
     userAgent: string
     country?: string | null
     city?: string | null
     clientType?: string | null
     platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
   }
 
   export type AnalyticsRequestUpdateManyMutationInput = {
@@ -14536,14 +16916,18 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     clientType?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestUncheckedUpdateManyInput = {
@@ -14555,82 +16939,170 @@ export namespace Prisma {
     responseTime?: IntFieldUpdateOperationsInput | number
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     country?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     clientType?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityCreateInput = {
     id?: string
     timestamp?: Date | string
-    eventType: string
+    eventType: $Enums.SecurityEventType
+    severity: string
     ipAddress: string
     userAgent: string
-    clientId?: string | null
-    details: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+    user?: UserCreateNestedOneWithoutSecurityEventsInput
+    client?: ClientCreateNestedOneWithoutSecurityEventsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutSecurityEventsInput
   }
 
   export type AnalyticsSecurityUncheckedCreateInput = {
     id?: string
     timestamp?: Date | string
-    eventType: string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    clientId?: string | null
+    mcpServerId?: string | null
     ipAddress: string
     userAgent: string
-    clientId?: string | null
-    details: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
   }
 
   export type AnalyticsSecurityUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    details?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneWithoutSecurityEventsNestedInput
+    client?: ClientUpdateOneWithoutSecurityEventsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutSecurityEventsNestedInput
   }
 
   export type AnalyticsSecurityUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    details?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityCreateManyInput = {
     id?: string
     timestamp?: Date | string
-    eventType: string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    clientId?: string | null
+    mcpServerId?: string | null
     ipAddress: string
     userAgent: string
-    clientId?: string | null
-    details: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
   }
 
   export type AnalyticsSecurityUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    details?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
-    clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    details?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -14710,6 +17182,18 @@ export namespace Prisma {
     none?: RefreshTokenWhereInput
   }
 
+  export type AnalyticsRequestListRelationFilter = {
+    every?: AnalyticsRequestWhereInput
+    some?: AnalyticsRequestWhereInput
+    none?: AnalyticsRequestWhereInput
+  }
+
+  export type AnalyticsSecurityListRelationFilter = {
+    every?: AnalyticsSecurityWhereInput
+    some?: AnalyticsSecurityWhereInput
+    none?: AnalyticsSecurityWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -14736,6 +17220,14 @@ export namespace Prisma {
   }
 
   export type RefreshTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnalyticsRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnalyticsSecurityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15120,6 +17612,36 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type MCPServerCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    identifier?: SortOrder
+    description?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MCPServerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    identifier?: SortOrder
+    description?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MCPServerMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    identifier?: SortOrder
+    description?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -15131,6 +17653,16 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type ClientNullableScalarRelationFilter = {
+    is?: ClientWhereInput | null
+    isNot?: ClientWhereInput | null
+  }
+
+  export type MCPServerNullableScalarRelationFilter = {
+    is?: MCPServerWhereInput | null
+    isNot?: MCPServerWhereInput | null
+  }
+
   export type AnalyticsRequestCountOrderByAggregateInput = {
     id?: SortOrder
     timestamp?: SortOrder
@@ -15140,12 +17672,19 @@ export namespace Prisma {
     responseTime?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
+    mcpServerId?: SortOrder
+    ssoProvider?: SortOrder
+    userRole?: SortOrder
+    scopes?: SortOrder
+    organization?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     country?: SortOrder
     city?: SortOrder
     clientType?: SortOrder
     platform?: SortOrder
+    mcpMethod?: SortOrder
+    toolName?: SortOrder
   }
 
   export type AnalyticsRequestAvgOrderByAggregateInput = {
@@ -15162,12 +17701,18 @@ export namespace Prisma {
     responseTime?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
+    mcpServerId?: SortOrder
+    ssoProvider?: SortOrder
+    userRole?: SortOrder
+    organization?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     country?: SortOrder
     city?: SortOrder
     clientType?: SortOrder
     platform?: SortOrder
+    mcpMethod?: SortOrder
+    toolName?: SortOrder
   }
 
   export type AnalyticsRequestMinOrderByAggregateInput = {
@@ -15179,12 +17724,18 @@ export namespace Prisma {
     responseTime?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
+    mcpServerId?: SortOrder
+    ssoProvider?: SortOrder
+    userRole?: SortOrder
+    organization?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
     country?: SortOrder
     city?: SortOrder
     clientType?: SortOrder
     platform?: SortOrder
+    mcpMethod?: SortOrder
+    toolName?: SortOrder
   }
 
   export type AnalyticsRequestSumOrderByAggregateInput = {
@@ -15208,34 +17759,155 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type EnumSecurityEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SecurityEventType | EnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSecurityEventTypeFilter<$PrismaModel> | $Enums.SecurityEventType
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type AnalyticsSecurityCountOrderByAggregateInput = {
     id?: SortOrder
     timestamp?: SortOrder
     eventType?: SortOrder
+    severity?: SortOrder
+    userId?: SortOrder
+    clientId?: SortOrder
+    mcpServerId?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    clientId?: SortOrder
+    endpoint?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    organization?: SortOrder
+    ssoProvider?: SortOrder
     details?: SortOrder
+    riskScore?: SortOrder
+    resolved?: SortOrder
+    resolvedAt?: SortOrder
+    resolvedBy?: SortOrder
+  }
+
+  export type AnalyticsSecurityAvgOrderByAggregateInput = {
+    riskScore?: SortOrder
   }
 
   export type AnalyticsSecurityMaxOrderByAggregateInput = {
     id?: SortOrder
     timestamp?: SortOrder
     eventType?: SortOrder
+    severity?: SortOrder
+    userId?: SortOrder
+    clientId?: SortOrder
+    mcpServerId?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    clientId?: SortOrder
-    details?: SortOrder
+    endpoint?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    organization?: SortOrder
+    ssoProvider?: SortOrder
+    riskScore?: SortOrder
+    resolved?: SortOrder
+    resolvedAt?: SortOrder
+    resolvedBy?: SortOrder
   }
 
   export type AnalyticsSecurityMinOrderByAggregateInput = {
     id?: SortOrder
     timestamp?: SortOrder
     eventType?: SortOrder
+    severity?: SortOrder
+    userId?: SortOrder
+    clientId?: SortOrder
+    mcpServerId?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    clientId?: SortOrder
-    details?: SortOrder
+    endpoint?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    organization?: SortOrder
+    ssoProvider?: SortOrder
+    riskScore?: SortOrder
+    resolved?: SortOrder
+    resolvedAt?: SortOrder
+    resolvedBy?: SortOrder
+  }
+
+  export type AnalyticsSecuritySumOrderByAggregateInput = {
+    riskScore?: SortOrder
+  }
+
+  export type EnumSecurityEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SecurityEventType | EnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSecurityEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.SecurityEventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSecurityEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumSecurityEventTypeFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -15280,6 +17952,20 @@ export namespace Prisma {
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
+  export type AnalyticsRequestCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput> | AnalyticsRequestCreateWithoutUserInput[] | AnalyticsRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutUserInput | AnalyticsRequestCreateOrConnectWithoutUserInput[]
+    createMany?: AnalyticsRequestCreateManyUserInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput> | AnalyticsSecurityCreateWithoutUserInput[] | AnalyticsSecurityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutUserInput | AnalyticsSecurityCreateOrConnectWithoutUserInput[]
+    createMany?: AnalyticsSecurityCreateManyUserInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -15320,6 +18006,20 @@ export namespace Prisma {
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
     createMany?: RefreshTokenCreateManyUserInputEnvelope
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput> | AnalyticsRequestCreateWithoutUserInput[] | AnalyticsRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutUserInput | AnalyticsRequestCreateOrConnectWithoutUserInput[]
+    createMany?: AnalyticsRequestCreateManyUserInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput> | AnalyticsSecurityCreateWithoutUserInput[] | AnalyticsSecurityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutUserInput | AnalyticsSecurityCreateOrConnectWithoutUserInput[]
+    createMany?: AnalyticsSecurityCreateManyUserInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15418,6 +18118,34 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
+  export type AnalyticsRequestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput> | AnalyticsRequestCreateWithoutUserInput[] | AnalyticsRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutUserInput | AnalyticsRequestCreateOrConnectWithoutUserInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutUserInput | AnalyticsRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnalyticsRequestCreateManyUserInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutUserInput | AnalyticsRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutUserInput | AnalyticsRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput> | AnalyticsSecurityCreateWithoutUserInput[] | AnalyticsSecurityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutUserInput | AnalyticsSecurityCreateOrConnectWithoutUserInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnalyticsSecurityCreateManyUserInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutUserInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutUserInput | AnalyticsSecurityUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -15502,6 +18230,34 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
+  export type AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput> | AnalyticsRequestCreateWithoutUserInput[] | AnalyticsRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutUserInput | AnalyticsRequestCreateOrConnectWithoutUserInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutUserInput | AnalyticsRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnalyticsRequestCreateManyUserInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutUserInput | AnalyticsRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutUserInput | AnalyticsRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput> | AnalyticsSecurityCreateWithoutUserInput[] | AnalyticsSecurityUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutUserInput | AnalyticsSecurityCreateOrConnectWithoutUserInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnalyticsSecurityCreateManyUserInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutUserInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutUserInput | AnalyticsSecurityUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -15573,6 +18329,20 @@ export namespace Prisma {
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
+  export type AnalyticsRequestCreateNestedManyWithoutClientInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput> | AnalyticsRequestCreateWithoutClientInput[] | AnalyticsRequestUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutClientInput | AnalyticsRequestCreateOrConnectWithoutClientInput[]
+    createMany?: AnalyticsRequestCreateManyClientInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityCreateNestedManyWithoutClientInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput> | AnalyticsSecurityCreateWithoutClientInput[] | AnalyticsSecurityUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutClientInput | AnalyticsSecurityCreateOrConnectWithoutClientInput[]
+    createMany?: AnalyticsSecurityCreateManyClientInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+  }
+
   export type AccessTokenUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<AccessTokenCreateWithoutClientInput, AccessTokenUncheckedCreateWithoutClientInput> | AccessTokenCreateWithoutClientInput[] | AccessTokenUncheckedCreateWithoutClientInput[]
     connectOrCreate?: AccessTokenCreateOrConnectWithoutClientInput | AccessTokenCreateOrConnectWithoutClientInput[]
@@ -15592,6 +18362,20 @@ export namespace Prisma {
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutClientInput | RefreshTokenCreateOrConnectWithoutClientInput[]
     createMany?: RefreshTokenCreateManyClientInputEnvelope
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput> | AnalyticsRequestCreateWithoutClientInput[] | AnalyticsRequestUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutClientInput | AnalyticsRequestCreateOrConnectWithoutClientInput[]
+    createMany?: AnalyticsRequestCreateManyClientInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput> | AnalyticsSecurityCreateWithoutClientInput[] | AnalyticsSecurityUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutClientInput | AnalyticsSecurityCreateOrConnectWithoutClientInput[]
+    createMany?: AnalyticsSecurityCreateManyClientInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
   }
 
   export type ClientUpdateredirectUrisInput = {
@@ -15651,6 +18435,34 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
+  export type AnalyticsRequestUpdateManyWithoutClientNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput> | AnalyticsRequestCreateWithoutClientInput[] | AnalyticsRequestUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutClientInput | AnalyticsRequestCreateOrConnectWithoutClientInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutClientInput | AnalyticsRequestUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: AnalyticsRequestCreateManyClientInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutClientInput | AnalyticsRequestUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutClientInput | AnalyticsRequestUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUpdateManyWithoutClientNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput> | AnalyticsSecurityCreateWithoutClientInput[] | AnalyticsSecurityUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutClientInput | AnalyticsSecurityCreateOrConnectWithoutClientInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutClientInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: AnalyticsSecurityCreateManyClientInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutClientInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutClientInput | AnalyticsSecurityUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+  }
+
   export type AccessTokenUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<AccessTokenCreateWithoutClientInput, AccessTokenUncheckedCreateWithoutClientInput> | AccessTokenCreateWithoutClientInput[] | AccessTokenUncheckedCreateWithoutClientInput[]
     connectOrCreate?: AccessTokenCreateOrConnectWithoutClientInput | AccessTokenCreateOrConnectWithoutClientInput[]
@@ -15691,6 +18503,34 @@ export namespace Prisma {
     update?: RefreshTokenUpdateWithWhereUniqueWithoutClientInput | RefreshTokenUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: RefreshTokenUpdateManyWithWhereWithoutClientInput | RefreshTokenUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput> | AnalyticsRequestCreateWithoutClientInput[] | AnalyticsRequestUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutClientInput | AnalyticsRequestCreateOrConnectWithoutClientInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutClientInput | AnalyticsRequestUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: AnalyticsRequestCreateManyClientInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutClientInput | AnalyticsRequestUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutClientInput | AnalyticsRequestUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput> | AnalyticsSecurityCreateWithoutClientInput[] | AnalyticsSecurityUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutClientInput | AnalyticsSecurityCreateOrConnectWithoutClientInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutClientInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: AnalyticsSecurityCreateManyClientInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutClientInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutClientInput | AnalyticsSecurityUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutAccessTokensInput = {
@@ -15777,12 +18617,209 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefreshTokensInput, UserUpdateWithoutRefreshTokensInput>, UserUncheckedUpdateWithoutRefreshTokensInput>
   }
 
+  export type AnalyticsRequestCreateNestedManyWithoutMcpServerInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput> | AnalyticsRequestCreateWithoutMcpServerInput[] | AnalyticsRequestUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutMcpServerInput | AnalyticsRequestCreateOrConnectWithoutMcpServerInput[]
+    createMany?: AnalyticsRequestCreateManyMcpServerInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityCreateNestedManyWithoutMcpServerInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput> | AnalyticsSecurityCreateWithoutMcpServerInput[] | AnalyticsSecurityUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutMcpServerInput | AnalyticsSecurityCreateOrConnectWithoutMcpServerInput[]
+    createMany?: AnalyticsSecurityCreateManyMcpServerInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+  }
+
+  export type AnalyticsRequestUncheckedCreateNestedManyWithoutMcpServerInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput> | AnalyticsRequestCreateWithoutMcpServerInput[] | AnalyticsRequestUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutMcpServerInput | AnalyticsRequestCreateOrConnectWithoutMcpServerInput[]
+    createMany?: AnalyticsRequestCreateManyMcpServerInputEnvelope
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedCreateNestedManyWithoutMcpServerInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput> | AnalyticsSecurityCreateWithoutMcpServerInput[] | AnalyticsSecurityUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutMcpServerInput | AnalyticsSecurityCreateOrConnectWithoutMcpServerInput[]
+    createMany?: AnalyticsSecurityCreateManyMcpServerInputEnvelope
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+  }
+
+  export type AnalyticsRequestUpdateManyWithoutMcpServerNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput> | AnalyticsRequestCreateWithoutMcpServerInput[] | AnalyticsRequestUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutMcpServerInput | AnalyticsRequestCreateOrConnectWithoutMcpServerInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutMcpServerInput | AnalyticsRequestUpsertWithWhereUniqueWithoutMcpServerInput[]
+    createMany?: AnalyticsRequestCreateManyMcpServerInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutMcpServerInput | AnalyticsRequestUpdateWithWhereUniqueWithoutMcpServerInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutMcpServerInput | AnalyticsRequestUpdateManyWithWhereWithoutMcpServerInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUpdateManyWithoutMcpServerNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput> | AnalyticsSecurityCreateWithoutMcpServerInput[] | AnalyticsSecurityUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutMcpServerInput | AnalyticsSecurityCreateOrConnectWithoutMcpServerInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutMcpServerInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutMcpServerInput[]
+    createMany?: AnalyticsSecurityCreateManyMcpServerInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutMcpServerInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutMcpServerInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutMcpServerInput | AnalyticsSecurityUpdateManyWithWhereWithoutMcpServerInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyWithoutMcpServerNestedInput = {
+    create?: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput> | AnalyticsRequestCreateWithoutMcpServerInput[] | AnalyticsRequestUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsRequestCreateOrConnectWithoutMcpServerInput | AnalyticsRequestCreateOrConnectWithoutMcpServerInput[]
+    upsert?: AnalyticsRequestUpsertWithWhereUniqueWithoutMcpServerInput | AnalyticsRequestUpsertWithWhereUniqueWithoutMcpServerInput[]
+    createMany?: AnalyticsRequestCreateManyMcpServerInputEnvelope
+    set?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    disconnect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    delete?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    connect?: AnalyticsRequestWhereUniqueInput | AnalyticsRequestWhereUniqueInput[]
+    update?: AnalyticsRequestUpdateWithWhereUniqueWithoutMcpServerInput | AnalyticsRequestUpdateWithWhereUniqueWithoutMcpServerInput[]
+    updateMany?: AnalyticsRequestUpdateManyWithWhereWithoutMcpServerInput | AnalyticsRequestUpdateManyWithWhereWithoutMcpServerInput[]
+    deleteMany?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutMcpServerNestedInput = {
+    create?: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput> | AnalyticsSecurityCreateWithoutMcpServerInput[] | AnalyticsSecurityUncheckedCreateWithoutMcpServerInput[]
+    connectOrCreate?: AnalyticsSecurityCreateOrConnectWithoutMcpServerInput | AnalyticsSecurityCreateOrConnectWithoutMcpServerInput[]
+    upsert?: AnalyticsSecurityUpsertWithWhereUniqueWithoutMcpServerInput | AnalyticsSecurityUpsertWithWhereUniqueWithoutMcpServerInput[]
+    createMany?: AnalyticsSecurityCreateManyMcpServerInputEnvelope
+    set?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    disconnect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    delete?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    connect?: AnalyticsSecurityWhereUniqueInput | AnalyticsSecurityWhereUniqueInput[]
+    update?: AnalyticsSecurityUpdateWithWhereUniqueWithoutMcpServerInput | AnalyticsSecurityUpdateWithWhereUniqueWithoutMcpServerInput[]
+    updateMany?: AnalyticsSecurityUpdateManyWithWhereWithoutMcpServerInput | AnalyticsSecurityUpdateManyWithWhereWithoutMcpServerInput[]
+    deleteMany?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+  }
+
+  export type AnalyticsRequestCreatescopesInput = {
+    set: string[]
+  }
+
+  export type ClientCreateNestedOneWithoutAnalyticsRequestsInput = {
+    create?: XOR<ClientCreateWithoutAnalyticsRequestsInput, ClientUncheckedCreateWithoutAnalyticsRequestsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutAnalyticsRequestsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAnalyticsRequestsInput = {
+    create?: XOR<UserCreateWithoutAnalyticsRequestsInput, UserUncheckedCreateWithoutAnalyticsRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnalyticsRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MCPServerCreateNestedOneWithoutRequestsInput = {
+    create?: XOR<MCPServerCreateWithoutRequestsInput, MCPServerUncheckedCreateWithoutRequestsInput>
+    connectOrCreate?: MCPServerCreateOrConnectWithoutRequestsInput
+    connect?: MCPServerWhereUniqueInput
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type AnalyticsRequestUpdatescopesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ClientUpdateOneWithoutAnalyticsRequestsNestedInput = {
+    create?: XOR<ClientCreateWithoutAnalyticsRequestsInput, ClientUncheckedCreateWithoutAnalyticsRequestsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutAnalyticsRequestsInput
+    upsert?: ClientUpsertWithoutAnalyticsRequestsInput
+    disconnect?: ClientWhereInput | boolean
+    delete?: ClientWhereInput | boolean
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutAnalyticsRequestsInput, ClientUpdateWithoutAnalyticsRequestsInput>, ClientUncheckedUpdateWithoutAnalyticsRequestsInput>
+  }
+
+  export type UserUpdateOneWithoutAnalyticsRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutAnalyticsRequestsInput, UserUncheckedCreateWithoutAnalyticsRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnalyticsRequestsInput
+    upsert?: UserUpsertWithoutAnalyticsRequestsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnalyticsRequestsInput, UserUpdateWithoutAnalyticsRequestsInput>, UserUncheckedUpdateWithoutAnalyticsRequestsInput>
+  }
+
+  export type MCPServerUpdateOneWithoutRequestsNestedInput = {
+    create?: XOR<MCPServerCreateWithoutRequestsInput, MCPServerUncheckedCreateWithoutRequestsInput>
+    connectOrCreate?: MCPServerCreateOrConnectWithoutRequestsInput
+    upsert?: MCPServerUpsertWithoutRequestsInput
+    disconnect?: MCPServerWhereInput | boolean
+    delete?: MCPServerWhereInput | boolean
+    connect?: MCPServerWhereUniqueInput
+    update?: XOR<XOR<MCPServerUpdateToOneWithWhereWithoutRequestsInput, MCPServerUpdateWithoutRequestsInput>, MCPServerUncheckedUpdateWithoutRequestsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSecurityEventsInput = {
+    create?: XOR<UserCreateWithoutSecurityEventsInput, UserUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSecurityEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ClientCreateNestedOneWithoutSecurityEventsInput = {
+    create?: XOR<ClientCreateWithoutSecurityEventsInput, ClientUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutSecurityEventsInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type MCPServerCreateNestedOneWithoutSecurityEventsInput = {
+    create?: XOR<MCPServerCreateWithoutSecurityEventsInput, MCPServerUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: MCPServerCreateOrConnectWithoutSecurityEventsInput
+    connect?: MCPServerWhereUniqueInput
+  }
+
+  export type EnumSecurityEventTypeFieldUpdateOperationsInput = {
+    set?: $Enums.SecurityEventType
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type UserUpdateOneWithoutSecurityEventsNestedInput = {
+    create?: XOR<UserCreateWithoutSecurityEventsInput, UserUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSecurityEventsInput
+    upsert?: UserUpsertWithoutSecurityEventsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSecurityEventsInput, UserUpdateWithoutSecurityEventsInput>, UserUncheckedUpdateWithoutSecurityEventsInput>
+  }
+
+  export type ClientUpdateOneWithoutSecurityEventsNestedInput = {
+    create?: XOR<ClientCreateWithoutSecurityEventsInput, ClientUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutSecurityEventsInput
+    upsert?: ClientUpsertWithoutSecurityEventsInput
+    disconnect?: ClientWhereInput | boolean
+    delete?: ClientWhereInput | boolean
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutSecurityEventsInput, ClientUpdateWithoutSecurityEventsInput>, ClientUncheckedUpdateWithoutSecurityEventsInput>
+  }
+
+  export type MCPServerUpdateOneWithoutSecurityEventsNestedInput = {
+    create?: XOR<MCPServerCreateWithoutSecurityEventsInput, MCPServerUncheckedCreateWithoutSecurityEventsInput>
+    connectOrCreate?: MCPServerCreateOrConnectWithoutSecurityEventsInput
+    upsert?: MCPServerUpsertWithoutSecurityEventsInput
+    disconnect?: MCPServerWhereInput | boolean
+    delete?: MCPServerWhereInput | boolean
+    connect?: MCPServerWhereUniqueInput
+    update?: XOR<XOR<MCPServerUpdateToOneWithWhereWithoutSecurityEventsInput, MCPServerUpdateWithoutSecurityEventsInput>, MCPServerUncheckedUpdateWithoutSecurityEventsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15973,6 +19010,59 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumSecurityEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SecurityEventType | EnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSecurityEventTypeFilter<$PrismaModel> | $Enums.SecurityEventType
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumSecurityEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SecurityEventType | EnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SecurityEventType[] | ListEnumSecurityEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSecurityEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.SecurityEventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSecurityEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumSecurityEventTypeFilter<$PrismaModel>
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -16044,6 +19134,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUserInput = {
@@ -16057,6 +19149,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUserInput = {
@@ -16156,6 +19250,114 @@ export namespace Prisma {
 
   export type RefreshTokenCreateManyUserInputEnvelope = {
     data: RefreshTokenCreateManyUserInput | RefreshTokenCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnalyticsRequestCreateWithoutUserInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+    client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
+  }
+
+  export type AnalyticsRequestUncheckedCreateWithoutUserInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsRequestCreateOrConnectWithoutUserInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    create: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnalyticsRequestCreateManyUserInputEnvelope = {
+    data: AnalyticsRequestCreateManyUserInput | AnalyticsRequestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnalyticsSecurityCreateWithoutUserInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+    client?: ClientCreateNestedOneWithoutSecurityEventsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutSecurityEventsInput
+  }
+
+  export type AnalyticsSecurityUncheckedCreateWithoutUserInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    clientId?: string | null
+    mcpServerId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+  }
+
+  export type AnalyticsSecurityCreateOrConnectWithoutUserInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    create: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnalyticsSecurityCreateManyUserInputEnvelope = {
+    data: AnalyticsSecurityCreateManyUserInput | AnalyticsSecurityCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16339,6 +19541,90 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
   }
 
+  export type AnalyticsRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    update: XOR<AnalyticsRequestUpdateWithoutUserInput, AnalyticsRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<AnalyticsRequestCreateWithoutUserInput, AnalyticsRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnalyticsRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    data: XOR<AnalyticsRequestUpdateWithoutUserInput, AnalyticsRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnalyticsRequestUpdateManyWithWhereWithoutUserInput = {
+    where: AnalyticsRequestScalarWhereInput
+    data: XOR<AnalyticsRequestUpdateManyMutationInput, AnalyticsRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnalyticsRequestScalarWhereInput = {
+    AND?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+    OR?: AnalyticsRequestScalarWhereInput[]
+    NOT?: AnalyticsRequestScalarWhereInput | AnalyticsRequestScalarWhereInput[]
+    id?: StringFilter<"AnalyticsRequest"> | string
+    timestamp?: DateTimeFilter<"AnalyticsRequest"> | Date | string
+    endpoint?: StringFilter<"AnalyticsRequest"> | string
+    method?: StringFilter<"AnalyticsRequest"> | string
+    statusCode?: IntFilter<"AnalyticsRequest"> | number
+    responseTime?: IntFilter<"AnalyticsRequest"> | number
+    clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userRole?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    scopes?: StringNullableListFilter<"AnalyticsRequest">
+    organization?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ipAddress?: StringFilter<"AnalyticsRequest"> | string
+    userAgent?: StringFilter<"AnalyticsRequest"> | string
+    country?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    city?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    clientType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+  }
+
+  export type AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    update: XOR<AnalyticsSecurityUpdateWithoutUserInput, AnalyticsSecurityUncheckedUpdateWithoutUserInput>
+    create: XOR<AnalyticsSecurityCreateWithoutUserInput, AnalyticsSecurityUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnalyticsSecurityUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    data: XOR<AnalyticsSecurityUpdateWithoutUserInput, AnalyticsSecurityUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnalyticsSecurityUpdateManyWithWhereWithoutUserInput = {
+    where: AnalyticsSecurityScalarWhereInput
+    data: XOR<AnalyticsSecurityUpdateManyMutationInput, AnalyticsSecurityUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnalyticsSecurityScalarWhereInput = {
+    AND?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+    OR?: AnalyticsSecurityScalarWhereInput[]
+    NOT?: AnalyticsSecurityScalarWhereInput | AnalyticsSecurityScalarWhereInput[]
+    id?: StringFilter<"AnalyticsSecurity"> | string
+    timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
+    eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
+    severity?: StringFilter<"AnalyticsSecurity"> | string
+    userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    ipAddress?: StringFilter<"AnalyticsSecurity"> | string
+    userAgent?: StringFilter<"AnalyticsSecurity"> | string
+    endpoint?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    country?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    city?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    organization?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    ssoProvider?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    details?: JsonFilter<"AnalyticsSecurity">
+    riskScore?: IntFilter<"AnalyticsSecurity"> | number
+    resolved?: BoolFilter<"AnalyticsSecurity"> | boolean
+    resolvedAt?: DateTimeNullableFilter<"AnalyticsSecurity"> | Date | string | null
+    resolvedBy?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -16350,6 +19636,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -16363,6 +19651,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -16392,6 +19682,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -16405,6 +19697,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -16418,6 +19712,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -16431,6 +19727,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -16460,6 +19758,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -16473,6 +19773,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutClientsInput = {
@@ -16486,6 +19788,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClientsInput = {
@@ -16499,6 +19803,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientsInput = {
@@ -16596,6 +19902,114 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AnalyticsRequestCreateWithoutClientInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+    user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
+  }
+
+  export type AnalyticsRequestUncheckedCreateWithoutClientInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    userId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsRequestCreateOrConnectWithoutClientInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    create: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput>
+  }
+
+  export type AnalyticsRequestCreateManyClientInputEnvelope = {
+    data: AnalyticsRequestCreateManyClientInput | AnalyticsRequestCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnalyticsSecurityCreateWithoutClientInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+    user?: UserCreateNestedOneWithoutSecurityEventsInput
+    mcpServer?: MCPServerCreateNestedOneWithoutSecurityEventsInput
+  }
+
+  export type AnalyticsSecurityUncheckedCreateWithoutClientInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    mcpServerId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+  }
+
+  export type AnalyticsSecurityCreateOrConnectWithoutClientInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    create: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput>
+  }
+
+  export type AnalyticsSecurityCreateManyClientInputEnvelope = {
+    data: AnalyticsSecurityCreateManyClientInput | AnalyticsSecurityCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutClientsInput = {
     update: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
     create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
@@ -16618,6 +20032,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientsInput = {
@@ -16631,6 +20047,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccessTokenUpsertWithWhereUniqueWithoutClientInput = {
@@ -16681,6 +20099,38 @@ export namespace Prisma {
     data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyWithoutClientInput>
   }
 
+  export type AnalyticsRequestUpsertWithWhereUniqueWithoutClientInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    update: XOR<AnalyticsRequestUpdateWithoutClientInput, AnalyticsRequestUncheckedUpdateWithoutClientInput>
+    create: XOR<AnalyticsRequestCreateWithoutClientInput, AnalyticsRequestUncheckedCreateWithoutClientInput>
+  }
+
+  export type AnalyticsRequestUpdateWithWhereUniqueWithoutClientInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    data: XOR<AnalyticsRequestUpdateWithoutClientInput, AnalyticsRequestUncheckedUpdateWithoutClientInput>
+  }
+
+  export type AnalyticsRequestUpdateManyWithWhereWithoutClientInput = {
+    where: AnalyticsRequestScalarWhereInput
+    data: XOR<AnalyticsRequestUpdateManyMutationInput, AnalyticsRequestUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type AnalyticsSecurityUpsertWithWhereUniqueWithoutClientInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    update: XOR<AnalyticsSecurityUpdateWithoutClientInput, AnalyticsSecurityUncheckedUpdateWithoutClientInput>
+    create: XOR<AnalyticsSecurityCreateWithoutClientInput, AnalyticsSecurityUncheckedCreateWithoutClientInput>
+  }
+
+  export type AnalyticsSecurityUpdateWithWhereUniqueWithoutClientInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    data: XOR<AnalyticsSecurityUpdateWithoutClientInput, AnalyticsSecurityUncheckedUpdateWithoutClientInput>
+  }
+
+  export type AnalyticsSecurityUpdateManyWithWhereWithoutClientInput = {
+    where: AnalyticsSecurityScalarWhereInput
+    data: XOR<AnalyticsSecurityUpdateManyMutationInput, AnalyticsSecurityUncheckedUpdateManyWithoutClientInput>
+  }
+
   export type ClientCreateWithoutAccessTokensInput = {
     id?: string
     clientId?: string
@@ -16692,6 +20142,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientsInput
     authCodes?: AuthCodeCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutAccessTokensInput = {
@@ -16705,6 +20157,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutAccessTokensInput = {
@@ -16723,6 +20177,8 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccessTokensInput = {
@@ -16736,6 +20192,8 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccessTokensInput = {
@@ -16765,6 +20223,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutClientsNestedInput
     authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutAccessTokensInput = {
@@ -16778,6 +20238,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutAccessTokensInput = {
@@ -16802,6 +20264,8 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccessTokensInput = {
@@ -16815,6 +20279,8 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ClientCreateWithoutAuthCodesInput = {
@@ -16828,6 +20294,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientsInput
     accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutAuthCodesInput = {
@@ -16841,6 +20309,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutAuthCodesInput = {
@@ -16859,6 +20329,8 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuthCodesInput = {
@@ -16872,6 +20344,8 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuthCodesInput = {
@@ -16901,6 +20375,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutClientsNestedInput
     accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutAuthCodesInput = {
@@ -16914,6 +20390,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutAuthCodesInput = {
@@ -16938,6 +20416,8 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthCodesInput = {
@@ -16951,6 +20431,8 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ClientCreateWithoutRefreshTokensInput = {
@@ -16964,6 +20446,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientsInput
     accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutRefreshTokensInput = {
@@ -16977,6 +20461,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutRefreshTokensInput = {
@@ -16995,6 +20481,8 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -17008,6 +20496,8 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
     authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -17037,6 +20527,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutClientsNestedInput
     accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutRefreshTokensInput = {
@@ -17050,6 +20542,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutRefreshTokensInput = {
@@ -17074,6 +20568,8 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -17087,6 +20583,572 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AnalyticsRequestCreateWithoutMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+    client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
+    user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
+  }
+
+  export type AnalyticsRequestUncheckedCreateWithoutMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    userId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsRequestCreateOrConnectWithoutMcpServerInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    create: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsRequestCreateManyMcpServerInputEnvelope = {
+    data: AnalyticsRequestCreateManyMcpServerInput | AnalyticsRequestCreateManyMcpServerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnalyticsSecurityCreateWithoutMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+    user?: UserCreateNestedOneWithoutSecurityEventsInput
+    client?: ClientCreateNestedOneWithoutSecurityEventsInput
+  }
+
+  export type AnalyticsSecurityUncheckedCreateWithoutMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    clientId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+  }
+
+  export type AnalyticsSecurityCreateOrConnectWithoutMcpServerInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    create: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsSecurityCreateManyMcpServerInputEnvelope = {
+    data: AnalyticsSecurityCreateManyMcpServerInput | AnalyticsSecurityCreateManyMcpServerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnalyticsRequestUpsertWithWhereUniqueWithoutMcpServerInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    update: XOR<AnalyticsRequestUpdateWithoutMcpServerInput, AnalyticsRequestUncheckedUpdateWithoutMcpServerInput>
+    create: XOR<AnalyticsRequestCreateWithoutMcpServerInput, AnalyticsRequestUncheckedCreateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsRequestUpdateWithWhereUniqueWithoutMcpServerInput = {
+    where: AnalyticsRequestWhereUniqueInput
+    data: XOR<AnalyticsRequestUpdateWithoutMcpServerInput, AnalyticsRequestUncheckedUpdateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsRequestUpdateManyWithWhereWithoutMcpServerInput = {
+    where: AnalyticsRequestScalarWhereInput
+    data: XOR<AnalyticsRequestUpdateManyMutationInput, AnalyticsRequestUncheckedUpdateManyWithoutMcpServerInput>
+  }
+
+  export type AnalyticsSecurityUpsertWithWhereUniqueWithoutMcpServerInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    update: XOR<AnalyticsSecurityUpdateWithoutMcpServerInput, AnalyticsSecurityUncheckedUpdateWithoutMcpServerInput>
+    create: XOR<AnalyticsSecurityCreateWithoutMcpServerInput, AnalyticsSecurityUncheckedCreateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsSecurityUpdateWithWhereUniqueWithoutMcpServerInput = {
+    where: AnalyticsSecurityWhereUniqueInput
+    data: XOR<AnalyticsSecurityUpdateWithoutMcpServerInput, AnalyticsSecurityUncheckedUpdateWithoutMcpServerInput>
+  }
+
+  export type AnalyticsSecurityUpdateManyWithWhereWithoutMcpServerInput = {
+    where: AnalyticsSecurityScalarWhereInput
+    data: XOR<AnalyticsSecurityUpdateManyMutationInput, AnalyticsSecurityUncheckedUpdateManyWithoutMcpServerInput>
+  }
+
+  export type ClientCreateWithoutAnalyticsRequestsInput = {
+    id?: string
+    clientId?: string
+    clientSecret: string
+    name: string
+    redirectUris?: ClientCreateredirectUrisInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutClientsInput
+    accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
+    authCodes?: AuthCodeCreateNestedManyWithoutClientInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutAnalyticsRequestsInput = {
+    id?: string
+    clientId?: string
+    clientSecret: string
+    name: string
+    redirectUris?: ClientCreateredirectUrisInput | string[]
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
+    authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutAnalyticsRequestsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutAnalyticsRequestsInput, ClientUncheckedCreateWithoutAnalyticsRequestsInput>
+  }
+
+  export type UserCreateWithoutAnalyticsRequestsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
+    accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
+    authCodes?: AuthCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAnalyticsRequestsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
+    authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAnalyticsRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnalyticsRequestsInput, UserUncheckedCreateWithoutAnalyticsRequestsInput>
+  }
+
+  export type MCPServerCreateWithoutRequestsInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    securityEvents?: AnalyticsSecurityCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerUncheckedCreateWithoutRequestsInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    securityEvents?: AnalyticsSecurityUncheckedCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerCreateOrConnectWithoutRequestsInput = {
+    where: MCPServerWhereUniqueInput
+    create: XOR<MCPServerCreateWithoutRequestsInput, MCPServerUncheckedCreateWithoutRequestsInput>
+  }
+
+  export type ClientUpsertWithoutAnalyticsRequestsInput = {
+    update: XOR<ClientUpdateWithoutAnalyticsRequestsInput, ClientUncheckedUpdateWithoutAnalyticsRequestsInput>
+    create: XOR<ClientCreateWithoutAnalyticsRequestsInput, ClientUncheckedCreateWithoutAnalyticsRequestsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutAnalyticsRequestsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutAnalyticsRequestsInput, ClientUncheckedUpdateWithoutAnalyticsRequestsInput>
+  }
+
+  export type ClientUpdateWithoutAnalyticsRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    redirectUris?: ClientUpdateredirectUrisInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutClientsNestedInput
+    accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
+    authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutAnalyticsRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    redirectUris?: ClientUpdateredirectUrisInput | string[]
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
+    authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type UserUpsertWithoutAnalyticsRequestsInput = {
+    update: XOR<UserUpdateWithoutAnalyticsRequestsInput, UserUncheckedUpdateWithoutAnalyticsRequestsInput>
+    create: XOR<UserCreateWithoutAnalyticsRequestsInput, UserUncheckedCreateWithoutAnalyticsRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnalyticsRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnalyticsRequestsInput, UserUncheckedUpdateWithoutAnalyticsRequestsInput>
+  }
+
+  export type UserUpdateWithoutAnalyticsRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
+    accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
+    authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnalyticsRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
+    authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MCPServerUpsertWithoutRequestsInput = {
+    update: XOR<MCPServerUpdateWithoutRequestsInput, MCPServerUncheckedUpdateWithoutRequestsInput>
+    create: XOR<MCPServerCreateWithoutRequestsInput, MCPServerUncheckedCreateWithoutRequestsInput>
+    where?: MCPServerWhereInput
+  }
+
+  export type MCPServerUpdateToOneWithWhereWithoutRequestsInput = {
+    where?: MCPServerWhereInput
+    data: XOR<MCPServerUpdateWithoutRequestsInput, MCPServerUncheckedUpdateWithoutRequestsInput>
+  }
+
+  export type MCPServerUpdateWithoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutMcpServerNestedInput
+  }
+
+  export type MCPServerUncheckedUpdateWithoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutMcpServerNestedInput
+  }
+
+  export type UserCreateWithoutSecurityEventsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
+    accessTokens?: AccessTokenCreateNestedManyWithoutUserInput
+    authCodes?: AuthCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSecurityEventsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutUserInput
+    authCodes?: AuthCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSecurityEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSecurityEventsInput, UserUncheckedCreateWithoutSecurityEventsInput>
+  }
+
+  export type ClientCreateWithoutSecurityEventsInput = {
+    id?: string
+    clientId?: string
+    clientSecret: string
+    name: string
+    redirectUris?: ClientCreateredirectUrisInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutClientsInput
+    accessTokens?: AccessTokenCreateNestedManyWithoutClientInput
+    authCodes?: AuthCodeCreateNestedManyWithoutClientInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutSecurityEventsInput = {
+    id?: string
+    clientId?: string
+    clientSecret: string
+    name: string
+    redirectUris?: ClientCreateredirectUrisInput | string[]
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accessTokens?: AccessTokenUncheckedCreateNestedManyWithoutClientInput
+    authCodes?: AuthCodeUncheckedCreateNestedManyWithoutClientInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    analyticsRequests?: AnalyticsRequestUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutSecurityEventsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutSecurityEventsInput, ClientUncheckedCreateWithoutSecurityEventsInput>
+  }
+
+  export type MCPServerCreateWithoutSecurityEventsInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: AnalyticsRequestCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerUncheckedCreateWithoutSecurityEventsInput = {
+    id?: string
+    name: string
+    identifier: string
+    description?: string | null
+    version?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: AnalyticsRequestUncheckedCreateNestedManyWithoutMcpServerInput
+  }
+
+  export type MCPServerCreateOrConnectWithoutSecurityEventsInput = {
+    where: MCPServerWhereUniqueInput
+    create: XOR<MCPServerCreateWithoutSecurityEventsInput, MCPServerUncheckedCreateWithoutSecurityEventsInput>
+  }
+
+  export type UserUpsertWithoutSecurityEventsInput = {
+    update: XOR<UserUpdateWithoutSecurityEventsInput, UserUncheckedUpdateWithoutSecurityEventsInput>
+    create: XOR<UserCreateWithoutSecurityEventsInput, UserUncheckedCreateWithoutSecurityEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSecurityEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSecurityEventsInput, UserUncheckedUpdateWithoutSecurityEventsInput>
+  }
+
+  export type UserUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
+    accessTokens?: AccessTokenUpdateManyWithoutUserNestedInput
+    authCodes?: AuthCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    accessTokens?: AccessTokenUncheckedUpdateManyWithoutUserNestedInput
+    authCodes?: AuthCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ClientUpsertWithoutSecurityEventsInput = {
+    update: XOR<ClientUpdateWithoutSecurityEventsInput, ClientUncheckedUpdateWithoutSecurityEventsInput>
+    create: XOR<ClientCreateWithoutSecurityEventsInput, ClientUncheckedCreateWithoutSecurityEventsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutSecurityEventsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutSecurityEventsInput, ClientUncheckedUpdateWithoutSecurityEventsInput>
+  }
+
+  export type ClientUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    redirectUris?: ClientUpdateredirectUrisInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutClientsNestedInput
+    accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
+    authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    redirectUris?: ClientUpdateredirectUrisInput | string[]
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
+    authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type MCPServerUpsertWithoutSecurityEventsInput = {
+    update: XOR<MCPServerUpdateWithoutSecurityEventsInput, MCPServerUncheckedUpdateWithoutSecurityEventsInput>
+    create: XOR<MCPServerCreateWithoutSecurityEventsInput, MCPServerUncheckedCreateWithoutSecurityEventsInput>
+    where?: MCPServerWhereInput
+  }
+
+  export type MCPServerUpdateToOneWithWhereWithoutSecurityEventsInput = {
+    where?: MCPServerWhereInput
+    data: XOR<MCPServerUpdateWithoutSecurityEventsInput, MCPServerUncheckedUpdateWithoutSecurityEventsInput>
+  }
+
+  export type MCPServerUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: AnalyticsRequestUpdateManyWithoutMcpServerNestedInput
+  }
+
+  export type MCPServerUncheckedUpdateWithoutSecurityEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: AnalyticsRequestUncheckedUpdateManyWithoutMcpServerNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -17147,6 +21209,50 @@ export namespace Prisma {
     clientId: string
     resource?: string | null
     createdAt?: Date | string
+  }
+
+  export type AnalyticsRequestCreateManyUserInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsSecurityCreateManyUserInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    clientId?: string | null
+    mcpServerId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -17220,6 +21326,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUserInput = {
@@ -17233,6 +21341,8 @@ export namespace Prisma {
     accessTokens?: AccessTokenUncheckedUpdateManyWithoutClientNestedInput
     authCodes?: AuthCodeUncheckedUpdateManyWithoutClientNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    analyticsRequests?: AnalyticsRequestUncheckedUpdateManyWithoutClientNestedInput
+    securityEvents?: AnalyticsSecurityUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateManyWithoutUserInput = {
@@ -17335,6 +21445,138 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AnalyticsRequestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
+  }
+
+  export type AnalyticsRequestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneWithoutSecurityEventsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutSecurityEventsNestedInput
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type AccessTokenCreateManyClientInput = {
     id?: string
     token: string
@@ -17363,6 +21605,50 @@ export namespace Prisma {
     userId: string
     resource?: string | null
     createdAt?: Date | string
+  }
+
+  export type AnalyticsRequestCreateManyClientInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    userId?: string | null
+    mcpServerId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsSecurityCreateManyClientInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    mcpServerId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
   }
 
   export type AccessTokenUpdateWithoutClientInput = {
@@ -17453,6 +21739,314 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     resource?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnalyticsRequestUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
+  }
+
+  export type AnalyticsRequestUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneWithoutSecurityEventsNestedInput
+    mcpServer?: MCPServerUpdateOneWithoutSecurityEventsNestedInput
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestCreateManyMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    userId?: string | null
+    ssoProvider?: string | null
+    userRole?: string | null
+    scopes?: AnalyticsRequestCreatescopesInput | string[]
+    organization?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+    mcpMethod?: string | null
+    toolName?: string | null
+  }
+
+  export type AnalyticsSecurityCreateManyMcpServerInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: $Enums.SecurityEventType
+    severity: string
+    userId?: string | null
+    clientId?: string | null
+    ipAddress: string
+    userAgent: string
+    endpoint?: string | null
+    country?: string | null
+    city?: string | null
+    organization?: string | null
+    ssoProvider?: string | null
+    details: JsonNullValueInput | InputJsonValue
+    riskScore?: number
+    resolved?: boolean
+    resolvedAt?: Date | string | null
+    resolvedBy?: string | null
+  }
+
+  export type AnalyticsRequestUpdateWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
+    user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
+  }
+
+  export type AnalyticsRequestUncheckedUpdateWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: NullableStringFieldUpdateOperationsInput | string | null
+    scopes?: AnalyticsRequestUpdatescopesInput | string[]
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    toolName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUpdateWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneWithoutSecurityEventsNestedInput
+    client?: ClientUpdateOneWithoutSecurityEventsNestedInput
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyWithoutMcpServerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
+    severity?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    endpoint?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: NullableStringFieldUpdateOperationsInput | string | null
+    ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: JsonNullValueInput | InputJsonValue
+    riskScore?: IntFieldUpdateOperationsInput | number
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
