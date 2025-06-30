@@ -40,6 +40,7 @@ Based on your server logs, I identified several critical issues preventing prope
   "authorization_endpoint": "https://your-domain.com/oauth/authorize",
   "token_endpoint": "https://your-domain.com/api/oauth/token",
   "registration_endpoint": "https://your-domain.com/api/oauth/register",
+  "grant_types_supported": ["authorization_code", "refresh_token"],
   "code_challenge_methods_supported": ["S256", "plain"],
   "resource_parameter_supported": true
 }
@@ -53,10 +54,10 @@ Based on your server logs, I identified several critical issues preventing prope
 {
   "resource": "https://your-domain.com",
   "authorization_servers": ["https://your-domain.com"],
-  "mcp_endpoints": [
-    "https://your-domain.com/mcp/mcp",
-    "https://your-domain.com/mcp/sse"
-  ]
+  "mcp_endpoints": {
+    "http_stream": "https://your-domain.com/mcp/mcp",
+    "sse": "https://your-domain.com/mcp/sse"
+  }
 }
 ```
 
@@ -88,9 +89,9 @@ if (accessToken.resource && accessToken.resource !== currentResource) {
 ```
 
 #### 6. **Registration Endpoint Path**
-**Problem**: Clients expected `/register` but you had `/api/oauth/register`
-**Impact**: Dynamic client registration failed
-**Fix**: Added redirect endpoint at `/register`
+**Problem**: Registration endpoint path needed to be properly advertised
+**Impact**: Dynamic client registration endpoint discoverability
+**Fix**: Proper endpoint advertising in authorization server metadata (`/api/oauth/register`)
 
 ## Security Improvements
 
@@ -147,7 +148,7 @@ sequenceDiagram
     M->>C: Resource metadata + authorization_servers
     
     C->>A: GET /.well-known/oauth-authorization-server  
-    A->>C: Authorization server metadata
+    A->>C: Authorization server metadata (includes refresh_token grant)
     
     C->>A: POST /register (dynamic client registration)
     A->>C: client_id + client_secret
@@ -156,10 +157,23 @@ sequenceDiagram
     A->>C: Authorization code
     
     C->>A: Token request + resource parameter
-    A->>C: Access token (bound to resource)
+    A->>C: Access token + refresh token (expires_in: 300)
     
     C->>M: MCP request + Authorization: Bearer token
     M->>C: MCP response (token validated for audience)
+    
+    Note over C,M: MCP communication continues...
+    Note over C: After 5 minutes, access token expires
+    
+    C->>M: MCP request + Authorization: Bearer (expired token)
+    M->>C: 401 Unauthorized
+    
+    Note over C: Client detects expiry, uses refresh token
+    C->>A: POST /token (grant_type=refresh_token + resource)
+    A->>C: New access token + new refresh token
+    
+    C->>M: MCP request + Authorization: Bearer (new token)
+    M->>C: MCP response (seamless continuation)
 ```
 
 ## Testing Your Implementation
@@ -179,7 +193,7 @@ After deploying these changes, verify:
 
 3. **Registration endpoint accessible**:
    ```bash
-   curl -X POST https://your-domain.com/register \
+   curl -X POST https://your-domain.com/api/oauth/register \
      -H "Content-Type: application/json" \
      -d '{"client_name": "Test", "redirect_uris": ["http://localhost:3000"]}'
    ```
@@ -204,7 +218,8 @@ Test token endpoint with refresh_token grant:
 ```bash
 # First get tokens via authorization flow, then test refresh
 curl -X POST https://your-domain.com/api/oauth/token \
-  -d "grant_type=refresh_token&refresh_token=your_refresh_token&client_id=your_client_id"
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=refresh_token&refresh_token=your_refresh_token&client_id=your_client_id&resource=https://your-domain.com"
 ```
 
 ### Testing Refresh Token Flow
