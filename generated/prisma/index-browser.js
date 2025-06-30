@@ -190,6 +190,16 @@ exports.Prisma.AuthCodeScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  clientId: 'clientId',
+  userId: 'userId',
+  resource: 'resource',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -213,7 +223,8 @@ exports.Prisma.ModelName = {
   VerificationToken: 'VerificationToken',
   Client: 'Client',
   AccessToken: 'AccessToken',
-  AuthCode: 'AuthCode'
+  AuthCode: 'AuthCode',
+  RefreshToken: 'RefreshToken'
 };
 
 /**

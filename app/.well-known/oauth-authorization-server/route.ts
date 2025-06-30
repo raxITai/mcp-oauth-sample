@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     registration_endpoint: `${baseUrl}/api/oauth/register`,
     scopes_supported: ['read', 'write'],
     response_types_supported: ['code'],
-    grant_types_supported: ['authorization_code'],
+    grant_types_supported: ['authorization_code', 'refresh_token'],
     code_challenge_methods_supported: ['S256', 'plain'],
     token_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
     // MCP-specific claims

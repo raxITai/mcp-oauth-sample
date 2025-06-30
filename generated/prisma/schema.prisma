@@ -9,9 +9,9 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -19,6 +19,7 @@ model User {
   clients       Client[]
   accessTokens  AccessToken[]
   authCodes     AuthCode[]
+  refreshTokens RefreshToken[]
 }
 
 model Account {
@@ -57,15 +58,16 @@ model VerificationToken {
 }
 
 model Client {
-  id           String        @id @default(cuid())
-  clientId     String        @unique @default(cuid())
-  clientSecret String
-  name         String
-  redirectUris String[]
-  userId       String?
-  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessTokens AccessToken[]
-  authCodes    AuthCode[]
+  id            String         @id @default(cuid())
+  clientId      String         @unique @default(cuid())
+  clientSecret  String
+  name          String
+  redirectUris  String[]
+  userId        String?
+  user          User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessTokens  AccessToken[]
+  authCodes     AuthCode[]
+  refreshTokens RefreshToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,6 +98,19 @@ model AuthCode {
   codeChallenge       String?
   codeChallengeMethod String?
   resource            String?
+
+  createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource  String?
 
   createdAt DateTime @default(now())
 }
