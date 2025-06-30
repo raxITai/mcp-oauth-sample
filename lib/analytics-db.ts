@@ -258,9 +258,9 @@ class OptimizedAnalyticsCollector {
     const result = await prisma.$queryRaw`
       SELECT 
         COUNT(*) as total_requests,
-        AVG(response_time) as avg_response_time,
-        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY response_time) as p95_response_time,
-        COUNT(CASE WHEN status_code >= 400 THEN 1 END) * 100.0 / COUNT(*) as error_rate
+        AVG("responseTime") as avg_response_time,
+        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY "responseTime") as p95_response_time,
+        COUNT(CASE WHEN "statusCode" >= 400 THEN 1 END) * 100.0 / COUNT(*) as error_rate
       FROM "AnalyticsRequest"
       WHERE timestamp >= ${cutoff}
     ` as Array<{
