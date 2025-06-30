@@ -99,7 +99,7 @@ The application will be available at `http://localhost:3000`
 
 ## Common Issues and Solutions
 
-### Database Connection Errors
+### Database Connection Errors...
 
 **Error**: `Can't reach database server at 'server:5432'`
 
