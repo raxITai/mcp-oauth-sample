@@ -33,11 +33,24 @@ async function getEnhancedAnalytics(hours = 24) {
     }
 
     // Efficient parallel queries for enhanced analytics
-    const [performance, endpoints, geography, securityEvents] = await Promise.all([
+    const [
+      performance, 
+      endpoints, 
+      geography, 
+      securityEvents, 
+      usersByMCP, 
+      securityByOrg, 
+      privilegeEscalations, 
+      toolUsage
+    ] = await Promise.all([
       analyticsDB.getPerformanceMetrics(hours),
       analyticsDB.getTopEndpoints(hours, 10),
       analyticsDB.getGeographyStats(hours),
-      analyticsDB.getSecurityEvents(hours)
+      analyticsDB.getSecurityEvents(hours),
+      analyticsDB.getUsersByMCPServer(hours),
+      analyticsDB.getSecurityEventsByOrganization(hours),
+      analyticsDB.getUserPrivilegeEscalations(168), // Last 7 days
+      analyticsDB.getMCPToolUsage(hours)
     ]);
 
     const data = {
@@ -46,7 +59,13 @@ async function getEnhancedAnalytics(hours = 24) {
       geography,
       security: {
         events: securityEvents,
-        eventCount: securityEvents.length
+        eventCount: securityEvents.length,
+        byOrganization: securityByOrg,
+        privilegeEscalations
+      },
+      enterprise: {
+        usersByMCPServer: usersByMCP,
+        toolUsage
       },
       timeRange: `${hours} hours`,
       lastUpdated: new Date().toISOString()

@@ -11,10 +11,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid analytics data' }, { status: 400 });
     }
 
-    // Convert ISO string back to Date object
+    // Convert ISO string back to Date object and add enhanced fields
     const requestData = {
       ...analyticsData,
-      timestamp: new Date(analyticsData.timestamp)
+      timestamp: new Date(analyticsData.timestamp),
+      // Handle arrays properly
+      scopes: analyticsData.scopes || [],
+      // Ensure required fields have defaults
+      statusCode: analyticsData.statusCode || 200,
+      responseTime: analyticsData.responseTime || 0,
+      ipAddress: analyticsData.ipAddress || '127.0.0.1',
+      userAgent: analyticsData.userAgent || 'unknown'
     };
 
     // Log the request using our optimized analytics system

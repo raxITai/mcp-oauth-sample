@@ -3,6 +3,20 @@ import { z } from "zod";
 import { prisma } from '@/app/prisma';
 import { NextRequest } from 'next/server';
 
+interface AccessTokenData {
+  clientId: string;
+  userId: string;
+  user?: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+  };
+  client?: {
+    id: string;
+    name: string;
+  };
+}
+
 // Utility function for getting client IP
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
@@ -142,12 +156,125 @@ async function authenticateRequest(request: NextRequest) {
   }
 }
 
+// Helper function to log enhanced analytics
+async function logEnhancedAnalytics(
+  request: NextRequest, 
+  accessToken: AccessTokenData | null, 
+  requestBody: Record<string, unknown> | null,
+  startTime: number,
+  statusCode: number
+) {
+  try {
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+    
+    // Extract MCP-specific data from request
+    let mcpMethod: string | undefined;
+    let toolName: string | undefined;
+    
+    if (requestBody) {
+      mcpMethod = (typeof requestBody.method === 'string' ? requestBody.method : 'unknown');
+      if (requestBody.params && typeof requestBody.params === 'object' && requestBody.params !== null) {
+        const params = requestBody.params as Record<string, unknown>;
+        if (typeof params.name === 'string') {
+          toolName = params.name;
+        }
+      }
+    }
+    
+    // Get or create MCP server registration
+    let mcpServerId: string | undefined;
+    try {
+      const host = request.headers.get('host');
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      const serverIdentifier = `${protocol}://${host}/mcp`;
+      
+      let mcpServer = await prisma.mCPServer.findUnique({
+        where: { identifier: serverIdentifier }
+      });
+      
+      if (!mcpServer) {
+        mcpServer = await prisma.mCPServer.create({
+          data: {
+            name: 'Default MCP Server',
+            identifier: serverIdentifier,
+            description: 'MCP OAuth Server',
+            version: '1.0.0'
+          }
+        });
+      }
+      
+      mcpServerId = mcpServer.id;
+    } catch (error) {
+      console.warn('Failed to register MCP server:', error);
+    }
+    
+    // Extract SSO context from user account
+    let ssoProvider: string | undefined;
+    let organization: string | undefined;
+    
+    if (accessToken?.user) {
+      try {
+        const account = await prisma.account.findFirst({
+          where: { userId: accessToken.user.id }
+        });
+        if (account) {
+          ssoProvider = account.provider;
+        }
+      } catch (error) {
+        console.warn('Failed to get SSO context:', error);
+      }
+    }
+    
+    const host = request.headers.get('host');
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const baseUrl = `${protocol}://${host}`;
+    
+    const analyticsData = {
+      timestamp: new Date(startTime).toISOString(),
+      endpoint: request.nextUrl.pathname,
+      method: request.method,
+      statusCode,
+      responseTime,
+      clientId: accessToken?.clientId,
+      userId: accessToken?.userId,
+      mcpServerId,
+      ssoProvider,
+      userRole: undefined, // Would extract from JWT claims
+      scopes: [], // Would extract from access token scopes
+      organization,
+      ipAddress: getClientIP(request),
+      userAgent: request.headers.get('user-agent') || '',
+      mcpMethod,
+      toolName
+    };
+
+    await fetch(`${baseUrl}/api/analytics/collect`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(analyticsData)
+    }).catch(() => {
+      // Silent fail - analytics shouldn't break MCP requests
+    });
+    
+  } catch (error) {
+    console.warn('Enhanced analytics logging failed:', error);
+  }
+}
+
 // MCP handler with authentication
 const handler = async (req: Request) => {
+  const startTime = Date.now();
+  
   // Inject authentication here
   const nextReq = req as unknown as NextRequest; // for type compatibility
   const accessToken = await authenticateRequest(nextReq);
   if (!accessToken) {
+    // Log failed authentication analytics
+    await logEnhancedAnalytics(nextReq, null, null, startTime, 401);
+    
     // Get host for WWW-Authenticate header
     const host = nextReq.headers.get('host');
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
@@ -164,11 +291,12 @@ const handler = async (req: Request) => {
     });
   }
 
-  // Log request body
+  // Log request body for analytics
   const requestBody = await req.clone().json().catch(() => null);
   console.log('[MCP] Request body:', requestBody);
 
-  return createMcpHandler(
+  // Execute MCP handler and capture response
+  const mcpResponse = await createMcpHandler(
     (server) => {
       server.tool(
         "add_numbers",
@@ -198,6 +326,12 @@ const handler = async (req: Request) => {
       redisUrl: process.env.REDIS_URL,
     }
   )(req);
+  
+  // Log successful analytics after response
+  const statusCode = mcpResponse.status || 200;
+  await logEnhancedAnalytics(nextReq, accessToken, requestBody, startTime, statusCode);
+  
+  return mcpResponse;
 };
 
 export { handler as GET, handler as POST };

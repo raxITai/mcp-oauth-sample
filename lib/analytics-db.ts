@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '../app/prisma';
 
-// Optimized interfaces for database operations
+// Enhanced interfaces for database operations
 interface RequestAnalytics {
   timestamp: Date;
   endpoint: string;
@@ -10,12 +10,19 @@ interface RequestAnalytics {
   responseTime: number;
   clientId?: string;
   userId?: string;
+  mcpServerId?: string;
+  ssoProvider?: string;
+  userRole?: string;
+  scopes?: string[];
+  organization?: string;
   ipAddress: string;
   userAgent: string;
   country?: string;
   city?: string;
   clientType?: string;
   platform?: string;
+  mcpMethod?: string;
+  toolName?: string;
 }
 
 interface SecurityEvent {
@@ -90,12 +97,19 @@ class OptimizedAnalyticsCollector {
             responseTime: req.responseTime,
             clientId: req.clientId,
             userId: req.userId,
+            mcpServerId: req.mcpServerId,
+            ssoProvider: req.ssoProvider,
+            userRole: req.userRole,
+            scopes: req.scopes || [],
+            organization: req.organization,
             ipAddress: req.ipAddress,
             userAgent: req.userAgent,
             country: req.country,
             city: req.city,
             clientType: req.clientType,
-            platform: req.platform
+            platform: req.platform,
+            mcpMethod: req.mcpMethod,
+            toolName: req.toolName
           })),
           skipDuplicates: true
         });
@@ -328,6 +342,118 @@ class OptimizedAnalyticsCollector {
     return countries.map(c => ({
       country: c.country,
       count: Number(c.count)
+    }));
+  }
+
+  // Enterprise analytics queries
+  async getUsersByMCPServer(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.analyticsRequest.findMany({
+      where: {
+        timestamp: { gte: cutoff },
+        userId: { not: null },
+        mcpServerId: { not: null }
+      },
+      include: {
+        user: { select: { name: true, email: true } },
+        mcpServer: { select: { name: true, identifier: true } }
+      },
+      distinct: ['userId', 'mcpServerId']
+    });
+
+    return result.map(r => ({
+      userName: r.user?.name || 'Unknown',
+      userEmail: r.user?.email || 'Unknown',
+      mcpServerName: r.mcpServer?.name || 'Unknown',
+      mcpServerIdentifier: r.mcpServer?.identifier || 'Unknown'
+    }));
+  }
+
+  async getSecurityEventsByOrganization(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        organization,
+        "eventType",
+        severity,
+        COUNT(*) as event_count,
+        AVG("riskScore") as avg_risk_score
+      FROM "AnalyticsSecurity"
+      WHERE timestamp >= ${cutoff}
+        AND organization IS NOT NULL
+      GROUP BY organization, "eventType", severity
+      ORDER BY event_count DESC
+    ` as Array<{
+      organization: string;
+      eventType: string;
+      severity: string;
+      event_count: bigint;
+      avg_risk_score: number;
+    }>;
+
+    return result.map(r => ({
+      organization: r.organization,
+      eventType: r.eventType,
+      severity: r.severity,
+      eventCount: Number(r.event_count),
+      avgRiskScore: Math.round(r.avg_risk_score || 0)
+    }));
+  }
+
+  async getUserPrivilegeEscalations(hoursBack = 168) { // Default 7 days
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.analyticsSecurity.findMany({
+      where: {
+        timestamp: { gte: cutoff },
+        eventType: 'PRIVILEGE_ESCALATION',
+        userId: { not: null }
+      },
+      include: {
+        user: { select: { name: true, email: true } }
+      },
+      orderBy: { riskScore: 'desc' }
+    });
+
+    return result.map(r => ({
+      userName: r.user?.name || 'Unknown',
+      userEmail: r.user?.email || 'Unknown',
+      eventType: r.eventType,
+      riskScore: r.riskScore,
+      timestamp: r.timestamp,
+      details: r.details
+    }));
+  }
+
+  async getMCPToolUsage(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        "toolName",
+        "mcpMethod",
+        COUNT(*) as usage_count,
+        COUNT(DISTINCT "userId") as unique_users
+      FROM "AnalyticsRequest"
+      WHERE timestamp >= ${cutoff}
+        AND "toolName" IS NOT NULL
+      GROUP BY "toolName", "mcpMethod"
+      ORDER BY usage_count DESC
+      LIMIT 20
+    ` as Array<{
+      toolName: string;
+      mcpMethod: string;
+      usage_count: bigint;
+      unique_users: bigint;
+    }>;
+
+    return result.map(r => ({
+      toolName: r.toolName,
+      mcpMethod: r.mcpMethod,
+      usageCount: Number(r.usage_count),
+      uniqueUsers: Number(r.unique_users)
     }));
   }
 
