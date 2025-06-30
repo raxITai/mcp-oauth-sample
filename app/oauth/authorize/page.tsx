@@ -21,6 +21,17 @@ export default async function AuthorizePage({
   const code_challenge_method = params.code_challenge_method as string | undefined;
   const resource = params.resource as string | undefined;
 
+  // Enhanced logging for debugging
+  console.log('[OAuth Authorize] Request params:', {
+    clientId,
+    redirectUri,
+    responseType,
+    state,
+    code_challenge: code_challenge ? 'present' : 'missing',
+    code_challenge_method,
+    resource
+  });
+
   if (!session || !session.user || !session.user.id) {
     const headersList = await headers();
     const host = headersList.get('host');
@@ -42,6 +53,12 @@ export default async function AuthorizePage({
   }
 
   if (!clientId || !redirectUri || responseType !== 'code') {
+    console.log('[OAuth Authorize] Invalid request parameters:', {
+      clientId: !!clientId,
+      redirectUri: !!redirectUri,
+      responseType
+    });
+    
     return (
       <main className="flex items-center justify-center h-screen">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full text-center">
@@ -59,12 +76,43 @@ export default async function AuthorizePage({
     where: { clientId },
   });
 
-  if (!client || !client.redirectUris.includes(redirectUri)) {
+  // Enhanced error logging
+  if (!client) {
+    console.log('[OAuth Authorize] Client not found:', clientId);
     return (
       <main className="flex items-center justify-center h-screen">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full text-center">
           <h1 className="text-2xl font-bold mb-4">Error</h1>
-          <p>Invalid client or redirect URI.</p>
+          <p>Client not found.</p>
+          <p className="text-xs text-gray-500 mt-4">
+            Client ID: {clientId}
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Please ensure the client is registered via Dynamic Client Registration.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!client.redirectUris.includes(redirectUri)) {
+    console.log('[OAuth Authorize] Redirect URI mismatch:', {
+      clientId,
+      requestedUri: redirectUri,
+      registeredUris: client.redirectUris
+    });
+    
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full text-center">
+          <h1 className="text-2xl font-bold mb-4">Error</h1>
+          <p>Invalid redirect URI.</p>
+          <p className="text-xs text-gray-500 mt-4">
+            Requested: {redirectUri}
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Registered URIs: {client.redirectUris.join(', ')}
+          </p>
         </div>
       </main>
     );
