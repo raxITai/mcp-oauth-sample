@@ -45,6 +45,25 @@ export default function AnalyticsPage() {
     }
   }, [timeRange]);
 
+  const generateTestEvents = async () => {
+    try {
+      const eventTypes = ['AUTH_FAILURE', 'INVALID_TOKEN', 'SUSPICIOUS_ACTIVITY', 'RATE_LIMIT_EXCEEDED'];
+      
+      for (const eventType of eventTypes) {
+        await fetch('/api/test/security-events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ eventType, count: 2 })
+        });
+      }
+      
+      alert('Test security events generated! Refresh data in 30 seconds to see them.');
+    } catch (error) {
+      console.error('Failed to generate test events:', error);
+      alert('Failed to generate test events');
+    }
+  };
+
   useEffect(() => {
     fetchAnalytics();
   }, [timeRange, fetchAnalytics]);
@@ -106,6 +125,9 @@ export default function AnalyticsPage() {
           </div>
           <button onClick={fetchAnalytics} className="button">
             Refresh Data
+          </button>
+          <button onClick={generateTestEvents} className="button test-button">
+            Generate Test Events
           </button>
         </div>
         <p>Last updated: {data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : 'Never'} | Time Range: {data.timeRange}</p>
@@ -363,6 +385,14 @@ export default function AnalyticsPage() {
 
         .button:hover {
           background: #0056b3;
+        }
+
+        .test-button {
+          background: #dc3545;
+        }
+
+        .test-button:hover {
+          background: #c82333;
         }
 
         .analytics-grid {
