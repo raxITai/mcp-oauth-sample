@@ -200,6 +200,33 @@ exports.Prisma.RefreshTokenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AnalyticsRequestScalarFieldEnum = {
+  id: 'id',
+  timestamp: 'timestamp',
+  endpoint: 'endpoint',
+  method: 'method',
+  statusCode: 'statusCode',
+  responseTime: 'responseTime',
+  clientId: 'clientId',
+  userId: 'userId',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  country: 'country',
+  city: 'city',
+  clientType: 'clientType',
+  platform: 'platform'
+};
+
+exports.Prisma.AnalyticsSecurityScalarFieldEnum = {
+  id: 'id',
+  timestamp: 'timestamp',
+  eventType: 'eventType',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  clientId: 'clientId',
+  details: 'details'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -224,7 +251,9 @@ exports.Prisma.ModelName = {
   Client: 'Client',
   AccessToken: 'AccessToken',
   AuthCode: 'AuthCode',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  AnalyticsRequest: 'AnalyticsRequest',
+  AnalyticsSecurity: 'AnalyticsSecurity'
 };
 
 /**

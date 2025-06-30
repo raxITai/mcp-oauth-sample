@@ -53,6 +53,16 @@ export type AuthCode = $Result.DefaultSelection<Prisma.$AuthCodePayload>
  * 
  */
 export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
+/**
+ * Model AnalyticsRequest
+ * 
+ */
+export type AnalyticsRequest = $Result.DefaultSelection<Prisma.$AnalyticsRequestPayload>
+/**
+ * Model AnalyticsSecurity
+ * 
+ */
+export type AnalyticsSecurity = $Result.DefaultSelection<Prisma.$AnalyticsSecurityPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -258,6 +268,26 @@ export class PrismaClient<
     * ```
     */
   get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.analyticsRequest`: Exposes CRUD operations for the **AnalyticsRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnalyticsRequests
+    * const analyticsRequests = await prisma.analyticsRequest.findMany()
+    * ```
+    */
+  get analyticsRequest(): Prisma.AnalyticsRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.analyticsSecurity`: Exposes CRUD operations for the **AnalyticsSecurity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnalyticsSecurities
+    * const analyticsSecurities = await prisma.analyticsSecurity.findMany()
+    * ```
+    */
+  get analyticsSecurity(): Prisma.AnalyticsSecurityDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -705,7 +735,9 @@ export namespace Prisma {
     Client: 'Client',
     AccessToken: 'AccessToken',
     AuthCode: 'AuthCode',
-    RefreshToken: 'RefreshToken'
+    RefreshToken: 'RefreshToken',
+    AnalyticsRequest: 'AnalyticsRequest',
+    AnalyticsSecurity: 'AnalyticsSecurity'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -724,7 +756,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "client" | "accessToken" | "authCode" | "refreshToken"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "client" | "accessToken" | "authCode" | "refreshToken" | "analyticsRequest" | "analyticsSecurity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1320,6 +1352,154 @@ export namespace Prisma {
           }
         }
       }
+      AnalyticsRequest: {
+        payload: Prisma.$AnalyticsRequestPayload<ExtArgs>
+        fields: Prisma.AnalyticsRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnalyticsRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnalyticsRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.AnalyticsRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnalyticsRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          findMany: {
+            args: Prisma.AnalyticsRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>[]
+          }
+          create: {
+            args: Prisma.AnalyticsRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          createMany: {
+            args: Prisma.AnalyticsRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnalyticsRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.AnalyticsRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          update: {
+            args: Prisma.AnalyticsRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnalyticsRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnalyticsRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnalyticsRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnalyticsRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.AnalyticsRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnalyticsRequest>
+          }
+          groupBy: {
+            args: Prisma.AnalyticsRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnalyticsRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnalyticsRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<AnalyticsRequestCountAggregateOutputType> | number
+          }
+        }
+      }
+      AnalyticsSecurity: {
+        payload: Prisma.$AnalyticsSecurityPayload<ExtArgs>
+        fields: Prisma.AnalyticsSecurityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnalyticsSecurityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnalyticsSecurityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          findFirst: {
+            args: Prisma.AnalyticsSecurityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnalyticsSecurityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          findMany: {
+            args: Prisma.AnalyticsSecurityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>[]
+          }
+          create: {
+            args: Prisma.AnalyticsSecurityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          createMany: {
+            args: Prisma.AnalyticsSecurityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnalyticsSecurityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>[]
+          }
+          delete: {
+            args: Prisma.AnalyticsSecurityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          update: {
+            args: Prisma.AnalyticsSecurityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnalyticsSecurityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnalyticsSecurityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnalyticsSecurityUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnalyticsSecurityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnalyticsSecurityPayload>
+          }
+          aggregate: {
+            args: Prisma.AnalyticsSecurityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnalyticsSecurity>
+          }
+          groupBy: {
+            args: Prisma.AnalyticsSecurityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnalyticsSecurityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnalyticsSecurityCountArgs<ExtArgs>
+            result: $Utils.Optional<AnalyticsSecurityCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1412,6 +1592,8 @@ export namespace Prisma {
     accessToken?: AccessTokenOmit
     authCode?: AuthCodeOmit
     refreshToken?: RefreshTokenOmit
+    analyticsRequest?: AnalyticsRequestOmit
+    analyticsSecurity?: AnalyticsSecurityOmit
   }
 
   /* Types for Logging */
@@ -10551,6 +10733,2177 @@ export namespace Prisma {
 
 
   /**
+   * Model AnalyticsRequest
+   */
+
+  export type AggregateAnalyticsRequest = {
+    _count: AnalyticsRequestCountAggregateOutputType | null
+    _avg: AnalyticsRequestAvgAggregateOutputType | null
+    _sum: AnalyticsRequestSumAggregateOutputType | null
+    _min: AnalyticsRequestMinAggregateOutputType | null
+    _max: AnalyticsRequestMaxAggregateOutputType | null
+  }
+
+  export type AnalyticsRequestAvgAggregateOutputType = {
+    statusCode: number | null
+    responseTime: number | null
+  }
+
+  export type AnalyticsRequestSumAggregateOutputType = {
+    statusCode: number | null
+    responseTime: number | null
+  }
+
+  export type AnalyticsRequestMinAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    endpoint: string | null
+    method: string | null
+    statusCode: number | null
+    responseTime: number | null
+    clientId: string | null
+    userId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    country: string | null
+    city: string | null
+    clientType: string | null
+    platform: string | null
+  }
+
+  export type AnalyticsRequestMaxAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    endpoint: string | null
+    method: string | null
+    statusCode: number | null
+    responseTime: number | null
+    clientId: string | null
+    userId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    country: string | null
+    city: string | null
+    clientType: string | null
+    platform: string | null
+  }
+
+  export type AnalyticsRequestCountAggregateOutputType = {
+    id: number
+    timestamp: number
+    endpoint: number
+    method: number
+    statusCode: number
+    responseTime: number
+    clientId: number
+    userId: number
+    ipAddress: number
+    userAgent: number
+    country: number
+    city: number
+    clientType: number
+    platform: number
+    _all: number
+  }
+
+
+  export type AnalyticsRequestAvgAggregateInputType = {
+    statusCode?: true
+    responseTime?: true
+  }
+
+  export type AnalyticsRequestSumAggregateInputType = {
+    statusCode?: true
+    responseTime?: true
+  }
+
+  export type AnalyticsRequestMinAggregateInputType = {
+    id?: true
+    timestamp?: true
+    endpoint?: true
+    method?: true
+    statusCode?: true
+    responseTime?: true
+    clientId?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    country?: true
+    city?: true
+    clientType?: true
+    platform?: true
+  }
+
+  export type AnalyticsRequestMaxAggregateInputType = {
+    id?: true
+    timestamp?: true
+    endpoint?: true
+    method?: true
+    statusCode?: true
+    responseTime?: true
+    clientId?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    country?: true
+    city?: true
+    clientType?: true
+    platform?: true
+  }
+
+  export type AnalyticsRequestCountAggregateInputType = {
+    id?: true
+    timestamp?: true
+    endpoint?: true
+    method?: true
+    statusCode?: true
+    responseTime?: true
+    clientId?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    country?: true
+    city?: true
+    clientType?: true
+    platform?: true
+    _all?: true
+  }
+
+  export type AnalyticsRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnalyticsRequest to aggregate.
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsRequests to fetch.
+     */
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnalyticsRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnalyticsRequests
+    **/
+    _count?: true | AnalyticsRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AnalyticsRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AnalyticsRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnalyticsRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnalyticsRequestMaxAggregateInputType
+  }
+
+  export type GetAnalyticsRequestAggregateType<T extends AnalyticsRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnalyticsRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnalyticsRequest[P]>
+      : GetScalarType<T[P], AggregateAnalyticsRequest[P]>
+  }
+
+
+
+
+  export type AnalyticsRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsRequestWhereInput
+    orderBy?: AnalyticsRequestOrderByWithAggregationInput | AnalyticsRequestOrderByWithAggregationInput[]
+    by: AnalyticsRequestScalarFieldEnum[] | AnalyticsRequestScalarFieldEnum
+    having?: AnalyticsRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnalyticsRequestCountAggregateInputType | true
+    _avg?: AnalyticsRequestAvgAggregateInputType
+    _sum?: AnalyticsRequestSumAggregateInputType
+    _min?: AnalyticsRequestMinAggregateInputType
+    _max?: AnalyticsRequestMaxAggregateInputType
+  }
+
+  export type AnalyticsRequestGroupByOutputType = {
+    id: string
+    timestamp: Date
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId: string | null
+    userId: string | null
+    ipAddress: string
+    userAgent: string
+    country: string | null
+    city: string | null
+    clientType: string | null
+    platform: string | null
+    _count: AnalyticsRequestCountAggregateOutputType | null
+    _avg: AnalyticsRequestAvgAggregateOutputType | null
+    _sum: AnalyticsRequestSumAggregateOutputType | null
+    _min: AnalyticsRequestMinAggregateOutputType | null
+    _max: AnalyticsRequestMaxAggregateOutputType | null
+  }
+
+  type GetAnalyticsRequestGroupByPayload<T extends AnalyticsRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnalyticsRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnalyticsRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnalyticsRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], AnalyticsRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnalyticsRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    endpoint?: boolean
+    method?: boolean
+    statusCode?: boolean
+    responseTime?: boolean
+    clientId?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    country?: boolean
+    city?: boolean
+    clientType?: boolean
+    platform?: boolean
+  }, ExtArgs["result"]["analyticsRequest"]>
+
+  export type AnalyticsRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    endpoint?: boolean
+    method?: boolean
+    statusCode?: boolean
+    responseTime?: boolean
+    clientId?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    country?: boolean
+    city?: boolean
+    clientType?: boolean
+    platform?: boolean
+  }, ExtArgs["result"]["analyticsRequest"]>
+
+  export type AnalyticsRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    endpoint?: boolean
+    method?: boolean
+    statusCode?: boolean
+    responseTime?: boolean
+    clientId?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    country?: boolean
+    city?: boolean
+    clientType?: boolean
+    platform?: boolean
+  }, ExtArgs["result"]["analyticsRequest"]>
+
+  export type AnalyticsRequestSelectScalar = {
+    id?: boolean
+    timestamp?: boolean
+    endpoint?: boolean
+    method?: boolean
+    statusCode?: boolean
+    responseTime?: boolean
+    clientId?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    country?: boolean
+    city?: boolean
+    clientType?: boolean
+    platform?: boolean
+  }
+
+  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform", ExtArgs["result"]["analyticsRequest"]>
+
+  export type $AnalyticsRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnalyticsRequest"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      timestamp: Date
+      endpoint: string
+      method: string
+      statusCode: number
+      responseTime: number
+      clientId: string | null
+      userId: string | null
+      ipAddress: string
+      userAgent: string
+      country: string | null
+      city: string | null
+      clientType: string | null
+      platform: string | null
+    }, ExtArgs["result"]["analyticsRequest"]>
+    composites: {}
+  }
+
+  type AnalyticsRequestGetPayload<S extends boolean | null | undefined | AnalyticsRequestDefaultArgs> = $Result.GetResult<Prisma.$AnalyticsRequestPayload, S>
+
+  type AnalyticsRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnalyticsRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnalyticsRequestCountAggregateInputType | true
+    }
+
+  export interface AnalyticsRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnalyticsRequest'], meta: { name: 'AnalyticsRequest' } }
+    /**
+     * Find zero or one AnalyticsRequest that matches the filter.
+     * @param {AnalyticsRequestFindUniqueArgs} args - Arguments to find a AnalyticsRequest
+     * @example
+     * // Get one AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnalyticsRequestFindUniqueArgs>(args: SelectSubset<T, AnalyticsRequestFindUniqueArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnalyticsRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnalyticsRequestFindUniqueOrThrowArgs} args - Arguments to find a AnalyticsRequest
+     * @example
+     * // Get one AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnalyticsRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, AnalyticsRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnalyticsRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestFindFirstArgs} args - Arguments to find a AnalyticsRequest
+     * @example
+     * // Get one AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnalyticsRequestFindFirstArgs>(args?: SelectSubset<T, AnalyticsRequestFindFirstArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnalyticsRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestFindFirstOrThrowArgs} args - Arguments to find a AnalyticsRequest
+     * @example
+     * // Get one AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnalyticsRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, AnalyticsRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnalyticsRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnalyticsRequests
+     * const analyticsRequests = await prisma.analyticsRequest.findMany()
+     * 
+     * // Get first 10 AnalyticsRequests
+     * const analyticsRequests = await prisma.analyticsRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const analyticsRequestWithIdOnly = await prisma.analyticsRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnalyticsRequestFindManyArgs>(args?: SelectSubset<T, AnalyticsRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnalyticsRequest.
+     * @param {AnalyticsRequestCreateArgs} args - Arguments to create a AnalyticsRequest.
+     * @example
+     * // Create one AnalyticsRequest
+     * const AnalyticsRequest = await prisma.analyticsRequest.create({
+     *   data: {
+     *     // ... data to create a AnalyticsRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnalyticsRequestCreateArgs>(args: SelectSubset<T, AnalyticsRequestCreateArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnalyticsRequests.
+     * @param {AnalyticsRequestCreateManyArgs} args - Arguments to create many AnalyticsRequests.
+     * @example
+     * // Create many AnalyticsRequests
+     * const analyticsRequest = await prisma.analyticsRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnalyticsRequestCreateManyArgs>(args?: SelectSubset<T, AnalyticsRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnalyticsRequests and returns the data saved in the database.
+     * @param {AnalyticsRequestCreateManyAndReturnArgs} args - Arguments to create many AnalyticsRequests.
+     * @example
+     * // Create many AnalyticsRequests
+     * const analyticsRequest = await prisma.analyticsRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnalyticsRequests and only return the `id`
+     * const analyticsRequestWithIdOnly = await prisma.analyticsRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnalyticsRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, AnalyticsRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnalyticsRequest.
+     * @param {AnalyticsRequestDeleteArgs} args - Arguments to delete one AnalyticsRequest.
+     * @example
+     * // Delete one AnalyticsRequest
+     * const AnalyticsRequest = await prisma.analyticsRequest.delete({
+     *   where: {
+     *     // ... filter to delete one AnalyticsRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnalyticsRequestDeleteArgs>(args: SelectSubset<T, AnalyticsRequestDeleteArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnalyticsRequest.
+     * @param {AnalyticsRequestUpdateArgs} args - Arguments to update one AnalyticsRequest.
+     * @example
+     * // Update one AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnalyticsRequestUpdateArgs>(args: SelectSubset<T, AnalyticsRequestUpdateArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnalyticsRequests.
+     * @param {AnalyticsRequestDeleteManyArgs} args - Arguments to filter AnalyticsRequests to delete.
+     * @example
+     * // Delete a few AnalyticsRequests
+     * const { count } = await prisma.analyticsRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnalyticsRequestDeleteManyArgs>(args?: SelectSubset<T, AnalyticsRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnalyticsRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnalyticsRequests
+     * const analyticsRequest = await prisma.analyticsRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnalyticsRequestUpdateManyArgs>(args: SelectSubset<T, AnalyticsRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnalyticsRequests and returns the data updated in the database.
+     * @param {AnalyticsRequestUpdateManyAndReturnArgs} args - Arguments to update many AnalyticsRequests.
+     * @example
+     * // Update many AnalyticsRequests
+     * const analyticsRequest = await prisma.analyticsRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnalyticsRequests and only return the `id`
+     * const analyticsRequestWithIdOnly = await prisma.analyticsRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnalyticsRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, AnalyticsRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnalyticsRequest.
+     * @param {AnalyticsRequestUpsertArgs} args - Arguments to update or create a AnalyticsRequest.
+     * @example
+     * // Update or create a AnalyticsRequest
+     * const analyticsRequest = await prisma.analyticsRequest.upsert({
+     *   create: {
+     *     // ... data to create a AnalyticsRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnalyticsRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnalyticsRequestUpsertArgs>(args: SelectSubset<T, AnalyticsRequestUpsertArgs<ExtArgs>>): Prisma__AnalyticsRequestClient<$Result.GetResult<Prisma.$AnalyticsRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnalyticsRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestCountArgs} args - Arguments to filter AnalyticsRequests to count.
+     * @example
+     * // Count the number of AnalyticsRequests
+     * const count = await prisma.analyticsRequest.count({
+     *   where: {
+     *     // ... the filter for the AnalyticsRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnalyticsRequestCountArgs>(
+      args?: Subset<T, AnalyticsRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnalyticsRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnalyticsRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnalyticsRequestAggregateArgs>(args: Subset<T, AnalyticsRequestAggregateArgs>): Prisma.PrismaPromise<GetAnalyticsRequestAggregateType<T>>
+
+    /**
+     * Group by AnalyticsRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnalyticsRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnalyticsRequestGroupByArgs['orderBy'] }
+        : { orderBy?: AnalyticsRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnalyticsRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnalyticsRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnalyticsRequest model
+   */
+  readonly fields: AnalyticsRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnalyticsRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnalyticsRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnalyticsRequest model
+   */
+  interface AnalyticsRequestFieldRefs {
+    readonly id: FieldRef<"AnalyticsRequest", 'String'>
+    readonly timestamp: FieldRef<"AnalyticsRequest", 'DateTime'>
+    readonly endpoint: FieldRef<"AnalyticsRequest", 'String'>
+    readonly method: FieldRef<"AnalyticsRequest", 'String'>
+    readonly statusCode: FieldRef<"AnalyticsRequest", 'Int'>
+    readonly responseTime: FieldRef<"AnalyticsRequest", 'Int'>
+    readonly clientId: FieldRef<"AnalyticsRequest", 'String'>
+    readonly userId: FieldRef<"AnalyticsRequest", 'String'>
+    readonly ipAddress: FieldRef<"AnalyticsRequest", 'String'>
+    readonly userAgent: FieldRef<"AnalyticsRequest", 'String'>
+    readonly country: FieldRef<"AnalyticsRequest", 'String'>
+    readonly city: FieldRef<"AnalyticsRequest", 'String'>
+    readonly clientType: FieldRef<"AnalyticsRequest", 'String'>
+    readonly platform: FieldRef<"AnalyticsRequest", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnalyticsRequest findUnique
+   */
+  export type AnalyticsRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsRequest to fetch.
+     */
+    where: AnalyticsRequestWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsRequest findUniqueOrThrow
+   */
+  export type AnalyticsRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsRequest to fetch.
+     */
+    where: AnalyticsRequestWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsRequest findFirst
+   */
+  export type AnalyticsRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsRequest to fetch.
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsRequests to fetch.
+     */
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnalyticsRequests.
+     */
+    cursor?: AnalyticsRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnalyticsRequests.
+     */
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsRequest findFirstOrThrow
+   */
+  export type AnalyticsRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsRequest to fetch.
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsRequests to fetch.
+     */
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnalyticsRequests.
+     */
+    cursor?: AnalyticsRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnalyticsRequests.
+     */
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsRequest findMany
+   */
+  export type AnalyticsRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsRequests to fetch.
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsRequests to fetch.
+     */
+    orderBy?: AnalyticsRequestOrderByWithRelationInput | AnalyticsRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnalyticsRequests.
+     */
+    cursor?: AnalyticsRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsRequests.
+     */
+    skip?: number
+    distinct?: AnalyticsRequestScalarFieldEnum | AnalyticsRequestScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsRequest create
+   */
+  export type AnalyticsRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AnalyticsRequest.
+     */
+    data: XOR<AnalyticsRequestCreateInput, AnalyticsRequestUncheckedCreateInput>
+  }
+
+  /**
+   * AnalyticsRequest createMany
+   */
+  export type AnalyticsRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnalyticsRequests.
+     */
+    data: AnalyticsRequestCreateManyInput | AnalyticsRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnalyticsRequest createManyAndReturn
+   */
+  export type AnalyticsRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnalyticsRequests.
+     */
+    data: AnalyticsRequestCreateManyInput | AnalyticsRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnalyticsRequest update
+   */
+  export type AnalyticsRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AnalyticsRequest.
+     */
+    data: XOR<AnalyticsRequestUpdateInput, AnalyticsRequestUncheckedUpdateInput>
+    /**
+     * Choose, which AnalyticsRequest to update.
+     */
+    where: AnalyticsRequestWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsRequest updateMany
+   */
+  export type AnalyticsRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnalyticsRequests.
+     */
+    data: XOR<AnalyticsRequestUpdateManyMutationInput, AnalyticsRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which AnalyticsRequests to update
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * Limit how many AnalyticsRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsRequest updateManyAndReturn
+   */
+  export type AnalyticsRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update AnalyticsRequests.
+     */
+    data: XOR<AnalyticsRequestUpdateManyMutationInput, AnalyticsRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which AnalyticsRequests to update
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * Limit how many AnalyticsRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsRequest upsert
+   */
+  export type AnalyticsRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AnalyticsRequest to update in case it exists.
+     */
+    where: AnalyticsRequestWhereUniqueInput
+    /**
+     * In case the AnalyticsRequest found by the `where` argument doesn't exist, create a new AnalyticsRequest with this data.
+     */
+    create: XOR<AnalyticsRequestCreateInput, AnalyticsRequestUncheckedCreateInput>
+    /**
+     * In case the AnalyticsRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnalyticsRequestUpdateInput, AnalyticsRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * AnalyticsRequest delete
+   */
+  export type AnalyticsRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+    /**
+     * Filter which AnalyticsRequest to delete.
+     */
+    where: AnalyticsRequestWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsRequest deleteMany
+   */
+  export type AnalyticsRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnalyticsRequests to delete
+     */
+    where?: AnalyticsRequestWhereInput
+    /**
+     * Limit how many AnalyticsRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsRequest without action
+   */
+  export type AnalyticsRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsRequest
+     */
+    select?: AnalyticsRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsRequest
+     */
+    omit?: AnalyticsRequestOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AnalyticsSecurity
+   */
+
+  export type AggregateAnalyticsSecurity = {
+    _count: AnalyticsSecurityCountAggregateOutputType | null
+    _min: AnalyticsSecurityMinAggregateOutputType | null
+    _max: AnalyticsSecurityMaxAggregateOutputType | null
+  }
+
+  export type AnalyticsSecurityMinAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    eventType: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    clientId: string | null
+    details: string | null
+  }
+
+  export type AnalyticsSecurityMaxAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    eventType: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    clientId: string | null
+    details: string | null
+  }
+
+  export type AnalyticsSecurityCountAggregateOutputType = {
+    id: number
+    timestamp: number
+    eventType: number
+    ipAddress: number
+    userAgent: number
+    clientId: number
+    details: number
+    _all: number
+  }
+
+
+  export type AnalyticsSecurityMinAggregateInputType = {
+    id?: true
+    timestamp?: true
+    eventType?: true
+    ipAddress?: true
+    userAgent?: true
+    clientId?: true
+    details?: true
+  }
+
+  export type AnalyticsSecurityMaxAggregateInputType = {
+    id?: true
+    timestamp?: true
+    eventType?: true
+    ipAddress?: true
+    userAgent?: true
+    clientId?: true
+    details?: true
+  }
+
+  export type AnalyticsSecurityCountAggregateInputType = {
+    id?: true
+    timestamp?: true
+    eventType?: true
+    ipAddress?: true
+    userAgent?: true
+    clientId?: true
+    details?: true
+    _all?: true
+  }
+
+  export type AnalyticsSecurityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnalyticsSecurity to aggregate.
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsSecurities to fetch.
+     */
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsSecurities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsSecurities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnalyticsSecurities
+    **/
+    _count?: true | AnalyticsSecurityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnalyticsSecurityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnalyticsSecurityMaxAggregateInputType
+  }
+
+  export type GetAnalyticsSecurityAggregateType<T extends AnalyticsSecurityAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnalyticsSecurity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnalyticsSecurity[P]>
+      : GetScalarType<T[P], AggregateAnalyticsSecurity[P]>
+  }
+
+
+
+
+  export type AnalyticsSecurityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnalyticsSecurityWhereInput
+    orderBy?: AnalyticsSecurityOrderByWithAggregationInput | AnalyticsSecurityOrderByWithAggregationInput[]
+    by: AnalyticsSecurityScalarFieldEnum[] | AnalyticsSecurityScalarFieldEnum
+    having?: AnalyticsSecurityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnalyticsSecurityCountAggregateInputType | true
+    _min?: AnalyticsSecurityMinAggregateInputType
+    _max?: AnalyticsSecurityMaxAggregateInputType
+  }
+
+  export type AnalyticsSecurityGroupByOutputType = {
+    id: string
+    timestamp: Date
+    eventType: string
+    ipAddress: string
+    userAgent: string
+    clientId: string | null
+    details: string
+    _count: AnalyticsSecurityCountAggregateOutputType | null
+    _min: AnalyticsSecurityMinAggregateOutputType | null
+    _max: AnalyticsSecurityMaxAggregateOutputType | null
+  }
+
+  type GetAnalyticsSecurityGroupByPayload<T extends AnalyticsSecurityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnalyticsSecurityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnalyticsSecurityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnalyticsSecurityGroupByOutputType[P]>
+            : GetScalarType<T[P], AnalyticsSecurityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnalyticsSecuritySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    eventType?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    clientId?: boolean
+    details?: boolean
+  }, ExtArgs["result"]["analyticsSecurity"]>
+
+  export type AnalyticsSecuritySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    eventType?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    clientId?: boolean
+    details?: boolean
+  }, ExtArgs["result"]["analyticsSecurity"]>
+
+  export type AnalyticsSecuritySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    eventType?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    clientId?: boolean
+    details?: boolean
+  }, ExtArgs["result"]["analyticsSecurity"]>
+
+  export type AnalyticsSecuritySelectScalar = {
+    id?: boolean
+    timestamp?: boolean
+    eventType?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    clientId?: boolean
+    details?: boolean
+  }
+
+  export type AnalyticsSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "eventType" | "ipAddress" | "userAgent" | "clientId" | "details", ExtArgs["result"]["analyticsSecurity"]>
+
+  export type $AnalyticsSecurityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnalyticsSecurity"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      timestamp: Date
+      eventType: string
+      ipAddress: string
+      userAgent: string
+      clientId: string | null
+      details: string
+    }, ExtArgs["result"]["analyticsSecurity"]>
+    composites: {}
+  }
+
+  type AnalyticsSecurityGetPayload<S extends boolean | null | undefined | AnalyticsSecurityDefaultArgs> = $Result.GetResult<Prisma.$AnalyticsSecurityPayload, S>
+
+  type AnalyticsSecurityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnalyticsSecurityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnalyticsSecurityCountAggregateInputType | true
+    }
+
+  export interface AnalyticsSecurityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnalyticsSecurity'], meta: { name: 'AnalyticsSecurity' } }
+    /**
+     * Find zero or one AnalyticsSecurity that matches the filter.
+     * @param {AnalyticsSecurityFindUniqueArgs} args - Arguments to find a AnalyticsSecurity
+     * @example
+     * // Get one AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnalyticsSecurityFindUniqueArgs>(args: SelectSubset<T, AnalyticsSecurityFindUniqueArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnalyticsSecurity that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnalyticsSecurityFindUniqueOrThrowArgs} args - Arguments to find a AnalyticsSecurity
+     * @example
+     * // Get one AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnalyticsSecurityFindUniqueOrThrowArgs>(args: SelectSubset<T, AnalyticsSecurityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnalyticsSecurity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityFindFirstArgs} args - Arguments to find a AnalyticsSecurity
+     * @example
+     * // Get one AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnalyticsSecurityFindFirstArgs>(args?: SelectSubset<T, AnalyticsSecurityFindFirstArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnalyticsSecurity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityFindFirstOrThrowArgs} args - Arguments to find a AnalyticsSecurity
+     * @example
+     * // Get one AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnalyticsSecurityFindFirstOrThrowArgs>(args?: SelectSubset<T, AnalyticsSecurityFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnalyticsSecurities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnalyticsSecurities
+     * const analyticsSecurities = await prisma.analyticsSecurity.findMany()
+     * 
+     * // Get first 10 AnalyticsSecurities
+     * const analyticsSecurities = await prisma.analyticsSecurity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const analyticsSecurityWithIdOnly = await prisma.analyticsSecurity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnalyticsSecurityFindManyArgs>(args?: SelectSubset<T, AnalyticsSecurityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnalyticsSecurity.
+     * @param {AnalyticsSecurityCreateArgs} args - Arguments to create a AnalyticsSecurity.
+     * @example
+     * // Create one AnalyticsSecurity
+     * const AnalyticsSecurity = await prisma.analyticsSecurity.create({
+     *   data: {
+     *     // ... data to create a AnalyticsSecurity
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnalyticsSecurityCreateArgs>(args: SelectSubset<T, AnalyticsSecurityCreateArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnalyticsSecurities.
+     * @param {AnalyticsSecurityCreateManyArgs} args - Arguments to create many AnalyticsSecurities.
+     * @example
+     * // Create many AnalyticsSecurities
+     * const analyticsSecurity = await prisma.analyticsSecurity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnalyticsSecurityCreateManyArgs>(args?: SelectSubset<T, AnalyticsSecurityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnalyticsSecurities and returns the data saved in the database.
+     * @param {AnalyticsSecurityCreateManyAndReturnArgs} args - Arguments to create many AnalyticsSecurities.
+     * @example
+     * // Create many AnalyticsSecurities
+     * const analyticsSecurity = await prisma.analyticsSecurity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnalyticsSecurities and only return the `id`
+     * const analyticsSecurityWithIdOnly = await prisma.analyticsSecurity.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnalyticsSecurityCreateManyAndReturnArgs>(args?: SelectSubset<T, AnalyticsSecurityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnalyticsSecurity.
+     * @param {AnalyticsSecurityDeleteArgs} args - Arguments to delete one AnalyticsSecurity.
+     * @example
+     * // Delete one AnalyticsSecurity
+     * const AnalyticsSecurity = await prisma.analyticsSecurity.delete({
+     *   where: {
+     *     // ... filter to delete one AnalyticsSecurity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnalyticsSecurityDeleteArgs>(args: SelectSubset<T, AnalyticsSecurityDeleteArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnalyticsSecurity.
+     * @param {AnalyticsSecurityUpdateArgs} args - Arguments to update one AnalyticsSecurity.
+     * @example
+     * // Update one AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnalyticsSecurityUpdateArgs>(args: SelectSubset<T, AnalyticsSecurityUpdateArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnalyticsSecurities.
+     * @param {AnalyticsSecurityDeleteManyArgs} args - Arguments to filter AnalyticsSecurities to delete.
+     * @example
+     * // Delete a few AnalyticsSecurities
+     * const { count } = await prisma.analyticsSecurity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnalyticsSecurityDeleteManyArgs>(args?: SelectSubset<T, AnalyticsSecurityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnalyticsSecurities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnalyticsSecurities
+     * const analyticsSecurity = await prisma.analyticsSecurity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnalyticsSecurityUpdateManyArgs>(args: SelectSubset<T, AnalyticsSecurityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnalyticsSecurities and returns the data updated in the database.
+     * @param {AnalyticsSecurityUpdateManyAndReturnArgs} args - Arguments to update many AnalyticsSecurities.
+     * @example
+     * // Update many AnalyticsSecurities
+     * const analyticsSecurity = await prisma.analyticsSecurity.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnalyticsSecurities and only return the `id`
+     * const analyticsSecurityWithIdOnly = await prisma.analyticsSecurity.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnalyticsSecurityUpdateManyAndReturnArgs>(args: SelectSubset<T, AnalyticsSecurityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnalyticsSecurity.
+     * @param {AnalyticsSecurityUpsertArgs} args - Arguments to update or create a AnalyticsSecurity.
+     * @example
+     * // Update or create a AnalyticsSecurity
+     * const analyticsSecurity = await prisma.analyticsSecurity.upsert({
+     *   create: {
+     *     // ... data to create a AnalyticsSecurity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnalyticsSecurity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnalyticsSecurityUpsertArgs>(args: SelectSubset<T, AnalyticsSecurityUpsertArgs<ExtArgs>>): Prisma__AnalyticsSecurityClient<$Result.GetResult<Prisma.$AnalyticsSecurityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnalyticsSecurities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityCountArgs} args - Arguments to filter AnalyticsSecurities to count.
+     * @example
+     * // Count the number of AnalyticsSecurities
+     * const count = await prisma.analyticsSecurity.count({
+     *   where: {
+     *     // ... the filter for the AnalyticsSecurities we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnalyticsSecurityCountArgs>(
+      args?: Subset<T, AnalyticsSecurityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnalyticsSecurityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnalyticsSecurity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnalyticsSecurityAggregateArgs>(args: Subset<T, AnalyticsSecurityAggregateArgs>): Prisma.PrismaPromise<GetAnalyticsSecurityAggregateType<T>>
+
+    /**
+     * Group by AnalyticsSecurity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnalyticsSecurityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnalyticsSecurityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnalyticsSecurityGroupByArgs['orderBy'] }
+        : { orderBy?: AnalyticsSecurityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnalyticsSecurityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnalyticsSecurityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnalyticsSecurity model
+   */
+  readonly fields: AnalyticsSecurityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnalyticsSecurity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnalyticsSecurityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnalyticsSecurity model
+   */
+  interface AnalyticsSecurityFieldRefs {
+    readonly id: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly timestamp: FieldRef<"AnalyticsSecurity", 'DateTime'>
+    readonly eventType: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly ipAddress: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly userAgent: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly clientId: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly details: FieldRef<"AnalyticsSecurity", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnalyticsSecurity findUnique
+   */
+  export type AnalyticsSecurityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsSecurity to fetch.
+     */
+    where: AnalyticsSecurityWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsSecurity findUniqueOrThrow
+   */
+  export type AnalyticsSecurityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsSecurity to fetch.
+     */
+    where: AnalyticsSecurityWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsSecurity findFirst
+   */
+  export type AnalyticsSecurityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsSecurity to fetch.
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsSecurities to fetch.
+     */
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnalyticsSecurities.
+     */
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsSecurities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsSecurities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnalyticsSecurities.
+     */
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsSecurity findFirstOrThrow
+   */
+  export type AnalyticsSecurityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsSecurity to fetch.
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsSecurities to fetch.
+     */
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnalyticsSecurities.
+     */
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsSecurities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsSecurities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnalyticsSecurities.
+     */
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsSecurity findMany
+   */
+  export type AnalyticsSecurityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter, which AnalyticsSecurities to fetch.
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnalyticsSecurities to fetch.
+     */
+    orderBy?: AnalyticsSecurityOrderByWithRelationInput | AnalyticsSecurityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnalyticsSecurities.
+     */
+    cursor?: AnalyticsSecurityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnalyticsSecurities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnalyticsSecurities.
+     */
+    skip?: number
+    distinct?: AnalyticsSecurityScalarFieldEnum | AnalyticsSecurityScalarFieldEnum[]
+  }
+
+  /**
+   * AnalyticsSecurity create
+   */
+  export type AnalyticsSecurityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AnalyticsSecurity.
+     */
+    data: XOR<AnalyticsSecurityCreateInput, AnalyticsSecurityUncheckedCreateInput>
+  }
+
+  /**
+   * AnalyticsSecurity createMany
+   */
+  export type AnalyticsSecurityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnalyticsSecurities.
+     */
+    data: AnalyticsSecurityCreateManyInput | AnalyticsSecurityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnalyticsSecurity createManyAndReturn
+   */
+  export type AnalyticsSecurityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnalyticsSecurities.
+     */
+    data: AnalyticsSecurityCreateManyInput | AnalyticsSecurityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnalyticsSecurity update
+   */
+  export type AnalyticsSecurityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AnalyticsSecurity.
+     */
+    data: XOR<AnalyticsSecurityUpdateInput, AnalyticsSecurityUncheckedUpdateInput>
+    /**
+     * Choose, which AnalyticsSecurity to update.
+     */
+    where: AnalyticsSecurityWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsSecurity updateMany
+   */
+  export type AnalyticsSecurityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnalyticsSecurities.
+     */
+    data: XOR<AnalyticsSecurityUpdateManyMutationInput, AnalyticsSecurityUncheckedUpdateManyInput>
+    /**
+     * Filter which AnalyticsSecurities to update
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * Limit how many AnalyticsSecurities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsSecurity updateManyAndReturn
+   */
+  export type AnalyticsSecurityUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * The data used to update AnalyticsSecurities.
+     */
+    data: XOR<AnalyticsSecurityUpdateManyMutationInput, AnalyticsSecurityUncheckedUpdateManyInput>
+    /**
+     * Filter which AnalyticsSecurities to update
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * Limit how many AnalyticsSecurities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsSecurity upsert
+   */
+  export type AnalyticsSecurityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AnalyticsSecurity to update in case it exists.
+     */
+    where: AnalyticsSecurityWhereUniqueInput
+    /**
+     * In case the AnalyticsSecurity found by the `where` argument doesn't exist, create a new AnalyticsSecurity with this data.
+     */
+    create: XOR<AnalyticsSecurityCreateInput, AnalyticsSecurityUncheckedCreateInput>
+    /**
+     * In case the AnalyticsSecurity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnalyticsSecurityUpdateInput, AnalyticsSecurityUncheckedUpdateInput>
+  }
+
+  /**
+   * AnalyticsSecurity delete
+   */
+  export type AnalyticsSecurityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+    /**
+     * Filter which AnalyticsSecurity to delete.
+     */
+    where: AnalyticsSecurityWhereUniqueInput
+  }
+
+  /**
+   * AnalyticsSecurity deleteMany
+   */
+  export type AnalyticsSecurityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnalyticsSecurities to delete
+     */
+    where?: AnalyticsSecurityWhereInput
+    /**
+     * Limit how many AnalyticsSecurities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnalyticsSecurity without action
+   */
+  export type AnalyticsSecurityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnalyticsSecurity
+     */
+    select?: AnalyticsSecuritySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnalyticsSecurity
+     */
+    omit?: AnalyticsSecurityOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10666,6 +13019,39 @@ export namespace Prisma {
   };
 
   export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+  export const AnalyticsRequestScalarFieldEnum: {
+    id: 'id',
+    timestamp: 'timestamp',
+    endpoint: 'endpoint',
+    method: 'method',
+    statusCode: 'statusCode',
+    responseTime: 'responseTime',
+    clientId: 'clientId',
+    userId: 'userId',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    country: 'country',
+    city: 'city',
+    clientType: 'clientType',
+    platform: 'platform'
+  };
+
+  export type AnalyticsRequestScalarFieldEnum = (typeof AnalyticsRequestScalarFieldEnum)[keyof typeof AnalyticsRequestScalarFieldEnum]
+
+
+  export const AnalyticsSecurityScalarFieldEnum: {
+    id: 'id',
+    timestamp: 'timestamp',
+    eventType: 'eventType',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    clientId: 'clientId',
+    details: 'details'
+  };
+
+  export type AnalyticsSecurityScalarFieldEnum = (typeof AnalyticsSecurityScalarFieldEnum)[keyof typeof AnalyticsSecurityScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11310,6 +13696,167 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
+  export type AnalyticsRequestWhereInput = {
+    AND?: AnalyticsRequestWhereInput | AnalyticsRequestWhereInput[]
+    OR?: AnalyticsRequestWhereInput[]
+    NOT?: AnalyticsRequestWhereInput | AnalyticsRequestWhereInput[]
+    id?: StringFilter<"AnalyticsRequest"> | string
+    timestamp?: DateTimeFilter<"AnalyticsRequest"> | Date | string
+    endpoint?: StringFilter<"AnalyticsRequest"> | string
+    method?: StringFilter<"AnalyticsRequest"> | string
+    statusCode?: IntFilter<"AnalyticsRequest"> | number
+    responseTime?: IntFilter<"AnalyticsRequest"> | number
+    clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ipAddress?: StringFilter<"AnalyticsRequest"> | string
+    userAgent?: StringFilter<"AnalyticsRequest"> | string
+    country?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    city?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    clientType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
+  }
+
+  export type AnalyticsRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    endpoint?: SortOrder
+    method?: SortOrder
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    clientType?: SortOrderInput | SortOrder
+    platform?: SortOrderInput | SortOrder
+  }
+
+  export type AnalyticsRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnalyticsRequestWhereInput | AnalyticsRequestWhereInput[]
+    OR?: AnalyticsRequestWhereInput[]
+    NOT?: AnalyticsRequestWhereInput | AnalyticsRequestWhereInput[]
+    timestamp?: DateTimeFilter<"AnalyticsRequest"> | Date | string
+    endpoint?: StringFilter<"AnalyticsRequest"> | string
+    method?: StringFilter<"AnalyticsRequest"> | string
+    statusCode?: IntFilter<"AnalyticsRequest"> | number
+    responseTime?: IntFilter<"AnalyticsRequest"> | number
+    clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    ipAddress?: StringFilter<"AnalyticsRequest"> | string
+    userAgent?: StringFilter<"AnalyticsRequest"> | string
+    country?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    city?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    clientType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
+  }, "id">
+
+  export type AnalyticsRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    endpoint?: SortOrder
+    method?: SortOrder
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    country?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    clientType?: SortOrderInput | SortOrder
+    platform?: SortOrderInput | SortOrder
+    _count?: AnalyticsRequestCountOrderByAggregateInput
+    _avg?: AnalyticsRequestAvgOrderByAggregateInput
+    _max?: AnalyticsRequestMaxOrderByAggregateInput
+    _min?: AnalyticsRequestMinOrderByAggregateInput
+    _sum?: AnalyticsRequestSumOrderByAggregateInput
+  }
+
+  export type AnalyticsRequestScalarWhereWithAggregatesInput = {
+    AND?: AnalyticsRequestScalarWhereWithAggregatesInput | AnalyticsRequestScalarWhereWithAggregatesInput[]
+    OR?: AnalyticsRequestScalarWhereWithAggregatesInput[]
+    NOT?: AnalyticsRequestScalarWhereWithAggregatesInput | AnalyticsRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
+    timestamp?: DateTimeWithAggregatesFilter<"AnalyticsRequest"> | Date | string
+    endpoint?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
+    method?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
+    statusCode?: IntWithAggregatesFilter<"AnalyticsRequest"> | number
+    responseTime?: IntWithAggregatesFilter<"AnalyticsRequest"> | number
+    clientId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    userId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    ipAddress?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
+    userAgent?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
+    country?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    city?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    clientType?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    platform?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+  }
+
+  export type AnalyticsSecurityWhereInput = {
+    AND?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
+    OR?: AnalyticsSecurityWhereInput[]
+    NOT?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
+    id?: StringFilter<"AnalyticsSecurity"> | string
+    timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
+    eventType?: StringFilter<"AnalyticsSecurity"> | string
+    ipAddress?: StringFilter<"AnalyticsSecurity"> | string
+    userAgent?: StringFilter<"AnalyticsSecurity"> | string
+    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    details?: StringFilter<"AnalyticsSecurity"> | string
+  }
+
+  export type AnalyticsSecurityOrderByWithRelationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    eventType?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    details?: SortOrder
+  }
+
+  export type AnalyticsSecurityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
+    OR?: AnalyticsSecurityWhereInput[]
+    NOT?: AnalyticsSecurityWhereInput | AnalyticsSecurityWhereInput[]
+    timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
+    eventType?: StringFilter<"AnalyticsSecurity"> | string
+    ipAddress?: StringFilter<"AnalyticsSecurity"> | string
+    userAgent?: StringFilter<"AnalyticsSecurity"> | string
+    clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
+    details?: StringFilter<"AnalyticsSecurity"> | string
+  }, "id">
+
+  export type AnalyticsSecurityOrderByWithAggregationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    eventType?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    details?: SortOrder
+    _count?: AnalyticsSecurityCountOrderByAggregateInput
+    _max?: AnalyticsSecurityMaxOrderByAggregateInput
+    _min?: AnalyticsSecurityMinOrderByAggregateInput
+  }
+
+  export type AnalyticsSecurityScalarWhereWithAggregatesInput = {
+    AND?: AnalyticsSecurityScalarWhereWithAggregatesInput | AnalyticsSecurityScalarWhereWithAggregatesInput[]
+    OR?: AnalyticsSecurityScalarWhereWithAggregatesInput[]
+    NOT?: AnalyticsSecurityScalarWhereWithAggregatesInput | AnalyticsSecurityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    timestamp?: DateTimeWithAggregatesFilter<"AnalyticsSecurity"> | Date | string
+    eventType?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    ipAddress?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    userAgent?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    clientId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
+    details?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -11897,6 +14444,195 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AnalyticsRequestCreateInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    userId?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+  }
+
+  export type AnalyticsRequestUncheckedCreateInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    userId?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+  }
+
+  export type AnalyticsRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestCreateManyInput = {
+    id?: string
+    timestamp?: Date | string
+    endpoint: string
+    method: string
+    statusCode: number
+    responseTime: number
+    clientId?: string | null
+    userId?: string | null
+    ipAddress: string
+    userAgent: string
+    country?: string | null
+    city?: string | null
+    clientType?: string | null
+    platform?: string | null
+  }
+
+  export type AnalyticsRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    statusCode?: IntFieldUpdateOperationsInput | number
+    responseTime?: IntFieldUpdateOperationsInput | number
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AnalyticsSecurityCreateInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: string
+    ipAddress: string
+    userAgent: string
+    clientId?: string | null
+    details: string
+  }
+
+  export type AnalyticsSecurityUncheckedCreateInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: string
+    ipAddress: string
+    userAgent: string
+    clientId?: string | null
+    details: string
+  }
+
+  export type AnalyticsSecurityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnalyticsSecurityCreateManyInput = {
+    id?: string
+    timestamp?: Date | string
+    eventType: string
+    ipAddress: string
+    userAgent: string
+    clientId?: string | null
+    details: string
+  }
+
+  export type AnalyticsSecurityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AnalyticsSecurityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    details?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12382,6 +15118,124 @@ export namespace Prisma {
     userId?: SortOrder
     resource?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type AnalyticsRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    endpoint?: SortOrder
+    method?: SortOrder
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+    clientId?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    clientType?: SortOrder
+    platform?: SortOrder
+  }
+
+  export type AnalyticsRequestAvgOrderByAggregateInput = {
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+  }
+
+  export type AnalyticsRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    endpoint?: SortOrder
+    method?: SortOrder
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+    clientId?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    clientType?: SortOrder
+    platform?: SortOrder
+  }
+
+  export type AnalyticsRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    endpoint?: SortOrder
+    method?: SortOrder
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+    clientId?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    country?: SortOrder
+    city?: SortOrder
+    clientType?: SortOrder
+    platform?: SortOrder
+  }
+
+  export type AnalyticsRequestSumOrderByAggregateInput = {
+    statusCode?: SortOrder
+    responseTime?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type AnalyticsSecurityCountOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    eventType?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    clientId?: SortOrder
+    details?: SortOrder
+  }
+
+  export type AnalyticsSecurityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    eventType?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    clientId?: SortOrder
+    details?: SortOrder
+  }
+
+  export type AnalyticsSecurityMinOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    eventType?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    clientId?: SortOrder
+    details?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -12923,6 +15777,14 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefreshTokensInput, UserUpdateWithoutRefreshTokensInput>, UserUncheckedUpdateWithoutRefreshTokensInput>
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13082,6 +15944,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type AccountCreateWithoutUserInput = {

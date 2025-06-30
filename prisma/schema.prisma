@@ -114,3 +114,53 @@ model RefreshToken {
 
   createdAt DateTime @default(now())
 }
+
+// Optimized Analytics Schema for Performance
+model AnalyticsRequest {
+  id           String   @id @default(cuid())
+  timestamp    DateTime @default(now())
+  endpoint     String   // /api/oauth/token, /mcp/sse, etc
+  method       String   // GET, POST, etc
+  statusCode   Int
+  responseTime Int      // milliseconds
+  
+  // Client information
+  clientId     String?
+  userId       String?
+  
+  // Request metadata (lightweight)
+  ipAddress    String
+  userAgent    String   @db.Text
+  
+  // Geographic data (optional, populated async)
+  country      String?
+  city         String?
+  
+  // Derived fields for performance
+  clientType   String?  // mcp-client, browser, etc
+  platform     String?  // windows, macos, linux
+  
+  // Indexes for fast queries
+  @@index([timestamp])
+  @@index([endpoint])
+  @@index([clientId])
+  @@index([statusCode])
+  @@index([timestamp, endpoint])
+  @@index([timestamp, clientId])
+}
+
+model AnalyticsSecurity {
+  id         String   @id @default(cuid())
+  timestamp  DateTime @default(now())
+  eventType  String   // auth_failure, invalid_token, suspicious_activity
+  ipAddress  String
+  userAgent  String   @db.Text
+  clientId   String?
+  details    String   @db.Text
+  
+  // Indexes for security queries
+  @@index([timestamp])
+  @@index([eventType])
+  @@index([ipAddress])
+  @@index([timestamp, eventType])
+}
