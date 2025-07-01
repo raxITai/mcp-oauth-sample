@@ -5,10 +5,12 @@ import { DataTable } from "./data-table"
 interface OAuthClient {
   name: string
   clientId: string
-  tokenCount: number
+  uniqueUsers: number
+  activeTokens: number
+  recentRequests: number
   lastActivity: string
-  grantType: string
-  pkceEnabled: boolean
+  userNames: string
+  status: string
 }
 
 interface OAuthClientActivityProps {
@@ -25,10 +27,10 @@ export function OAuthClientActivity({
   const formatData = (clients: OAuthClient[]) => {
     return clients.slice(0, maxItems).map(client => ({
       primary: client.name,
-      secondary: client.grantType,
-      value: `${client.tokenCount} tokens`,
-      badge: client.pkceEnabled ? "PKCE" : "Basic",
-      badgeVariant: (client.pkceEnabled ? "secondary" : "outline") as "secondary" | "outline"
+      secondary: `${client.uniqueUsers} user${client.uniqueUsers !== 1 ? 's' : ''} • ${client.userNames}`,
+      value: `${client.activeTokens} active tokens`,
+      badge: client.status,
+      badgeVariant: (client.status === "Active" ? "secondary" : "outline") as "secondary" | "outline"
     }))
   }
 

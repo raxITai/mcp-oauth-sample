@@ -8,6 +8,10 @@ interface ToolUsage {
   usageCount: number
   uniqueUsers: number
   avgResponseTime?: number
+  maxResponseTime?: number
+  minResponseTime?: number
+  errorCount?: number
+  errorRate?: number
 }
 
 interface GeographicUsage {
@@ -31,13 +35,19 @@ export function ToolUsagePanel({
   activeUsers = 0
 }: ToolUsagePanelProps) {
   const formatToolData = (tools: ToolUsage[]) => {
-    return tools.map(tool => ({
-      primary: tool.toolName,
-      secondary: tool.mcpMethod,
-      value: `${tool.usageCount} calls`,
-      badge: `${tool.uniqueUsers} users`,
-      badgeVariant: "secondary" as const
-    }))
+    return tools.map(tool => {
+      const responseTime = tool.avgResponseTime || 0;
+      return {
+        primary: tool.toolName,
+        secondary: `${tool.mcpMethod} • ${responseTime}ms avg`,
+        value: `${tool.usageCount} calls`,
+        badge: responseTime > 1000 ? `SLOW (${responseTime}ms)` : 
+               responseTime > 500 ? `${responseTime}ms` : 
+               `${responseTime}ms`,
+        badgeVariant: (responseTime > 1000 ? "destructive" : 
+                      responseTime > 500 ? "outline" : "secondary") as "destructive" | "outline" | "secondary"
+      };
+    });
   }
 
   const formatGeoData = (geo: GeographicUsage[]) => {

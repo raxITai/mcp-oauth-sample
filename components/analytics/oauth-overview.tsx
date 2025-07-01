@@ -1,69 +1,73 @@
 import type React from "react"
-import { Key, Users, RefreshCw, Shield } from "lucide-react"
+import { Key, Users, RefreshCw, UserCheck } from "lucide-react"
 import { MetricCard } from "./metric-card"
 
 interface OAuthOverviewProps {
+  totalUsers: number
+  activeUsers: number
   totalClients: number
   activeTokens: number
+  recentAuthorizations: number
   tokenRefreshRate: number
   pkceAdoption: number
-  clientGrowth?: string
-  tokenGrowth?: string
-  refreshGrowth?: string
-  pkceGrowth?: string
+  userActivity?: string
+  clientActivity?: string
 }
 
 export function OAuthOverview({
+  totalUsers,
+  activeUsers,
   totalClients,
   activeTokens,
+  recentAuthorizations,
   tokenRefreshRate,
   pkceAdoption,
-  clientGrowth = "+0%",
-  tokenGrowth = "+0%",
-  refreshGrowth = "+0%",
-  pkceGrowth = "+0%"
+  userActivity,
+  clientActivity
 }: OAuthOverviewProps) {
+  const userActivityRate = totalUsers > 0 ? Math.round((activeUsers / totalUsers) * 100) : 0;
+  
   return (
     <section aria-labelledby="oauth-overview-title" className="space-y-6">
       <h2 id="oauth-overview-title" className="sr-only">
-        OAuth Server Overview
+        MCP OAuth Server Overview
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
-          title="Registered Clients"
-          value={totalClients.toLocaleString()}
+          title="Total Users"
+          value={totalUsers.toLocaleString()}
           icon={Users}
           variant="primary"
-          change={clientGrowth}
-          changeType={clientGrowth.startsWith('+') ? "positive" : clientGrowth.startsWith('-') ? "negative" : "neutral"}
-          subtitle="OAuth applications"
+          change={userActivity}
+          changeType={userActivityRate >= 70 ? "positive" : userActivityRate >= 30 ? "neutral" : "negative"}
+          subtitle="authorized MCP access"
+        />
+        <MetricCard
+          title="Active Users"
+          value={activeUsers.toLocaleString()}
+          icon={UserCheck}
+          variant="primary"
+          change={`${userActivityRate}% active`}
+          changeType={userActivityRate >= 70 ? "positive" : userActivityRate >= 30 ? "neutral" : "negative"}
+          subtitle="with valid tokens"
         />
         <MetricCard
           title="Active Tokens"
           value={activeTokens.toLocaleString()}
           icon={Key}
-          variant="primary"
-          change={tokenGrowth}
-          changeType={tokenGrowth.startsWith('+') ? "positive" : tokenGrowth.startsWith('-') ? "negative" : "neutral"}
+          variant="secondary"
+          change={`${totalClients} clients`}
+          changeType="neutral"
           subtitle="valid access tokens"
         />
         <MetricCard
-          title="Token Refreshes"
-          value={`${tokenRefreshRate}/h`}
+          title="Recent Authorizations"
+          value={recentAuthorizations.toLocaleString()}
           icon={RefreshCw}
           variant="secondary"
-          change={refreshGrowth}
-          changeType={refreshGrowth.startsWith('+') ? "positive" : refreshGrowth.startsWith('-') ? "negative" : "neutral"}
-          subtitle="per hour"
-        />
-        <MetricCard
-          title="PKCE Adoption"
-          value={`${pkceAdoption}%`}
-          icon={Shield}
-          variant="secondary"
-          change={pkceGrowth}
-          changeType={pkceAdoption >= 80 ? "positive" : pkceAdoption >= 50 ? "neutral" : "negative"}
-          subtitle="security compliance"
+          change={`${Math.round(tokenRefreshRate * 100) / 100}/h refreshes`}
+          changeType={recentAuthorizations > 0 ? "positive" : "neutral"}
+          subtitle="new OAuth flows"
         />
       </div>
     </section>

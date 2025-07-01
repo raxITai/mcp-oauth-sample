@@ -7,13 +7,12 @@ import {
   SecurityPanel,
   LoadingSkeleton,
   DashboardHeader,
-  StatusBadge,
   OAuthOverview,
   OAuthSecurityPanel,
   OAuthClientActivity,
   TokenExpiration,
-  GrantTypeDistribution,
-  ToolUsagePanel
+  ToolUsagePanel,
+  GrantTypeChart
 } from "@/components/analytics"
 import {
   BarChart3,
@@ -31,21 +30,25 @@ export default function AnalyticsPage() {
       errorRate: number
     }
     oauth?: {
+      totalUsers: number
+      activeUsers: number
       totalClients: number
+      activeClients: number
       activeTokens: number
+      recentAuthorizations: number
       tokenRefreshRate: number
       pkceAdoption: number
-      clientGrowth?: string
-      tokenGrowth?: string
-      refreshGrowth?: string
-      pkceGrowth?: string
+      userActivity?: string
+      clientActivity?: string
       clients?: {
         name: string
         clientId: string
-        tokenCount: number
+        uniqueUsers: number
+        activeTokens: number
+        recentRequests: number
         lastActivity: string
-        grantType: string
-        pkceEnabled: boolean
+        userNames: string
+        status: string
       }[]
       expiringTokens?: {
         clientName: string
@@ -125,9 +128,12 @@ export default function AnalyticsPage() {
   const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/analytics?hours=${timeRange}`)
+      const response = await fetch(`/api/analytics?hours=${timeRange}`, {
+        credentials: 'include'
+      })
       if (!response.ok) {
-        throw new Error("Failed to fetch analytics")
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to fetch analytics")
       }
       const analyticsData = await response.json()
       setData(analyticsData)
@@ -237,7 +243,6 @@ export default function AnalyticsPage() {
         serverName={data.enterprise?.usersByMCPServer?.[0]?.mcpServerName}
         serverUrl={data.enterprise?.usersByMCPServer?.[0]?.mcpServerIdentifier}
       >
-        <StatusBadge status={healthStatus.status as "healthy" | "warning" | "critical"} />
         <label htmlFor="time-range-select" className="sr-only">
           Time Range
         </label>
@@ -273,14 +278,15 @@ export default function AnalyticsPage() {
         {/* OAuth Overview */}
         {data.oauth && (
           <OAuthOverview
+            totalUsers={data.oauth.totalUsers}
+            activeUsers={data.oauth.activeUsers}
             totalClients={data.oauth.totalClients}
             activeTokens={data.oauth.activeTokens}
+            recentAuthorizations={data.oauth.recentAuthorizations}
             tokenRefreshRate={data.oauth.tokenRefreshRate}
             pkceAdoption={data.oauth.pkceAdoption}
-            clientGrowth={data.oauth.clientGrowth}
-            tokenGrowth={data.oauth.tokenGrowth}
-            refreshGrowth={data.oauth.refreshGrowth}
-            pkceGrowth={data.oauth.pkceGrowth}
+            userActivity={data.oauth.userActivity}
+            clientActivity={data.oauth.clientActivity}
           />
         )}
 
@@ -292,7 +298,7 @@ export default function AnalyticsPage() {
             {data.oauth?.clients && data.oauth.clients.length > 0 && (
               <OAuthClientActivity 
                 clients={data.oauth.clients}
-                title="Active OAuth Clients"
+                title="Client-User Relationships"
                 maxItems={6}
               />
             )}
@@ -302,9 +308,9 @@ export default function AnalyticsPage() {
               <TokenExpiration expiringTokens={data.oauth.expiringTokens} />
             )}
 
-            {/* Grant Type Distribution */}
+            {/* Grant Type Distribution - Pie Chart */}
             {data.oauth?.grantTypes && data.oauth.grantTypes.length > 0 && (
-              <GrantTypeDistribution grantTypes={data.oauth.grantTypes} />
+              <GrantTypeChart grantTypes={data.oauth.grantTypes} />
             )}
           </div>
 

@@ -162,28 +162,29 @@ export default async function AuthorizePage({
   }
 
   return (
-    <main className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
-        <h1 className="text-xl font-semibold mb-4 text-center">
-          Authorize Application
-        </h1>
-        <div className="text-center">
-          <p className="mb-2">
-            The application{' '}
-            <strong className="font-medium">{client.name}</strong> is
-            requesting access to your account.
-          </p>
-          <p className="text-sm text-gray-600">
-            Do you want to grant access?
-          </p>
-        </div>
-        <form action={handleConsent} className="mt-6">
-          <div className="flex justify-center gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-base-50 via-primary-100 to-secondary-300 dark:from-base-950 dark:via-base-800 dark:to-base-800 flex items-center justify-center">
+      <div className="w-full max-w-md">
+        <div className="bg-background border border-border rounded-xl shadow-lg p-8 space-y-6">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-2">
+              Authorize Application
+            </h1>
+            <p className="text-muted-foreground mb-4">
+              The application{' '}
+              <strong className="font-medium text-foreground">{client.name}</strong> is
+              requesting access to your account.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Do you want to grant access?
+            </p>
+          </div>
+          
+          <form action={handleConsent} className="space-y-4">
             <button
               type="submit"
               name="consent"
               value="allow"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full bg-primary hover:bg-primary-800 text-primary-foreground px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-colors"
             >
               Allow
             </button>
@@ -191,13 +192,13 @@ export default async function AuthorizePage({
               type="submit"
               name="consent"
               value="deny"
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
+              className="w-full border border-border text-foreground hover:bg-muted px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-border focus:ring-opacity-50 transition-colors"
             >
               Deny
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </main>
+    </div>
   );
 } 

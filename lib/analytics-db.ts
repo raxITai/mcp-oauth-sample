@@ -62,10 +62,22 @@ class OptimizedAnalyticsCollector {
       platform
     };
 
+    console.log('[Analytics DB] Logging request:', {
+      endpoint: data.endpoint,
+      mcpMethod: data.mcpMethod,
+      toolName: data.toolName,
+      ipAddress: data.ipAddress
+    });
+
     this.requestBatch.push(enrichedData);
     
+    // For debugging: flush immediately if it's an MCP tool call
+    if (data.mcpMethod || data.toolName) {
+      console.log('[Analytics DB] Flushing immediately for MCP tool call');
+      await this.flushRequests();
+    }
     // Flush if batch is full
-    if (this.requestBatch.length >= this.BATCH_SIZE) {
+    else if (this.requestBatch.length >= this.BATCH_SIZE) {
       await this.flushRequests();
     }
 
@@ -218,8 +230,26 @@ class OptimizedAnalyticsCollector {
 
   // Async geography enrichment (non-blocking)
   private enrichGeographyAsync(ip: string) {
-    // Skip for localhost/private IPs
-    if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.')) {
+    // For development: Use mock data for localhost
+    if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('::ffff:127.0.0.1')) {
+      // Add mock geographic data for localhost in development
+      setTimeout(async () => {
+        try {
+          await prisma.analyticsRequest.updateMany({
+            where: {
+              ipAddress: ip,
+              country: null
+            },
+            data: {
+              country: 'United States',
+              city: 'San Francisco'
+            }
+          });
+          console.log('[Analytics] Added mock geographic data for localhost');
+        } catch (error) {
+          console.warn('Failed to update localhost geographic data:', error);
+        }
+      }, 100);
       return;
     }
 
@@ -457,7 +487,11 @@ class OptimizedAnalyticsCollector {
         "toolName",
         "mcpMethod",
         COUNT(*) as usage_count,
-        COUNT(DISTINCT "userId") as unique_users
+        COUNT(DISTINCT "userId") as unique_users,
+        AVG("responseTime") as avg_response_time,
+        MAX("responseTime") as max_response_time,
+        MIN("responseTime") as min_response_time,
+        COUNT(CASE WHEN "statusCode" >= 400 THEN 1 END) as error_count
       FROM "AnalyticsRequest"
       WHERE timestamp >= ${cutoff}
         AND "toolName" IS NOT NULL
@@ -469,14 +503,317 @@ class OptimizedAnalyticsCollector {
       mcpMethod: string;
       usage_count: bigint;
       unique_users: bigint;
+      avg_response_time: number;
+      max_response_time: number;
+      min_response_time: number;
+      error_count: bigint;
     }>;
 
     return result.map(r => ({
       toolName: r.toolName,
       mcpMethod: r.mcpMethod,
       usageCount: Number(r.usage_count),
-      uniqueUsers: Number(r.unique_users)
+      uniqueUsers: Number(r.unique_users),
+      avgResponseTime: Math.round(Number(r.avg_response_time) || 0),
+      maxResponseTime: Math.round(Number(r.max_response_time) || 0),
+      minResponseTime: Math.round(Number(r.min_response_time) || 0),
+      errorCount: Number(r.error_count),
+      errorRate: Number(r.usage_count) > 0 ? Math.round((Number(r.error_count) / Number(r.usage_count)) * 100 * 100) / 100 : 0
     }));
+  }
+
+  async getToolGeographyStats(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        country,
+        city,
+        COUNT(*) as count
+      FROM "AnalyticsRequest"
+      WHERE timestamp >= ${cutoff} 
+        AND country IS NOT NULL 
+        AND "toolName" IS NOT NULL
+      GROUP BY country, city
+      ORDER BY count DESC
+      LIMIT 15
+    ` as Array<{ 
+      country: string; 
+      city: string | null; 
+      count: bigint; 
+    }>;
+
+    const total = result.reduce((sum, r) => sum + Number(r.count), 0);
+
+    return result.map(r => ({
+      country: r.country,
+      city: r.city,
+      count: Number(r.count),
+      percentage: total > 0 ? Math.round((Number(r.count) / total) * 100 * 100) / 100 : 0
+    }));
+  }
+
+  // OAuth Analytics Functions - Meaningful MCP Metrics
+  async getOAuthMetrics(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const [userStats, clientStats, tokenStats, authActivity] = await Promise.all([
+      // Unique users who have authorized OAuth clients
+      prisma.$queryRaw<Array<{ total_users: bigint; active_users: bigint }>>`
+        SELECT 
+          COUNT(DISTINCT u.id) as total_users,
+          COUNT(DISTINCT CASE WHEN at."expiresAt" > NOW() THEN u.id END) as active_users
+        FROM "User" u
+        LEFT JOIN "AccessToken" at ON u.id = at."userId"
+        WHERE u.id IN (
+          SELECT DISTINCT "userId" FROM "AccessToken" 
+          UNION 
+          SELECT DISTINCT "userId" FROM "AuthCode"
+        )
+      `,
+      
+      // OAuth client statistics
+      prisma.$queryRaw<Array<{ 
+        total_clients: bigint; 
+        clients_with_active_tokens: bigint;
+      }>>`
+        SELECT 
+          COUNT(DISTINCT c.id) as total_clients,
+          COUNT(DISTINCT CASE WHEN at."expiresAt" > NOW() THEN c.id END) as clients_with_active_tokens
+        FROM "Client" c
+        LEFT JOIN "AccessToken" at ON c.id = at."clientId"
+      `,
+      
+      // Active token statistics  
+      prisma.accessToken.count({
+        where: {
+          expiresAt: {
+            gt: new Date()
+          }
+        }
+      }),
+      
+      // Recent OAuth authorization activity
+      prisma.$queryRaw<Array<{
+        recent_authorizations: bigint;
+        recent_token_refreshes: bigint;
+        pkce_usage: bigint;
+        total_oauth_requests: bigint;
+      }>>`
+        SELECT 
+          COUNT(CASE WHEN "oauthGrantType" = 'authorization_code' THEN 1 END) as recent_authorizations,
+          COUNT(CASE WHEN "oauthGrantType" = 'refresh_token' THEN 1 END) as recent_token_refreshes,
+          COUNT(CASE WHEN "usePKCE" = true THEN 1 END) as pkce_usage,
+          COUNT(*) as total_oauth_requests
+        FROM "AnalyticsRequest"
+        WHERE timestamp >= ${cutoff}
+          AND "oauthGrantType" IS NOT NULL
+      `
+    ]);
+
+    const userData = userStats[0];
+    const clientData = clientStats[0];
+    const authData = authActivity[0];
+    
+    const totalUsers = Number(userData?.total_users || 0);
+    const activeUsers = Number(userData?.active_users || 0);
+    const totalClients = Number(clientData?.total_clients || 0);
+    const activeClients = Number(clientData?.clients_with_active_tokens || 0);
+    const recentAuthorizations = Number(authData?.recent_authorizations || 0);
+    const recentRefreshes = Number(authData?.recent_token_refreshes || 0);
+    const pkceUsage = Number(authData?.pkce_usage || 0);
+    const totalOAuthRequests = Number(authData?.total_oauth_requests || 0);
+    
+    const pkceAdoption = totalOAuthRequests > 0 ? (pkceUsage / totalOAuthRequests) * 100 : 0;
+
+    return {
+      // User metrics (most important for MCP)
+      totalUsers,
+      activeUsers,
+      userActivity: `${activeUsers}/${totalUsers} users active`,
+      
+      // Client metrics  
+      totalClients,
+      activeClients,
+      clientActivity: `${activeClients}/${totalClients} clients active`,
+      
+      // Token metrics
+      activeTokens: tokenStats,
+      recentAuthorizations,
+      tokenRefreshRate: recentRefreshes / hoursBack,
+      
+      // Security metrics
+      pkceAdoption: Math.round(pkceAdoption * 100) / 100
+    };
+  }
+
+  async getOAuthClientActivity(hoursBack = 24, limit = 10) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    // Get meaningful client activity: which users are using which clients
+    const result = await prisma.$queryRaw<Array<{
+      client_name: string;
+      client_id: string;
+      unique_users: bigint;
+      active_tokens: bigint;
+      recent_requests: bigint;
+      last_activity: Date | null;
+      user_names: string;
+    }>>`
+      SELECT 
+        c.name as client_name,
+        c."clientId" as client_id,
+        COUNT(DISTINCT at."userId") as unique_users,
+        COUNT(CASE WHEN at."expiresAt" > NOW() THEN at.id END) as active_tokens,
+        COUNT(ar.id) as recent_requests,
+        MAX(ar.timestamp) as last_activity,
+        STRING_AGG(DISTINCT u.name, ', ') as user_names
+      FROM "Client" c
+      LEFT JOIN "AccessToken" at ON c.id = at."clientId"
+      LEFT JOIN "User" u ON at."userId" = u.id
+      LEFT JOIN "AnalyticsRequest" ar ON c.id = ar."clientId" AND ar.timestamp >= ${cutoff}
+      GROUP BY c.id, c.name, c."clientId"
+      HAVING COUNT(DISTINCT at."userId") > 0  -- Only show clients with users
+      ORDER BY unique_users DESC, active_tokens DESC, last_activity DESC NULLS LAST
+      LIMIT ${limit}
+    `;
+
+    return result.map(r => ({
+      name: r.client_name,
+      clientId: r.client_id,
+      uniqueUsers: Number(r.unique_users),
+      activeTokens: Number(r.active_tokens),
+      recentRequests: Number(r.recent_requests),
+      lastActivity: r.last_activity?.toISOString() || 'Never',
+      userNames: r.user_names || 'No users',
+      // Meaningful display instead of fake data
+      status: Number(r.active_tokens) > 0 ? 'Active' : 'Inactive'
+    }));
+  }
+
+  async getExpiringTokens(hoursAhead = 24) {
+    const cutoff = new Date(Date.now() + hoursAhead * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        c.name as client_name,
+        COUNT(at.id) as token_count,
+        EXTRACT(EPOCH FROM (MIN(at."expiresAt") - NOW())) / 3600 as hours_until_expiry
+      FROM "AccessToken" at
+      JOIN "Client" c ON at."clientId" = c.id
+      WHERE at."expiresAt" <= ${cutoff} AND at."expiresAt" > NOW()
+      GROUP BY c.name
+      ORDER BY hours_until_expiry ASC
+      LIMIT 10
+    ` as Array<{
+      client_name: string;
+      token_count: bigint;
+      hours_until_expiry: number;
+    }>;
+
+    return result.map(r => ({
+      clientName: r.client_name,
+      tokenCount: Number(r.token_count),
+      hoursUntilExpiry: Math.round(r.hours_until_expiry * 100) / 100
+    }));
+  }
+
+  async getGrantTypeDistribution(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        "oauthGrantType" as grant_type,
+        COUNT(*) as count
+      FROM "AnalyticsRequest"
+      WHERE timestamp >= ${cutoff}
+        AND "oauthGrantType" IS NOT NULL
+      GROUP BY "oauthGrantType"
+      ORDER BY count DESC
+    ` as Array<{
+      grant_type: string;
+      count: bigint;
+    }>;
+
+    const total = result.reduce((sum, r) => sum + Number(r.count), 0);
+
+    return result.map(r => ({
+      type: r.grant_type,
+      count: Number(r.count),
+      percentage: total > 0 ? Math.round((Number(r.count) / total) * 100 * 100) / 100 : 0
+    }));
+  }
+
+  async getOAuthSecurityEvents(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const [events, invalidClientAttempts, invalidGrantAttempts, unauthorizedScopes] = await Promise.all([
+      // OAuth-specific security events
+      prisma.$queryRaw<Array<{
+        client_name: string | null;
+        client_id: string;
+        event_type: string;
+        severity: string;
+        count: bigint;
+        last_occurred: Date;
+      }>>`
+        SELECT 
+          c.name as client_name,
+          s."clientId" as client_id,
+          s."eventType" as event_type,
+          s.severity,
+          COUNT(*) as count,
+          MAX(s.timestamp) as last_occurred
+        FROM "AnalyticsSecurity" s
+        LEFT JOIN "Client" c ON s."clientId" = c.id
+        WHERE s.timestamp >= ${cutoff}
+          AND s."clientId" IS NOT NULL
+        GROUP BY c.name, s."clientId", s."eventType", s.severity
+        ORDER BY count DESC, last_occurred DESC
+        LIMIT 20
+      `,
+
+      // Count invalid client attempts
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: cutoff },
+          eventType: { in: ['AUTH_FAILURE', 'INVALID_TOKEN'] }
+        }
+      }),
+
+      // Count invalid grant attempts  
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: cutoff },
+          eventType: 'INVALID_TOKEN'
+        }
+      }),
+
+      // Count unauthorized scope requests
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: cutoff },
+          eventType: 'UNAUTHORIZED_ACCESS'
+        }
+      })
+    ]);
+
+    const mappedEvents = events.map(e => ({
+      clientName: e.client_name || 'Unknown Client',
+      clientId: e.client_id,
+      eventType: e.event_type,
+      severity: e.severity,
+      count: Number(e.count),
+      lastOccurred: e.last_occurred.toISOString()
+    }));
+
+    return {
+      totalEvents: mappedEvents.reduce((sum, e) => sum + e.count, 0),
+      invalidClientAttempts,
+      invalidGrantAttempts,
+      unauthorizedScopes,
+      events: mappedEvents
+    };
   }
 
   // Cleanup old data to prevent database bloat

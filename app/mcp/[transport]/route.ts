@@ -180,6 +180,7 @@ async function logEnhancedAnalytics(
           toolName = params.name;
         }
       }
+      console.log('[MCP Analytics] Extracted:', { mcpMethod, toolName, hasParams: !!requestBody.params });
     }
     
     // Get or create MCP server registration
@@ -255,8 +256,8 @@ async function logEnhancedAnalytics(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(analyticsData)
-    }).catch(() => {
-      // Silent fail - analytics shouldn't break MCP requests
+    }).catch((error) => {
+      console.warn('Analytics collection failed:', error, 'Data:', analyticsData);
     });
     
   } catch (error) {
