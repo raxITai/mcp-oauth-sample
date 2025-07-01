@@ -157,6 +157,8 @@ export default function AnalyticsPage() {
         lastUpdated={data.lastUpdated}
         timeRange={data.timeRange}
         status={healthStatus.status as "healthy" | "warning" | "critical"}
+        serverName={data.enterprise?.usersByMCPServer?.[0]?.mcpServerName}
+        serverUrl={data.enterprise?.usersByMCPServer?.[0]?.mcpServerIdentifier}
       >
         <StatusBadge status={healthStatus.status as "healthy" | "warning" | "critical"} />
         <label htmlFor="time-range-select" className="sr-only">
@@ -202,7 +204,7 @@ export default function AnalyticsPage() {
                 title="Total Requests"
                 value={data.performance.totalRequests.toLocaleString()}
                 icon={BarChart3}
-                color="blue"
+                variant="primary"
                 change="+12.5%"
                 changeType="positive"
                 subtitle="vs last period"
@@ -211,7 +213,7 @@ export default function AnalyticsPage() {
                 title="Avg Response"
                 value={`${data.performance.avgResponseTime}ms`}
                 icon={Clock}
-                color="green"
+                variant="primary"
                 change={data.performance.avgResponseTime < 200 ? "-8%" : "+15%"}
                 changeType={data.performance.avgResponseTime < 200 ? "positive" : "negative"}
                 subtitle="response time"
@@ -220,7 +222,7 @@ export default function AnalyticsPage() {
                 title="P95 Response"
                 value={`${data.performance.p95ResponseTime}ms`}
                 icon={TrendingUp}
-                color="purple"
+                variant="secondary"
                 change="+3.2%"
                 changeType="neutral"
                 subtitle="95th percentile"
@@ -229,7 +231,7 @@ export default function AnalyticsPage() {
                 title="Error Rate"
                 value={`${data.performance.errorRate}%`}
                 icon={data.performance.errorRate > 5 ? AlertTriangle : CheckCircle}
-                color={data.performance.errorRate > 5 ? "red" : "green"}
+                variant="secondary"
                 change={data.performance.errorRate > 5 ? "+2.1%" : "-0.5%"}
                 changeType={data.performance.errorRate > 5 ? "negative" : "positive"}
                 subtitle="error percentage"
@@ -271,21 +273,7 @@ export default function AnalyticsPage() {
 
           {/* Middle Column - Enterprise Analytics */}
           <div className="space-y-8">
-            {/* MCP Server Usage */}
-            {data.enterprise?.usersByMCPServer && data.enterprise.usersByMCPServer.length > 0 && (
-              <DataTable
-                title="Active MCP Servers"
-                icon={Users}
-                data={data.enterprise.usersByMCPServer.map(item => ({
-                  primary: item.userName,
-                  secondary: item.userEmail,
-                  value: item.mcpServerName,
-                  badge: item.mcpServerIdentifier.substring(0, 8) + "..."
-                }))}
-                emptyMessage="No MCP server data available"
-                maxItems={3}
-              />
-            )}
+
 
             {/* Tool Usage */}
             {data.enterprise?.toolUsage && data.enterprise.toolUsage.length > 0 && (

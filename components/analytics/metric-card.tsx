@@ -7,7 +7,7 @@ interface MetricCardProps {
   change?: string
   changeType?: "positive" | "negative" | "neutral"
   icon: React.ComponentType<{ className?: string }>
-  color?: "blue" | "green" | "yellow" | "red" | "purple"
+  variant?: "primary" | "secondary"
   subtitle?: string
   className?: string
 }
@@ -18,22 +18,19 @@ export function MetricCard({
   change,
   changeType = "neutral",
   icon: Icon,
-  color = "blue",
+  variant = "primary",
   subtitle,
   className,
 }: MetricCardProps) {
-  // Color mapping from design system
+  // Color mapping from design system - only primary and secondary
   const colorClasses = {
-    blue: "bg-primary-100 text-primary-600",
-    green: "bg-green-100 text-green-600",
-    yellow: "bg-yellow-100 text-yellow-600",
-    red: "bg-red-100 text-destructive",
-    purple: "bg-secondary-300 text-secondary-600",
+    primary: "bg-primary-100 text-primary-600",
+    secondary: "bg-secondary-300 text-secondary-600",
   }
 
   const changeColors = {
-    positive: "text-green-600 bg-green-50",
-    negative: "text-destructive bg-red-50",
+    positive: "text-primary-600 bg-primary-100",
+    negative: "text-destructive bg-muted",
     neutral: "text-muted-foreground bg-muted",
   }
 
@@ -86,7 +83,7 @@ export function MetricCard({
 
         {/* Icon Container - Design System: spacing.3, borderRadius.xl, semantic colors */}
         <div 
-          className={cn("p-3 rounded-xl", colorClasses[color])}
+          className={cn("p-3 rounded-xl", colorClasses[variant])}
           aria-hidden="true"
         >
           <Icon className="w-6 h-6" />

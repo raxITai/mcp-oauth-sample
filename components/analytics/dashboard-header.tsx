@@ -1,6 +1,12 @@
 import type React from "react"
-import { Clock, Activity } from "lucide-react"
+import { Clock, Activity, Server } from "lucide-react"
 import { cn } from "@/lib/utils"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface DashboardHeaderProps {
   title: string
@@ -8,6 +14,8 @@ interface DashboardHeaderProps {
   lastUpdated?: string
   timeRange?: string
   status?: "healthy" | "warning" | "critical" | "unknown"
+  serverName?: string
+  serverUrl?: string
   children?: React.ReactNode
   className?: string
 }
@@ -46,6 +54,8 @@ export function DashboardHeader({
   lastUpdated,
   timeRange,
   status = "unknown",
+  serverName,
+  serverUrl,
   children,
   className
 }: DashboardHeaderProps) {
@@ -71,6 +81,8 @@ export function DashboardHeader({
                 {subtitle}
               </p>
             )}
+            
+
             
             {/* Status and Meta Information */}
             <div 
@@ -98,14 +110,38 @@ export function DashboardHeader({
                 </div>
               )}
               
+              {/* MCP Server Info */}
+              {serverName && (
+                <div className="flex items-center gap-2">
+                  <Server className="w-4 h-4" aria-hidden="true" />
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span 
+                          className="cursor-default"
+                          aria-label={`MCP Server: ${serverName}${serverUrl ? ` (${serverUrl})` : ''}`}
+                        >
+                          {serverName}
+                        </span>
+                      </TooltipTrigger>
+                      {serverUrl && (
+                        <TooltipContent side="bottom" className="font-mono">
+                          {serverUrl}
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
+              
               {/* Status Indicator */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <div 
                   className={cn("w-3 h-3 rounded-full", getStatusColor(status))}
                   aria-label={`System status: ${status}`}
                 />
                 <span className="capitalize" aria-hidden="true">{status}</span>
-              </div>
+              </div> */}
             </div>
           </div>
 

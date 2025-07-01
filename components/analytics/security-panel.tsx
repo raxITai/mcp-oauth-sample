@@ -1,7 +1,12 @@
 import type React from "react"
-import { CheckCircle, AlertTriangle } from "lucide-react"
+import { CheckCircle, AlertTriangle, Shield, Users, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
-
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface SecurityEventsByOrg {
   organization: string
@@ -30,15 +35,15 @@ interface SecurityPanelProps {
 function getSeverityColor(severity: string) {
   switch (severity.toLowerCase()) {
     case "low":
-      return "bg-green-50 text-green-700 border-green-200"
+      return "bg-background text-green-600 border-green-500/20"
     case "medium":
-      return "bg-yellow-50 text-yellow-700 border-yellow-200"
+      return "bg-background text-yellow-600 border-yellow-500/20"
     case "high":
-      return "bg-orange-50 text-orange-700 border-orange-200"
+      return "bg-background text-orange-600 border-orange-500/20"
     case "critical":
-      return "bg-red-50 text-destructive border-red-200"
+      return "bg-background text-destructive border-destructive/20"
     default:
-      return "bg-muted text-muted-foreground border-border"
+      return "bg-background text-muted-foreground border-border"
   }
 }
 
@@ -49,6 +54,8 @@ export function SecurityPanel({
   className
 }: SecurityPanelProps) {
   const isSecure = eventCount === 0
+  const hasSecurityEvents = byOrganization.length > 0
+  const hasPrivilegeEscalations = privilegeEscalations.length > 0
 
   return (
     <section 
@@ -63,20 +70,20 @@ export function SecurityPanel({
           id="security-monitor-title"
         >
           <div className="p-2 bg-muted rounded-lg" aria-hidden="true">
-            <AlertTriangle className="w-5 h-5 text-destructive" />
+            <Shield className="w-5 h-5 text-destructive" />
           </div>
           Security Monitor
         </h3>
       </div>
 
-      <div className="px-6 pb-6 space-y-8">
-        {/* Security Overview */}
+      <div className="px-6 pb-6 space-y-6">
+        {/* Security Overview - Always visible */}
         <div 
           className={cn(
-            "p-6 rounded-lg border-2",
+            "p-6 rounded-lg border",
             isSecure 
-              ? "bg-green-50 border-green-200" 
-              : "bg-red-50 border-red-200"
+              ? "bg-muted border-border" 
+              : "bg-muted border-border"
           )}
           role="status"
           aria-live="polite"
@@ -108,79 +115,130 @@ export function SecurityPanel({
           </div>
         </div>
 
-        {/* Security Events by Organization */}
-        {byOrganization.length > 0 && (
-          <div className="space-y-4">
-            <h4 className="text-base font-semibold text-foreground">Security Events</h4>
-            <div className="space-y-3">
-              {byOrganization.slice(0, 4).map((item, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-red-50 rounded-lg border border-red-200 space-y-3"
-                >
-                  <div className="flex justify-between items-start gap-4">
-                    <p className="font-medium text-base text-foreground">{item.organization}</p>
-                    <span className={cn(
-                      "px-2 py-1 rounded text-xs font-medium border",
-                      getSeverityColor(item.severity)
-                    )}>
-                      {item.severity}
+        {/* Accordion for detailed security information */}
+        {(hasSecurityEvents || hasPrivilegeEscalations || isSecure) && (
+          <Accordion type="single" collapsible className="space-y-2">
+            
+            {/* Security Events Accordion Item */}
+            {hasSecurityEvents && (
+              <AccordionItem
+                value="security-events"
+                className="border border-border rounded-lg overflow-hidden"
+              >
+                <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="w-5 h-5 text-destructive" />
+                    <span className="text-base font-semibold text-foreground">
+                      Security Events ({byOrganization.length})
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-sm text-muted-foreground">
-                    <span className="font-mono bg-background px-3 py-2 rounded border">
-                      {item.eventType}
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="space-y-3">
+                    {byOrganization.slice(0, 4).map((item, index) => (
+                      <div
+                        key={index}
+                        className="p-4 bg-muted rounded-lg border border-border space-y-3"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <p className="font-medium text-base text-foreground">{item.organization}</p>
+                          <span className={cn(
+                            "px-2 py-1 rounded text-xs font-medium border",
+                            getSeverityColor(item.severity)
+                          )}>
+                            {item.severity}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm text-muted-foreground">
+                          <span className="font-mono bg-background px-3 py-2 rounded border">
+                            {item.eventType}
+                          </span>
+                          <div className="text-right space-y-1">
+                            <div>{item.eventCount} events</div>
+                            <div>Risk: {item.avgRiskScore}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            )}
+
+            {/* Privilege Escalations Accordion Item */}
+            {hasPrivilegeEscalations && (
+              <AccordionItem
+                value="privilege-escalations"
+                className="border border-border rounded-lg overflow-hidden"
+              >
+                <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <TrendingUp className="w-5 h-5 text-orange-600" />
+                    <span className="text-base font-semibold text-foreground">
+                      Privilege Escalations ({privilegeEscalations.length})
                     </span>
-                    <div className="text-right space-y-1">
-                      <div>{item.eventCount} events</div>
-                      <div>Risk: {item.avgRiskScore}</div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="space-y-3">
+                    {privilegeEscalations.slice(0, 3).map((item, index) => (
+                      <div key={index} className="p-4 bg-muted rounded-lg border border-border">
+                        <div className="flex justify-between items-start gap-6">
+                          <div className="min-w-0 flex-1 space-y-2">
+                            <p className="font-medium text-base text-foreground truncate">{item.userName}</p>
+                            <p className="text-sm text-muted-foreground font-mono truncate">{item.userEmail}</p>
+                          </div>
+                          <div className="text-right text-sm text-muted-foreground space-y-1 shrink-0">
+                            <div className="font-semibold">Risk: {item.riskScore}</div>
+                            <div>{new Date(item.timestamp).toLocaleDateString()}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            )}
+
+            {/* All Clear Accordion Item */}
+            {isSecure && (
+              <AccordionItem
+                value="all-clear"
+                className="border border-border rounded-lg overflow-hidden"
+              >
+                <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <span className="text-base font-semibold text-foreground">
+                      Security Status Details
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="text-center py-6 space-y-4">
+                    <CheckCircle 
+                      className="w-12 h-12 text-green-500 mx-auto" 
+                      aria-hidden="true"
+                    />
+                    <div className="space-y-2">
+                      <p className="text-base text-green-600 font-medium">All Systems Secure</p>
+                      <p className="text-sm text-muted-foreground">
+                        No security events or privilege escalations detected in the selected time period.
+                      </p>
+                      <div className="mt-4 p-3 bg-muted rounded-lg border">
+                        <p className="text-xs text-muted-foreground">
+                          ✓ No unauthorized access attempts<br/>
+                          ✓ No suspicious activities detected<br/>
+                          ✓ All authentication events normal
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                </AccordionContent>
+              </AccordionItem>
+            )}
 
-        {/* Privilege Escalations */}
-        {privilegeEscalations.length > 0 && (
-          <div className="space-y-4">
-            <h4 className="text-base font-semibold text-foreground">Privilege Escalations</h4>
-            <div className="space-y-3">
-              {privilegeEscalations.slice(0, 3).map((item, index) => (
-                <div key={index} className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                  <div className="flex justify-between items-start gap-6">
-                    <div className="min-w-0 flex-1 space-y-2">
-                      <p className="font-medium text-base text-foreground truncate">{item.userName}</p>
-                      <p className="text-sm text-muted-foreground font-mono truncate">{item.userEmail}</p>
-                    </div>
-                    <div className="text-right text-sm text-muted-foreground space-y-1 shrink-0">
-                      <div className="font-semibold">Risk: {item.riskScore}</div>
-                      <div>{new Date(item.timestamp).toLocaleDateString()}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* All Clear State */}
-        {isSecure && (
-          <div 
-            className="text-center py-8 space-y-4"
-            role="status"
-            aria-live="polite"
-          >
-            <CheckCircle 
-              className="w-16 h-16 text-green-500 mx-auto" 
-              aria-hidden="true"
-            />
-            <div className="space-y-2">
-              <p className="text-base text-green-600 font-medium">All Clear</p>
-              <p className="text-sm text-muted-foreground">No security events detected</p>
-            </div>
-          </div>
+          </Accordion>
         )}
       </div>
     </section>
