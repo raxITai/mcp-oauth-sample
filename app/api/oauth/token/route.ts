@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@/app/prisma';
 import { randomBytes } from 'crypto';
+import { analyticsDB } from '@/lib/analytics-db';
 
 // Type for client object
 interface ClientType {
@@ -17,6 +18,33 @@ function getCorsHeaders() {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
+}
+
+// Helper function to log OAuth analytics
+async function logOAuthAnalytics(request: NextRequest, grantType: string, clientId: string, userId?: string, scopes?: string[], usePKCE?: boolean, redirectUri?: string) {
+  try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+               request.headers.get('x-real-ip') || 
+               '127.0.0.1';
+    
+    await analyticsDB.logRequest({
+      timestamp: new Date(),
+      endpoint: '/api/oauth/token',
+      method: request.method,
+      statusCode: 200,
+      responseTime: 0, // Will be updated by middleware
+      clientId,
+      userId,
+      ipAddress: ip,
+      userAgent: request.headers.get('user-agent') || '',
+      oauthGrantType: grantType,
+      tokenScopes: scopes || [],
+      usePKCE,
+      redirectUri
+    });
+  } catch (error) {
+    console.warn('Failed to log OAuth analytics:', error);
+  }
 }
 
 // Helper function to create access and refresh tokens
@@ -58,6 +86,7 @@ async function createTokens(clientId: string, userId: string, resource?: string)
 
 // Handle refresh token grant
 async function handleRefreshTokenGrant(
+  request: NextRequest,
   refreshTokenValue: string, 
   client: ClientType, 
   clientSecret: string | undefined, 
@@ -117,6 +146,9 @@ async function handleRefreshTokenGrant(
 
   // Create new tokens
   const tokens = await createTokens(client.id, refreshTokenRecord.userId, tokenResource);
+
+  // Log analytics for refresh token grant
+  await logOAuthAnalytics(request, 'refresh_token', client.id, refreshTokenRecord.userId);
 
   console.log('[RefreshToken] Tokens refreshed successfully');
   return NextResponse.json(tokens, { headers: getCorsHeaders() });
@@ -185,7 +217,7 @@ export async function POST(request: NextRequest) {
 
     // Handle refresh token grant
     if (grant_type === 'refresh_token') {
-      return await handleRefreshTokenGrant(refresh_token!, client, client_secret ?? undefined, resource);
+      return await handleRefreshTokenGrant(request, refresh_token!, client, client_secret ?? undefined, resource);
     }
 
     // Continue with authorization code grant (existing logic)
@@ -257,6 +289,17 @@ export async function POST(request: NextRequest) {
       client.id, 
       authCode.userId, 
       resource || authCode.resource || undefined
+    );
+
+    // Log analytics for authorization code grant
+    await logOAuthAnalytics(
+      request, 
+      'authorization_code', 
+      client.id, 
+      authCode.userId,
+      [], // Scopes would be extracted from auth code in full implementation
+      !!authCode.codeChallenge,
+      authCode.redirectUri
     );
 
     console.log("Access token and refresh token created.");

@@ -23,6 +23,10 @@ interface RequestAnalytics {
   platform?: string;
   mcpMethod?: string;
   toolName?: string;
+  oauthGrantType?: string;
+  tokenScopes?: string[];
+  usePKCE?: boolean;
+  redirectUri?: string;
 }
 
 interface SecurityEvent {
@@ -109,7 +113,11 @@ class OptimizedAnalyticsCollector {
             clientType: req.clientType,
             platform: req.platform,
             mcpMethod: req.mcpMethod,
-            toolName: req.toolName
+            toolName: req.toolName,
+            oauthGrantType: req.oauthGrantType,
+            tokenScopes: req.tokenScopes || [],
+            usePKCE: req.usePKCE,
+            redirectUri: req.redirectUri
           })),
           skipDuplicates: true
         });

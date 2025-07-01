@@ -182,6 +182,12 @@ model AnalyticsRequest {
   mcpMethod String? // "tools/list", "tools/call", etc
   toolName  String? // specific tool being called
 
+  // OAuth-specific tracking
+  oauthGrantType String? // "authorization_code", "refresh_token", "client_credentials"
+  tokenScopes    String[] // OAuth scopes granted/requested
+  usePKCE        Boolean? // Whether PKCE was used in this flow
+  redirectUri    String? // OAuth redirect URI used
+
   // Indexes for fast queries
   @@index([timestamp])
   @@index([endpoint])
@@ -194,6 +200,8 @@ model AnalyticsRequest {
   @@index([timestamp, userId])
   @@index([organization])
   @@index([ssoProvider])
+  @@index([oauthGrantType])
+  @@index([usePKCE])
 }
 
 enum SecurityEventType {
@@ -207,6 +215,9 @@ enum SecurityEventType {
   PRIVILEGE_ESCALATION
   MALFORMED_REQUEST
   BRUTE_FORCE_ATTEMPT
+  OAUTH_INVALID_CLIENT
+  OAUTH_INVALID_GRANT
+  OAUTH_INVALID_SCOPE
 }
 
 model AnalyticsSecurity {

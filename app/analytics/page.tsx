@@ -9,12 +9,17 @@ import {
   SecurityPanel,
   LoadingSkeleton,
   DashboardHeader,
-  StatusBadge
+  StatusBadge,
+  OAuthOverview,
+  OAuthSecurityPanel,
+  OAuthClientActivity,
+  TokenExpiration,
+  GrantTypeDistribution,
+  ToolUsagePanel
 } from "@/components/analytics"
 import {
   BarChart3,
   Globe,
-  Users,
   Activity,
   Clock,
   AlertTriangle,
@@ -31,6 +36,65 @@ export default function AnalyticsPage() {
       avgResponseTime: number
       p95ResponseTime: number
       errorRate: number
+    }
+    oauth?: {
+      totalClients: number
+      activeTokens: number
+      tokenRefreshRate: number
+      pkceAdoption: number
+      clientGrowth?: string
+      tokenGrowth?: string
+      refreshGrowth?: string
+      pkceGrowth?: string
+      clients?: {
+        name: string
+        clientId: string
+        tokenCount: number
+        lastActivity: string
+        grantType: string
+        pkceEnabled: boolean
+      }[]
+      expiringTokens?: {
+        clientName: string
+        tokenCount: number
+        hoursUntilExpiry: number
+      }[]
+      grantTypes?: {
+        type: string
+        count: number
+        percentage: number
+      }[]
+    }
+    oauthSecurity?: {
+      totalEvents: number
+      invalidClientAttempts: number
+      invalidGrantAttempts: number
+      unauthorizedScopes: number
+      events?: {
+        clientName: string
+        clientId: string
+        eventType: string
+        severity: string
+        count: number
+        lastOccurred: string
+      }[]
+    }
+    toolUsage?: {
+      tools: {
+        toolName: string
+        mcpMethod: string
+        usageCount: number
+        uniqueUsers: number
+        avgResponseTime?: number
+      }[]
+      geographic: {
+        country: string
+        city?: string
+        count: number
+        percentage: number
+      }[]
+      totalCalls: number
+      activeUsers: number
     }
     topEndpoints?: { endpoint: string; count: number }[]
     geography?: { country: string; count: number }[]
@@ -104,10 +168,30 @@ export default function AnalyticsPage() {
 
 
   const getHealthStatus = () => {
-    if (!data?.performance) return { status: "unknown", color: "bg-muted" }
-    const { errorRate, avgResponseTime } = data.performance
-    if (errorRate > 5 || avgResponseTime > 1000) return { status: "critical", color: "bg-destructive" }
-    if (errorRate > 1 || avgResponseTime > 500) return { status: "warning", color: "bg-yellow-500" }
+    if (!data?.performance && !data?.oauth) return { status: "unknown", color: "bg-muted" }
+    
+    let criticalIssues = 0
+    let warningIssues = 0
+    
+    // Check performance health
+    if (data?.performance) {
+      const { errorRate, avgResponseTime } = data.performance
+      if (errorRate > 5 || avgResponseTime > 1000) criticalIssues++
+      else if (errorRate > 1 || avgResponseTime > 500) warningIssues++
+    }
+    
+    // Check OAuth security health
+    if (data?.oauthSecurity) {
+      const { invalidClientAttempts, invalidGrantAttempts, unauthorizedScopes } = data.oauthSecurity
+      if (invalidClientAttempts > 10 || invalidGrantAttempts > 20) criticalIssues++
+      else if (invalidClientAttempts > 5 || invalidGrantAttempts > 10 || unauthorizedScopes > 5) warningIssues++
+    }
+    
+    // Check PKCE adoption
+    if (data?.oauth && data.oauth.pkceAdoption < 50) warningIssues++
+    
+    if (criticalIssues > 0) return { status: "critical", color: "bg-destructive" }
+    if (warningIssues > 0) return { status: "warning", color: "bg-yellow-500" }
     return { status: "healthy", color: "bg-green-500" }
   }
 
@@ -193,108 +277,72 @@ export default function AnalyticsPage() {
 
       <div className="container mx-auto px-6 py-8 max-w-7xl space-y-8">
 
-        {/* Performance Overview */}
-        {data.performance && (
-          <section aria-labelledby="performance-title" className="space-y-6">
-            <h2 id="performance-title" className="sr-only">
-              Performance Overview
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <MetricCard
-                title="Total Requests"
-                value={data.performance.totalRequests.toLocaleString()}
-                icon={BarChart3}
-                variant="primary"
-                change="+12.5%"
-                changeType="positive"
-                subtitle="vs last period"
-              />
-              <MetricCard
-                title="Avg Response"
-                value={`${data.performance.avgResponseTime}ms`}
-                icon={Clock}
-                variant="primary"
-                change={data.performance.avgResponseTime < 200 ? "-8%" : "+15%"}
-                changeType={data.performance.avgResponseTime < 200 ? "positive" : "negative"}
-                subtitle="response time"
-              />
-              <MetricCard
-                title="P95 Response"
-                value={`${data.performance.p95ResponseTime}ms`}
-                icon={TrendingUp}
-                variant="secondary"
-                change="+3.2%"
-                changeType="neutral"
-                subtitle="95th percentile"
-              />
-              <MetricCard
-                title="Error Rate"
-                value={`${data.performance.errorRate}%`}
-                icon={data.performance.errorRate > 5 ? AlertTriangle : CheckCircle}
-                variant="secondary"
-                change={data.performance.errorRate > 5 ? "+2.1%" : "-0.5%"}
-                changeType={data.performance.errorRate > 5 ? "negative" : "positive"}
-                subtitle="error percentage"
-              />
-            </div>
-          </section>
+        {/* OAuth Overview */}
+        {data.oauth && (
+          <OAuthOverview
+            totalClients={data.oauth.totalClients}
+            activeTokens={data.oauth.activeTokens}
+            tokenRefreshRate={data.oauth.tokenRefreshRate}
+            pkceAdoption={data.oauth.pkceAdoption}
+            clientGrowth={data.oauth.clientGrowth}
+            tokenGrowth={data.oauth.tokenGrowth}
+            refreshGrowth={data.oauth.refreshGrowth}
+            pkceGrowth={data.oauth.pkceGrowth}
+          />
         )}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Endpoints & Geography */}
+          {/* Left Column - OAuth Client Management */}
           <div className="space-y-8">
-            {/* Top Endpoints */}
-            {data.topEndpoints && data.topEndpoints.length > 0 && (
-              <DataTable
-                title="Popular Endpoints"
-                icon={Server}
-                data={data.topEndpoints.map(endpoint => ({
-                  primary: endpoint.endpoint,
-                  value: endpoint.count
-                }))}
-                emptyMessage="No endpoint data available"
+            {/* OAuth Client Activity */}
+            {data.oauth?.clients && data.oauth.clients.length > 0 && (
+              <OAuthClientActivity 
+                clients={data.oauth.clients}
+                title="Active OAuth Clients"
+                maxItems={6}
               />
             )}
 
-            {/* Geographic Distribution */}
-            {data.geography && data.geography.length > 0 && (
-              <DataTable
-                title="Geographic Distribution"
-                icon={Globe}
-                data={data.geography.map(country => ({
-                  primary: country.country,
-                  value: country.count
-                }))}
-                emptyMessage="No geographic data available"
+            {/* Token Expiration Tracking */}
+            {data.oauth?.expiringTokens && data.oauth.expiringTokens.length > 0 && (
+              <TokenExpiration expiringTokens={data.oauth.expiringTokens} />
+            )}
+
+            {/* Grant Type Distribution */}
+            {data.oauth?.grantTypes && data.oauth.grantTypes.length > 0 && (
+              <GrantTypeDistribution grantTypes={data.oauth.grantTypes} />
+            )}
+          </div>
+
+          {/* Middle Column - Tool Usage & Geography */}
+          <div className="space-y-8">
+            {/* Enhanced Tool Usage Panel */}
+            {data.toolUsage && (
+              <ToolUsagePanel
+                toolUsage={data.toolUsage.tools}
+                geographicUsage={data.toolUsage.geographic}
+                totalCalls={data.toolUsage.totalCalls}
+                activeUsers={data.toolUsage.activeUsers}
               />
             )}
           </div>
 
-          {/* Middle Column - Enterprise Analytics */}
+          {/* Right Column - Security Focus */}
           <div className="space-y-8">
-
-
-            {/* Tool Usage */}
-            {data.enterprise?.toolUsage && data.enterprise.toolUsage.length > 0 && (
-              <DataTable
-                title="Popular Tools"
-                icon={Activity}
-                data={data.enterprise.toolUsage.map(tool => ({
-                  primary: tool.toolName,
-                  secondary: tool.mcpMethod,
-                  value: `${tool.usageCount} calls`,
-                  badge: `${tool.uniqueUsers} users`
-                }))}
-                emptyMessage="No tool usage data available"
-                maxItems={4}
+            {/* OAuth Security Panel */}
+            {data.oauthSecurity && (
+              <OAuthSecurityPanel
+                totalEvents={data.oauthSecurity.totalEvents}
+                oauthEvents={data.oauthSecurity.events}
+                invalidClientAttempts={data.oauthSecurity.invalidClientAttempts}
+                invalidGrantAttempts={data.oauthSecurity.invalidGrantAttempts}
+                unauthorizedScopes={data.oauthSecurity.unauthorizedScopes}
               />
             )}
-          </div>
 
-          {/* Right Column - Security */}
-          <div className="space-y-8">
-            {data.security && (
+            {/* General Security Events (Fallback) */}
+            {data.security && !data.oauthSecurity && (
               <SecurityPanel
                 eventCount={data.security.eventCount || 0}
                 byOrganization={data.security.byOrganization}

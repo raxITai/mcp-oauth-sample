@@ -231,7 +231,11 @@ exports.Prisma.AnalyticsRequestScalarFieldEnum = {
   clientType: 'clientType',
   platform: 'platform',
   mcpMethod: 'mcpMethod',
-  toolName: 'toolName'
+  toolName: 'toolName',
+  oauthGrantType: 'oauthGrantType',
+  tokenScopes: 'tokenScopes',
+  usePKCE: 'usePKCE',
+  redirectUri: 'redirectUri'
 };
 
 exports.Prisma.AnalyticsSecurityScalarFieldEnum = {
@@ -290,7 +294,10 @@ exports.SecurityEventType = exports.$Enums.SecurityEventType = {
   UNUSUAL_LOCATION: 'UNUSUAL_LOCATION',
   PRIVILEGE_ESCALATION: 'PRIVILEGE_ESCALATION',
   MALFORMED_REQUEST: 'MALFORMED_REQUEST',
-  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT'
+  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT',
+  OAUTH_INVALID_CLIENT: 'OAUTH_INVALID_CLIENT',
+  OAUTH_INVALID_GRANT: 'OAUTH_INVALID_GRANT',
+  OAUTH_INVALID_SCOPE: 'OAUTH_INVALID_SCOPE'
 };
 
 exports.Prisma.ModelName = {

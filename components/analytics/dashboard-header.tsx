@@ -20,18 +20,6 @@ interface DashboardHeaderProps {
   className?: string
 }
 
-function getStatusColor(status: string) {
-  switch (status) {
-    case "healthy":
-      return "bg-green-500"
-    case "warning":
-      return "bg-yellow-500"
-    case "critical":
-      return "bg-destructive"
-    default:
-      return "bg-base-400"
-  }
-}
 
 function getStatusBadge(status: string) {
   const baseClasses = "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
@@ -53,7 +41,6 @@ export function DashboardHeader({
   subtitle,
   lastUpdated,
   timeRange,
-  status = "unknown",
   serverName,
   serverUrl,
   children,

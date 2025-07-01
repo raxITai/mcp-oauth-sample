@@ -83,7 +83,10 @@ export namespace $Enums {
   UNUSUAL_LOCATION: 'UNUSUAL_LOCATION',
   PRIVILEGE_ESCALATION: 'PRIVILEGE_ESCALATION',
   MALFORMED_REQUEST: 'MALFORMED_REQUEST',
-  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT'
+  BRUTE_FORCE_ATTEMPT: 'BRUTE_FORCE_ATTEMPT',
+  OAUTH_INVALID_CLIENT: 'OAUTH_INVALID_CLIENT',
+  OAUTH_INVALID_GRANT: 'OAUTH_INVALID_GRANT',
+  OAUTH_INVALID_SCOPE: 'OAUTH_INVALID_SCOPE'
 };
 
 export type SecurityEventType = (typeof SecurityEventType)[keyof typeof SecurityEventType]
@@ -12203,6 +12206,9 @@ export namespace Prisma {
     platform: string | null
     mcpMethod: string | null
     toolName: string | null
+    oauthGrantType: string | null
+    usePKCE: boolean | null
+    redirectUri: string | null
   }
 
   export type AnalyticsRequestMaxAggregateOutputType = {
@@ -12226,6 +12232,9 @@ export namespace Prisma {
     platform: string | null
     mcpMethod: string | null
     toolName: string | null
+    oauthGrantType: string | null
+    usePKCE: boolean | null
+    redirectUri: string | null
   }
 
   export type AnalyticsRequestCountAggregateOutputType = {
@@ -12250,6 +12259,10 @@ export namespace Prisma {
     platform: number
     mcpMethod: number
     toolName: number
+    oauthGrantType: number
+    tokenScopes: number
+    usePKCE: number
+    redirectUri: number
     _all: number
   }
 
@@ -12285,6 +12298,9 @@ export namespace Prisma {
     platform?: true
     mcpMethod?: true
     toolName?: true
+    oauthGrantType?: true
+    usePKCE?: true
+    redirectUri?: true
   }
 
   export type AnalyticsRequestMaxAggregateInputType = {
@@ -12308,6 +12324,9 @@ export namespace Prisma {
     platform?: true
     mcpMethod?: true
     toolName?: true
+    oauthGrantType?: true
+    usePKCE?: true
+    redirectUri?: true
   }
 
   export type AnalyticsRequestCountAggregateInputType = {
@@ -12332,6 +12351,10 @@ export namespace Prisma {
     platform?: true
     mcpMethod?: true
     toolName?: true
+    oauthGrantType?: true
+    tokenScopes?: true
+    usePKCE?: true
+    redirectUri?: true
     _all?: true
   }
 
@@ -12443,6 +12466,10 @@ export namespace Prisma {
     platform: string | null
     mcpMethod: string | null
     toolName: string | null
+    oauthGrantType: string | null
+    tokenScopes: string[]
+    usePKCE: boolean | null
+    redirectUri: string | null
     _count: AnalyticsRequestCountAggregateOutputType | null
     _avg: AnalyticsRequestAvgAggregateOutputType | null
     _sum: AnalyticsRequestSumAggregateOutputType | null
@@ -12486,6 +12513,10 @@ export namespace Prisma {
     platform?: boolean
     mcpMethod?: boolean
     toolName?: boolean
+    oauthGrantType?: boolean
+    tokenScopes?: boolean
+    usePKCE?: boolean
+    redirectUri?: boolean
     client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
     user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
     mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
@@ -12513,6 +12544,10 @@ export namespace Prisma {
     platform?: boolean
     mcpMethod?: boolean
     toolName?: boolean
+    oauthGrantType?: boolean
+    tokenScopes?: boolean
+    usePKCE?: boolean
+    redirectUri?: boolean
     client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
     user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
     mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
@@ -12540,6 +12575,10 @@ export namespace Prisma {
     platform?: boolean
     mcpMethod?: boolean
     toolName?: boolean
+    oauthGrantType?: boolean
+    tokenScopes?: boolean
+    usePKCE?: boolean
+    redirectUri?: boolean
     client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
     user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
     mcpServer?: boolean | AnalyticsRequest$mcpServerArgs<ExtArgs>
@@ -12567,9 +12606,13 @@ export namespace Prisma {
     platform?: boolean
     mcpMethod?: boolean
     toolName?: boolean
+    oauthGrantType?: boolean
+    tokenScopes?: boolean
+    usePKCE?: boolean
+    redirectUri?: boolean
   }
 
-  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "mcpServerId" | "ssoProvider" | "userRole" | "scopes" | "organization" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform" | "mcpMethod" | "toolName", ExtArgs["result"]["analyticsRequest"]>
+  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "mcpServerId" | "ssoProvider" | "userRole" | "scopes" | "organization" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform" | "mcpMethod" | "toolName" | "oauthGrantType" | "tokenScopes" | "usePKCE" | "redirectUri", ExtArgs["result"]["analyticsRequest"]>
   export type AnalyticsRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
     user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
@@ -12615,6 +12658,10 @@ export namespace Prisma {
       platform: string | null
       mcpMethod: string | null
       toolName: string | null
+      oauthGrantType: string | null
+      tokenScopes: string[]
+      usePKCE: boolean | null
+      redirectUri: string | null
     }, ExtArgs["result"]["analyticsRequest"]>
     composites: {}
   }
@@ -13062,6 +13109,10 @@ export namespace Prisma {
     readonly platform: FieldRef<"AnalyticsRequest", 'String'>
     readonly mcpMethod: FieldRef<"AnalyticsRequest", 'String'>
     readonly toolName: FieldRef<"AnalyticsRequest", 'String'>
+    readonly oauthGrantType: FieldRef<"AnalyticsRequest", 'String'>
+    readonly tokenScopes: FieldRef<"AnalyticsRequest", 'String[]'>
+    readonly usePKCE: FieldRef<"AnalyticsRequest", 'Boolean'>
+    readonly redirectUri: FieldRef<"AnalyticsRequest", 'String'>
   }
     
 
@@ -15028,7 +15079,11 @@ export namespace Prisma {
     clientType: 'clientType',
     platform: 'platform',
     mcpMethod: 'mcpMethod',
-    toolName: 'toolName'
+    toolName: 'toolName',
+    oauthGrantType: 'oauthGrantType',
+    tokenScopes: 'tokenScopes',
+    usePKCE: 'usePKCE',
+    redirectUri: 'redirectUri'
   };
 
   export type AnalyticsRequestScalarFieldEnum = (typeof AnalyticsRequestScalarFieldEnum)[keyof typeof AnalyticsRequestScalarFieldEnum]
@@ -15147,6 +15202,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'SecurityEventType'
    */
   export type EnumSecurityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecurityEventType'>
@@ -15171,13 +15233,6 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -15857,6 +15912,10 @@ export namespace Prisma {
     platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
     toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    oauthGrantType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    tokenScopes?: StringNullableListFilter<"AnalyticsRequest">
+    usePKCE?: BoolNullableFilter<"AnalyticsRequest"> | boolean | null
+    redirectUri?: StringNullableFilter<"AnalyticsRequest"> | string | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
@@ -15884,6 +15943,10 @@ export namespace Prisma {
     platform?: SortOrderInput | SortOrder
     mcpMethod?: SortOrderInput | SortOrder
     toolName?: SortOrderInput | SortOrder
+    oauthGrantType?: SortOrderInput | SortOrder
+    tokenScopes?: SortOrder
+    usePKCE?: SortOrderInput | SortOrder
+    redirectUri?: SortOrderInput | SortOrder
     client?: ClientOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     mcpServer?: MCPServerOrderByWithRelationInput
@@ -15914,6 +15977,10 @@ export namespace Prisma {
     platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
     toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    oauthGrantType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    tokenScopes?: StringNullableListFilter<"AnalyticsRequest">
+    usePKCE?: BoolNullableFilter<"AnalyticsRequest"> | boolean | null
+    redirectUri?: StringNullableFilter<"AnalyticsRequest"> | string | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     mcpServer?: XOR<MCPServerNullableScalarRelationFilter, MCPServerWhereInput> | null
@@ -15941,6 +16008,10 @@ export namespace Prisma {
     platform?: SortOrderInput | SortOrder
     mcpMethod?: SortOrderInput | SortOrder
     toolName?: SortOrderInput | SortOrder
+    oauthGrantType?: SortOrderInput | SortOrder
+    tokenScopes?: SortOrder
+    usePKCE?: SortOrderInput | SortOrder
+    redirectUri?: SortOrderInput | SortOrder
     _count?: AnalyticsRequestCountOrderByAggregateInput
     _avg?: AnalyticsRequestAvgOrderByAggregateInput
     _max?: AnalyticsRequestMaxOrderByAggregateInput
@@ -15973,6 +16044,10 @@ export namespace Prisma {
     platform?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     mcpMethod?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     toolName?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    oauthGrantType?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
+    tokenScopes?: StringNullableListFilter<"AnalyticsRequest">
+    usePKCE?: BoolNullableWithAggregatesFilter<"AnalyticsRequest"> | boolean | null
+    redirectUri?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
   }
 
   export type AnalyticsSecurityWhereInput = {
@@ -16808,6 +16883,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
     client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
     user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
     mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
@@ -16835,6 +16914,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsRequestUpdateInput = {
@@ -16856,6 +16939,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
     user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
     mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
@@ -16883,6 +16970,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestCreateManyInput = {
@@ -16907,6 +16998,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsRequestUpdateManyMutationInput = {
@@ -16928,6 +17023,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestUncheckedUpdateManyInput = {
@@ -16952,6 +17051,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityCreateInput = {
@@ -17653,6 +17756,11 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type ClientNullableScalarRelationFilter = {
     is?: ClientWhereInput | null
     isNot?: ClientWhereInput | null
@@ -17685,6 +17793,10 @@ export namespace Prisma {
     platform?: SortOrder
     mcpMethod?: SortOrder
     toolName?: SortOrder
+    oauthGrantType?: SortOrder
+    tokenScopes?: SortOrder
+    usePKCE?: SortOrder
+    redirectUri?: SortOrder
   }
 
   export type AnalyticsRequestAvgOrderByAggregateInput = {
@@ -17713,6 +17825,9 @@ export namespace Prisma {
     platform?: SortOrder
     mcpMethod?: SortOrder
     toolName?: SortOrder
+    oauthGrantType?: SortOrder
+    usePKCE?: SortOrder
+    redirectUri?: SortOrder
   }
 
   export type AnalyticsRequestMinOrderByAggregateInput = {
@@ -17736,6 +17851,9 @@ export namespace Prisma {
     platform?: SortOrder
     mcpMethod?: SortOrder
     toolName?: SortOrder
+    oauthGrantType?: SortOrder
+    usePKCE?: SortOrder
+    redirectUri?: SortOrder
   }
 
   export type AnalyticsRequestSumOrderByAggregateInput = {
@@ -17757,6 +17875,14 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type EnumSecurityEventTypeFilter<$PrismaModel = never> = {
@@ -18705,6 +18831,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type AnalyticsRequestCreatetokenScopesInput = {
+    set: string[]
+  }
+
   export type ClientCreateNestedOneWithoutAnalyticsRequestsInput = {
     create?: XOR<ClientCreateWithoutAnalyticsRequestsInput, ClientUncheckedCreateWithoutAnalyticsRequestsInput>
     connectOrCreate?: ClientCreateOrConnectWithoutAnalyticsRequestsInput
@@ -18734,6 +18864,15 @@ export namespace Prisma {
   export type AnalyticsRequestUpdatescopesInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type AnalyticsRequestUpdatetokenScopesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type ClientUpdateOneWithoutAnalyticsRequestsNestedInput = {
@@ -18983,6 +19122,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -19008,6 +19152,14 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumSecurityEventTypeFilter<$PrismaModel = never> = {
@@ -19272,6 +19424,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
     client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
     mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
   }
@@ -19297,6 +19453,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsRequestCreateOrConnectWithoutUserInput = {
@@ -19582,6 +19742,10 @@ export namespace Prisma {
     platform?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpMethod?: StringNullableFilter<"AnalyticsRequest"> | string | null
     toolName?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    oauthGrantType?: StringNullableFilter<"AnalyticsRequest"> | string | null
+    tokenScopes?: StringNullableListFilter<"AnalyticsRequest">
+    usePKCE?: BoolNullableFilter<"AnalyticsRequest"> | boolean | null
+    redirectUri?: StringNullableFilter<"AnalyticsRequest"> | string | null
   }
 
   export type AnalyticsSecurityUpsertWithWhereUniqueWithoutUserInput = {
@@ -19921,6 +20085,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
     user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
     mcpServer?: MCPServerCreateNestedOneWithoutRequestsInput
   }
@@ -19946,6 +20114,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsRequestCreateOrConnectWithoutClientInput = {
@@ -20606,6 +20778,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
     client?: ClientCreateNestedOneWithoutAnalyticsRequestsInput
     user?: UserCreateNestedOneWithoutAnalyticsRequestsInput
   }
@@ -20631,6 +20807,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsRequestCreateOrConnectWithoutMcpServerInput = {
@@ -21232,6 +21412,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsSecurityCreateManyUserInput = {
@@ -21464,6 +21648,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
     mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
   }
@@ -21489,6 +21677,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestUncheckedUpdateManyWithoutUserInput = {
@@ -21512,6 +21704,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityUpdateWithoutUserInput = {
@@ -21628,6 +21824,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsSecurityCreateManyClientInput = {
@@ -21760,6 +21960,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
     mcpServer?: MCPServerUpdateOneWithoutRequestsNestedInput
   }
@@ -21785,6 +21989,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestUncheckedUpdateManyWithoutClientInput = {
@@ -21808,6 +22016,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityUpdateWithoutClientInput = {
@@ -21894,6 +22106,10 @@ export namespace Prisma {
     platform?: string | null
     mcpMethod?: string | null
     toolName?: string | null
+    oauthGrantType?: string | null
+    tokenScopes?: AnalyticsRequestCreatetokenScopesInput | string[]
+    usePKCE?: boolean | null
+    redirectUri?: string | null
   }
 
   export type AnalyticsSecurityCreateManyMcpServerInput = {
@@ -21936,6 +22152,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
     client?: ClientUpdateOneWithoutAnalyticsRequestsNestedInput
     user?: UserUpdateOneWithoutAnalyticsRequestsNestedInput
   }
@@ -21961,6 +22181,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsRequestUncheckedUpdateManyWithoutMcpServerInput = {
@@ -21984,6 +22208,10 @@ export namespace Prisma {
     platform?: NullableStringFieldUpdateOperationsInput | string | null
     mcpMethod?: NullableStringFieldUpdateOperationsInput | string | null
     toolName?: NullableStringFieldUpdateOperationsInput | string | null
+    oauthGrantType?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenScopes?: AnalyticsRequestUpdatetokenScopesInput | string[]
+    usePKCE?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    redirectUri?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AnalyticsSecurityUpdateWithoutMcpServerInput = {

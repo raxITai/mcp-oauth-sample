@@ -1,5 +1,5 @@
 import type React from "react"
-import { CheckCircle, AlertTriangle, Shield, Users, TrendingUp } from "lucide-react"
+import { CheckCircle, AlertTriangle, Shield, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Accordion,

@@ -25,8 +25,8 @@ export async function middleware(request: NextRequest) {
   const startTime = Date.now();
   const pathname = request.nextUrl.pathname;
   
-  // Only collect analytics for MCP endpoints
-  const shouldCollectAnalytics = pathname.startsWith('/mcp/');
+  // Collect analytics for MCP and OAuth endpoints
+  const shouldCollectAnalytics = pathname.startsWith('/mcp/') || pathname.startsWith('/api/oauth/');
   
   // Let the request proceed
   const response = NextResponse.next();
@@ -61,10 +61,31 @@ export async function middleware(request: NextRequest) {
         let mcpMethod: string | undefined;
         let toolName: string | undefined;
         
+        // OAuth-specific context
+        let oauthGrantType: string | undefined;
+        let tokenScopes: string[] = [];
+        let usePKCE: boolean | undefined;
+        let redirectUri: string | undefined;
+        
         // Extract from request path/body if available
         if (pathname.includes('/mcp/')) {
-          // This would be more sophisticated in practice
           mcpMethod = request.method === 'POST' ? 'tools/call' : 'tools/list';
+        } else if (pathname.includes('/oauth/')) {
+          // Extract OAuth-specific data from request
+          if (pathname.includes('/authorize')) {
+            const url = new URL(request.url);
+            oauthGrantType = 'authorization_code';
+            usePKCE = url.searchParams.has('code_challenge');
+            redirectUri = url.searchParams.get('redirect_uri') || undefined;
+            const scope = url.searchParams.get('scope');
+            if (scope) tokenScopes = scope.split(' ');
+          } else if (pathname.includes('/token')) {
+            const contentType = request.headers.get('content-type');
+            if (contentType?.includes('application/x-www-form-urlencoded')) {
+              // Would need to parse body for grant_type, but that's complex in middleware
+              // We'll set this in the OAuth route handlers instead
+            }
+          }
         }
         
         // Enhanced analytics data with enterprise context
@@ -84,7 +105,11 @@ export async function middleware(request: NextRequest) {
           ipAddress: ip,
           userAgent,
           mcpMethod,
-          toolName
+          toolName,
+          oauthGrantType,
+          tokenScopes,
+          usePKCE,
+          redirectUri
         };
 
         // Make a fetch call to our analytics API endpoint
@@ -142,7 +167,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Only match MCP endpoints for analytics collection
+    // Match MCP and OAuth endpoints for analytics collection
     '/mcp/:path*',
+    '/api/oauth/:path*',
   ],
 };

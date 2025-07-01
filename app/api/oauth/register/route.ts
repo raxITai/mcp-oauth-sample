@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { prisma } from '@/app/prisma';
 import { randomBytes } from 'crypto';
+import { analyticsDB } from '@/lib/analytics-db';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -32,6 +33,29 @@ export async function POST(request: NextRequest) {
         userId: null, // Allow unauthenticated clients
       },
     });
+
+    // Log client registration analytics
+    try {
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+                 request.headers.get('x-real-ip') || 
+                 '127.0.0.1';
+      
+      await analyticsDB.logRequest({
+        timestamp: new Date(),
+        endpoint: '/api/oauth/register',
+        method: request.method,
+        statusCode: 200,
+        responseTime: 0,
+        clientId: newClient.id,
+        ipAddress: ip,
+        userAgent: request.headers.get('user-agent') || '',
+        oauthGrantType: 'client_registration',
+        tokenScopes: [],
+        redirectUri: redirect_uris[0] // First redirect URI
+      });
+    } catch (analyticsError) {
+      console.warn('Failed to log client registration analytics:', analyticsError);
+    }
 
     const response = NextResponse.json({
       client_id: newClient.clientId,
