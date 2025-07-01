@@ -35,11 +35,11 @@ interface SecurityPanelProps {
 function getSeverityColor(severity: string) {
   switch (severity.toLowerCase()) {
     case "low":
-      return "bg-background text-green-600 border-green-500/20"
+      return "bg-background text-primary-600 border-primary-300/20"
     case "medium":
-      return "bg-background text-yellow-600 border-yellow-500/20"
+      return "bg-background text-secondary-600 border-secondary-300/20"
     case "high":
-      return "bg-background text-orange-600 border-orange-500/20"
+      return "bg-background text-destructive border-destructive/20"
     case "critical":
       return "bg-background text-destructive border-destructive/20"
     default:
@@ -103,7 +103,7 @@ export function SecurityPanel({
             </div>
             {isSecure ? (
               <CheckCircle 
-                className="w-10 h-10 text-green-500" 
+                className="w-10 h-10 text-primary-600" 
                 aria-label="Secure status indicator"
               />
             ) : (
@@ -173,7 +173,7 @@ export function SecurityPanel({
               >
                 <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/50">
                   <div className="flex items-center gap-3">
-                    <TrendingUp className="w-5 h-5 text-orange-600" />
+                    <TrendingUp className="w-5 h-5 text-secondary-600" />
                     <span className="text-base font-semibold text-foreground">
                       Privilege Escalations ({privilegeEscalations.length})
                     </span>
@@ -208,7 +208,7 @@ export function SecurityPanel({
               >
                 <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/50">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
                     <span className="text-base font-semibold text-foreground">
                       Security Status Details
                     </span>
@@ -217,11 +217,11 @@ export function SecurityPanel({
                 <AccordionContent className="px-4 pb-4">
                   <div className="text-center py-6 space-y-4">
                     <CheckCircle 
-                      className="w-12 h-12 text-green-500 mx-auto" 
+                      className="w-12 h-12 text-primary-600 mx-auto" 
                       aria-hidden="true"
                     />
                     <div className="space-y-2">
-                      <p className="text-base text-green-600 font-medium">All Systems Secure</p>
+                      <p className="text-base text-primary-600 font-medium">All Systems Secure</p>
                       <p className="text-sm text-muted-foreground">
                         No security events or privilege escalations detected in the selected time period.
                       </p>

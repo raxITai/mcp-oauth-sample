@@ -26,13 +26,13 @@ function getStatusBadge(status: string) {
   
   switch (status) {
     case "healthy":
-      return cn(baseClasses, "bg-green-500 text-white")
+      return cn(baseClasses, "bg-primary-600 text-primary-foreground")
     case "warning":
-      return cn(baseClasses, "bg-yellow-500 text-white")
+      return cn(baseClasses, "bg-secondary-600 text-secondary-foreground")
     case "critical":
-      return cn(baseClasses, "bg-destructive text-white")
+      return cn(baseClasses, "bg-destructive text-primary-foreground")
     default:
-      return cn(baseClasses, "bg-base-400 text-white")
+      return cn(baseClasses, "bg-base-400 text-primary-foreground")
   }
 }
 
@@ -54,7 +54,7 @@ export function DashboardHeader({
       )}
       role="banner"
     >
-      <div className="container mx-auto px-6 py-6">
+      <div className="container mx-auto px-6 py-6 max-w-7xl">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div className="space-y-4">
             {/* Title - Design System: fontSize.3xl, fontWeight.bold, color.foreground */}

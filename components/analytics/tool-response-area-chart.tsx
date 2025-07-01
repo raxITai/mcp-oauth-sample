@@ -127,7 +127,7 @@ export function ToolResponseAreaChart({
     
   const getTrendIcon = () => {
     if (trendPercentage > 5) return <TrendingUp className="h-4 w-4 text-destructive" />
-    if (trendPercentage < -5) return <TrendingDown className="h-4 w-4 text-green-500" />
+    if (trendPercentage < -5) return <TrendingDown className="h-4 w-4 text-primary-600" />
     return <Minus className="h-4 w-4 text-muted-foreground" />
   }
   

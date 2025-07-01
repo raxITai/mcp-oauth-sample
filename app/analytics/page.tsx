@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
   SecurityPanel,
   LoadingSkeleton,
@@ -20,6 +23,11 @@ import {
   Activity,
   AlertTriangle,
   Zap,
+  ChevronDown,
+  ChevronUp,
+  Shield,
+  TrendingUp,
+  Users,
 } from "lucide-react"
 
 export default function AnalyticsPage() {
@@ -133,6 +141,11 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeRange, setTimeRange] = useState("24")
+  const [expandedSections, setExpandedSections] = useState({
+    oauth: true,
+    security: false,
+    tools: false
+  })
 
   const fetchAnalytics = useCallback(async () => {
     try {
@@ -199,8 +212,8 @@ export default function AnalyticsPage() {
     if (data?.oauth && data.oauth.pkceAdoption < 50) warningIssues++
     
     if (criticalIssues > 0) return { status: "critical", color: "bg-destructive" }
-    if (warningIssues > 0) return { status: "warning", color: "bg-yellow-500" }
-    return { status: "healthy", color: "bg-green-500" }
+    if (warningIssues > 0) return { status: "warning", color: "bg-secondary-300" }
+    return { status: "healthy", color: "bg-primary-300" }
   }
 
   if (loading) {
@@ -240,6 +253,36 @@ export default function AnalyticsPage() {
   }
 
   const healthStatus = getHealthStatus()
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
+
+  const getAlertSummary = () => {
+    const alerts = []
+    
+    if (data?.oauthSecurity) {
+      const { invalidClientAttempts, invalidGrantAttempts, unauthorizedScopes } = data.oauthSecurity
+      if (invalidClientAttempts > 10) alerts.push({ type: 'critical', message: `${invalidClientAttempts} invalid client attempts` })
+      if (invalidGrantAttempts > 20) alerts.push({ type: 'critical', message: `${invalidGrantAttempts} invalid grant attempts` })
+      if (unauthorizedScopes > 5) alerts.push({ type: 'warning', message: `${unauthorizedScopes} unauthorized scope requests` })
+    }
+    
+    if (data?.performance) {
+      const { errorRate, avgResponseTime } = data.performance
+      if (errorRate > 5) alerts.push({ type: 'critical', message: `${errorRate}% error rate` })
+      if (avgResponseTime > 1000) alerts.push({ type: 'warning', message: `${avgResponseTime}ms avg response time` })
+    }
+    
+    if (data?.oauth && data.oauth.pkceAdoption < 50) {
+      alerts.push({ type: 'warning', message: `${data.oauth.pkceAdoption}% PKCE adoption` })
+    }
+    
+    return alerts
+  }
 
   return (
     <main className="min-h-screen bg-background" aria-labelledby="dashboard-title">
@@ -282,91 +325,205 @@ export default function AnalyticsPage() {
         </Button>
       </DashboardHeader>
 
-      <div className="container mx-auto px-6 py-8 max-w-7xl space-y-8">
+      <div className="container mx-auto px-6 py-6 max-w-7xl space-y-6">
 
-        {/* OAuth Overview */}
-        {data.oauth && (
-          <OAuthOverview
-            totalUsers={data.oauth.totalUsers}
-            activeUsers={data.oauth.activeUsers}
-            totalClients={data.oauth.totalClients}
-            activeTokens={data.oauth.activeTokens}
-            recentAuthorizations={data.oauth.recentAuthorizations}
-            tokenRefreshRate={data.oauth.tokenRefreshRate}
-            pkceAdoption={data.oauth.pkceAdoption}
-            userActivity={data.oauth.userActivity}
-            clientActivity={data.oauth.clientActivity}
-          />
+        {/* Priority Alert Bar */}
+        {data && getAlertSummary().length > 0 && (
+          <Card className="border-destructive/20 bg-destructive/5">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+                <CardTitle className="text-lg text-destructive">Active Alerts</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {getAlertSummary().map((alert, index) => (
+                  <Badge 
+                    key={index}
+                    variant={alert.type === 'critical' ? 'destructive' : 'secondary'}
+                    className="text-xs"
+                  >
+                    {alert.message}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         )}
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - OAuth Client Management */}
-          <div className="space-y-8">
-            {/* OAuth Client Activity */}
-            {data.oauth?.clients && data.oauth.clients.length > 0 && (
-              <OAuthClientActivity 
-                clients={data.oauth.clients}
-                title="Client-User Relationships"
-                maxItems={6}
-              />
-            )}
+        {/* Section 1: OAuth Information */}
+        <Collapsible open={expandedSections.oauth} onOpenChange={() => toggleSection('oauth')}>
+          <Card className="border-primary-300 dark:border-primary-600">
+            <CollapsibleTrigger asChild>
+              <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary-600/10 rounded-lg">
+                      <Users className="w-5 h-5 text-primary-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">OAuth Metrics</CardTitle>
+                      <CardDescription>Authentication and client management</CardDescription>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {data?.oauth && (
+                      <Badge variant="outline" className="text-xs">
+                        {data.oauth.activeUsers} active users
+                      </Badge>
+                    )}
+                    {expandedSections.oauth ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="pt-0 space-y-4">
+                {data?.oauth && (
+                  <OAuthOverview
+                    totalUsers={data.oauth.totalUsers}
+                    activeUsers={data.oauth.activeUsers}
+                    totalClients={data.oauth.totalClients}
+                    activeTokens={data.oauth.activeTokens}
+                    recentAuthorizations={data.oauth.recentAuthorizations}
+                    tokenRefreshRate={data.oauth.tokenRefreshRate}
+                    pkceAdoption={data.oauth.pkceAdoption}
+                    userActivity={data.oauth.userActivity}
+                    clientActivity={data.oauth.clientActivity}
+                  />
+                )}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  {data?.oauth?.clients && data.oauth.clients.length > 0 && (
+                    <OAuthClientActivity 
+                      clients={data.oauth.clients}
+                      title="Client-User Relationships"
+                      maxItems={6}
+                    />
+                  )}
+                  {data?.oauth?.expiringTokens && data.oauth.expiringTokens.length > 0 && (
+                    <TokenExpiration expiringTokens={data.oauth.expiringTokens} />
+                  )}
+                  {data?.oauth?.grantTypes && data.oauth.grantTypes.length > 0 && (
+                    <GrantTypeChart grantTypes={data.oauth.grantTypes} />
+                  )}
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
 
-            {/* Token Expiration Tracking */}
-            {data.oauth?.expiringTokens && data.oauth.expiringTokens.length > 0 && (
-              <TokenExpiration expiringTokens={data.oauth.expiringTokens} />
-            )}
+        {/* Section 2: Security */}
+        <Collapsible open={expandedSections.security} onOpenChange={() => toggleSection('security')}>
+          <Card className="border-destructive/20 dark:border-destructive/40">
+            <CollapsibleTrigger asChild>
+              <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-destructive/10 rounded-lg">
+                      <Shield className="w-5 h-5 text-destructive" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">Security Overview</CardTitle>
+                      <CardDescription>Critical security events and monitoring</CardDescription>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {data?.oauthSecurity && (
+                      <Badge variant="outline" className="text-xs">
+                        {data.oauthSecurity.totalEvents} events
+                      </Badge>
+                    )}
+                    {expandedSections.security ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="pt-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {data?.oauthSecurity && (
+                    <OAuthSecurityPanel
+                      totalEvents={data.oauthSecurity.totalEvents}
+                      oauthEvents={data.oauthSecurity.events}
+                      invalidClientAttempts={data.oauthSecurity.invalidClientAttempts}
+                      invalidGrantAttempts={data.oauthSecurity.invalidGrantAttempts}
+                      unauthorizedScopes={data.oauthSecurity.unauthorizedScopes}
+                    />
+                  )}
+                  {data?.security && !data.oauthSecurity && (
+                    <SecurityPanel
+                      eventCount={data.security.eventCount || 0}
+                      byOrganization={data.security.byOrganization}
+                      privilegeEscalations={data.security.privilegeEscalations}
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
 
-            {/* Grant Type Distribution - Pie Chart */}
-            {data.oauth?.grantTypes && data.oauth.grantTypes.length > 0 && (
-              <GrantTypeChart grantTypes={data.oauth.grantTypes} />
-            )}
-          </div>
-
-          {/* Middle Column - Tool Usage & Geography */}
-          <div className="space-y-8">
-            {/* Enhanced Tool Usage Panel */}
-            {data.toolUsage && (
-              <ToolUsagePanel
-                toolUsage={data.toolUsage.tools}
-                geographicUsage={data.toolUsage.geographic}
-                totalCalls={data.toolUsage.totalCalls}
-                activeUsers={data.toolUsage.activeUsers}
-              />
-            )}
-
-            {/* Tool Response Time Area Chart */}
-            {data.toolUsage?.timeSeries && data.toolUsage.timeSeries.length > 0 && (
-              <ToolResponseAreaChart 
-                data={data.toolUsage.timeSeries}
-                hoursBack={parseInt(timeRange)}
-              />
-            )}
-          </div>
-
-          {/* Right Column - Security Focus */}
-          <div className="space-y-8">
-            {/* OAuth Security Panel */}
-            {data.oauthSecurity && (
-              <OAuthSecurityPanel
-                totalEvents={data.oauthSecurity.totalEvents}
-                oauthEvents={data.oauthSecurity.events}
-                invalidClientAttempts={data.oauthSecurity.invalidClientAttempts}
-                invalidGrantAttempts={data.oauthSecurity.invalidGrantAttempts}
-                unauthorizedScopes={data.oauthSecurity.unauthorizedScopes}
-              />
-            )}
-
-            {/* General Security Events (Fallback) */}
-            {data.security && !data.oauthSecurity && (
-              <SecurityPanel
-                eventCount={data.security.eventCount || 0}
-                byOrganization={data.security.byOrganization}
-                privilegeEscalations={data.security.privilegeEscalations}
-              />
-            )}
-          </div>
-        </div>
+        {/* Section 3: MCP Tools & Performance */}
+        <Collapsible open={expandedSections.tools} onOpenChange={() => toggleSection('tools')}>
+          <Card className="border-secondary-300 dark:border-secondary-600">
+            <CollapsibleTrigger asChild>
+              <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-secondary-600/10 rounded-lg">
+                      <TrendingUp className="w-5 h-5 text-secondary-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">Performance & Tools</CardTitle>
+                      <CardDescription>Tool usage and response metrics</CardDescription>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {data?.toolUsage && (
+                      <Badge variant="outline" className="text-xs">
+                        {data.toolUsage.totalCalls} calls
+                      </Badge>
+                    )}
+                    {expandedSections.tools ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="pt-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {data?.toolUsage && (
+                    <ToolUsagePanel
+                      toolUsage={data.toolUsage.tools}
+                      geographicUsage={data.toolUsage.geographic}
+                      totalCalls={data.toolUsage.totalCalls}
+                      activeUsers={data.toolUsage.activeUsers}
+                    />
+                  )}
+                  {data?.toolUsage?.timeSeries && data.toolUsage.timeSeries.length > 0 && (
+                    <ToolResponseAreaChart 
+                      data={data.toolUsage.timeSeries}
+                      hoursBack={parseInt(timeRange)}
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
       </div>
     </main>
   )

@@ -39,9 +39,9 @@ export function OAuthSecurityPanel({
       case 'oauth_invalid_client':
         return <ShieldX className="w-4 h-4 text-destructive" />
       case 'oauth_invalid_grant':
-        return <AlertTriangle className="w-4 h-4 text-yellow-500" />
+        return <AlertTriangle className="w-4 h-4 text-secondary-600" />
       case 'oauth_invalid_scope':
-        return <Shield className="w-4 h-4 text-blue-500" />
+        return <Shield className="w-4 h-4 text-primary-600" />
       default:
         return <AlertTriangle className="w-4 h-4 text-muted-foreground" />
     }
@@ -52,11 +52,11 @@ export function OAuthSecurityPanel({
       case 'critical':
         return 'text-destructive bg-destructive/10'
       case 'high':
-        return 'text-orange-600 bg-orange-100 dark:bg-orange-900/20'
+        return 'text-destructive bg-destructive/10'
       case 'medium':
-        return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20'
+        return 'text-secondary-600 bg-secondary-300/20'
       case 'low':
-        return 'text-blue-600 bg-blue-100 dark:bg-blue-900/20'
+        return 'text-primary-600 bg-primary-100/50'
       default:
         return 'text-muted-foreground bg-muted'
     }
@@ -70,12 +70,12 @@ export function OAuthSecurityPanel({
           <div className="flex items-center gap-3">
             <div className={cn(
               "p-2 rounded-full",
-              hasSecurityIssues ? "bg-destructive/10" : "bg-green-100 dark:bg-green-900/20"
+              hasSecurityIssues ? "bg-destructive/10" : "bg-primary-100"
             )}>
               {hasSecurityIssues ? (
                 <Shield className="w-5 h-5 text-destructive" />
               ) : (
-                <ShieldCheck className="w-5 h-5 text-green-600" />
+                <ShieldCheck className="w-5 h-5 text-primary-600" />
               )}
             </div>
             <div>
@@ -94,7 +94,7 @@ export function OAuthSecurityPanel({
             "px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2",
             hasSecurityIssues 
               ? "bg-destructive/10 text-destructive" 
-              : "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+              : "bg-primary-100 text-primary-600"
           )}>
             {hasSecurityIssues ? (
               <>
@@ -173,7 +173,7 @@ export function OAuthSecurityPanel({
         {/* All Clear State */}
         {!hasSecurityIssues && (
           <div className="text-center py-6">
-            <ShieldCheck className="w-12 h-12 text-green-600 mx-auto mb-3" />
+            <ShieldCheck className="w-12 h-12 text-primary-600 mx-auto mb-3" />
             <h4 className="font-medium text-foreground mb-1">OAuth Security All Clear</h4>
             <p className="text-sm text-muted-foreground">
               No security events detected in your OAuth flows

@@ -65,8 +65,8 @@ export function ToolUsagePanel({
       {/* Tool Usage Statistics */}
       <div className="bg-background border border-border rounded-lg shadow-sm p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-full bg-primary/10">
-            <Wrench className="w-5 h-5 text-primary" />
+          <div className="p-2 rounded-full bg-primary-100">
+            <Wrench className="w-5 h-5 text-primary-600" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-foreground">Tool Usage Overview</h3>
@@ -116,8 +116,8 @@ export function ToolUsagePanel({
       {/* Performance Insights */}
       <div className="bg-background border border-border rounded-lg shadow-sm p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/20">
-            <Clock className="w-5 h-5 text-green-600" />
+          <div className="p-2 rounded-full bg-primary-100">
+            <Clock className="w-5 h-5 text-primary-600" />
           </div>
           <div>
             <h4 className="font-semibold text-foreground">Performance Insights</h4>
