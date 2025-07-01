@@ -4,8 +4,6 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
-  MetricCard,
-  DataTable,
   SecurityPanel,
   LoadingSkeleton,
   DashboardHeader,
@@ -19,13 +17,8 @@ import {
 } from "@/components/analytics"
 import {
   BarChart3,
-  Globe,
   Activity,
-  Clock,
   AlertTriangle,
-  CheckCircle,
-  TrendingUp,
-  Server,
   Zap,
 } from "lucide-react"
 
