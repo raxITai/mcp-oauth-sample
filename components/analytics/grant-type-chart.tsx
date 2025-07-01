@@ -72,13 +72,13 @@ export function GrantTypeChart({ grantTypes, className }: GrantTypeChartProps) {
 function formatGrantTypeName(type: string): string {
   switch (type) {
     case 'authorization_code':
-      return 'Authorization Code'
+      return 'AuthZ Code'
     case 'refresh_token':
       return 'Refresh Token'
     case 'client_credentials':
-      return 'Client Credentials'
+      return 'Client Cred'
     case 'client_registration':
-      return 'Client Registration'
+      return 'Client Rego'
     case 'device_code':
       return 'Device Code'
     default:

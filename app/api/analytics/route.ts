@@ -44,6 +44,7 @@ async function getEnhancedAnalytics(hours = 24) {
       privilegeEscalations, 
       toolUsage,
       toolGeography,
+      toolResponseTimeSeries,
       oauthMetrics,
       oauthClientActivity,
       expiringTokens,
@@ -59,6 +60,7 @@ async function getEnhancedAnalytics(hours = 24) {
       analyticsDB.getUserPrivilegeEscalations(168), // Last 7 days
       analyticsDB.getMCPToolUsage(hours),
       analyticsDB.getToolGeographyStats(hours),
+      analyticsDB.getToolResponseTimeTimeSeries(hours),
       analyticsDB.getOAuthMetrics(hours),
       analyticsDB.getOAuthClientActivity(hours, 6),
       analyticsDB.getExpiringTokens(24),
@@ -80,6 +82,7 @@ async function getEnhancedAnalytics(hours = 24) {
       toolUsage: {
         tools: toolUsage,
         geographic: toolGeography,
+        timeSeries: toolResponseTimeSeries,
         totalCalls: toolUsage.reduce((sum, tool) => sum + tool.usageCount, 0),
         activeUsers: toolUsage.reduce((sum, tool) => sum + tool.uniqueUsers, 0)
       },

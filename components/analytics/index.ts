@@ -9,3 +9,4 @@ export { OAuthClientActivity, TokenExpiration, GrantTypeDistribution } from "./o
 export { ToolUsagePanel } from "./tool-usage-panel"
 export { AnalyticsPieChart } from "./analytics-pie-chart"
 export { GrantTypeChart } from "./grant-type-chart"
+export { ToolResponseAreaChart } from "./tool-response-area-chart"

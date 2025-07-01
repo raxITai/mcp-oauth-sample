@@ -553,6 +553,42 @@ class OptimizedAnalyticsCollector {
     }));
   }
 
+  async getToolResponseTimeTimeSeries(hoursBack = 24) {
+    const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+
+    const result = await prisma.$queryRaw`
+      SELECT 
+        DATE_TRUNC('hour', timestamp) as hour,
+        "toolName",
+        AVG("responseTime") as avg_response_time,
+        COUNT(*) as call_count,
+        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY "responseTime") as p95_response_time,
+        PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY "responseTime") as p50_response_time
+      FROM "AnalyticsRequest"
+      WHERE timestamp >= ${cutoff}
+        AND "toolName" IS NOT NULL
+        AND "statusCode" < 400
+      GROUP BY hour, "toolName"
+      ORDER BY hour, "toolName"
+    ` as Array<{
+      hour: Date;
+      toolName: string;
+      avg_response_time: number;
+      call_count: bigint;
+      p95_response_time: number;
+      p50_response_time: number;
+    }>;
+
+    return result.map(r => ({
+      hour: r.hour.toISOString(),
+      toolName: r.toolName,
+      avgResponseTime: Math.round(Number(r.avg_response_time) || 0),
+      callCount: Number(r.call_count),
+      p95ResponseTime: Math.round(Number(r.p95_response_time) || 0),
+      p50ResponseTime: Math.round(Number(r.p50_response_time) || 0)
+    }));
+  }
+
   // OAuth Analytics Functions - Meaningful MCP Metrics
   async getOAuthMetrics(hoursBack = 24) {
     const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);

@@ -12,7 +12,8 @@ import {
   OAuthClientActivity,
   TokenExpiration,
   ToolUsagePanel,
-  GrantTypeChart
+  GrantTypeChart,
+  ToolResponseAreaChart
 } from "@/components/analytics"
 import {
   BarChart3,
@@ -88,6 +89,14 @@ export default function AnalyticsPage() {
         city?: string
         count: number
         percentage: number
+      }[]
+      timeSeries?: {
+        hour: string
+        toolName: string
+        avgResponseTime: number
+        callCount: number
+        p95ResponseTime: number
+        p50ResponseTime: number
       }[]
       totalCalls: number
       activeUsers: number
@@ -323,6 +332,14 @@ export default function AnalyticsPage() {
                 geographicUsage={data.toolUsage.geographic}
                 totalCalls={data.toolUsage.totalCalls}
                 activeUsers={data.toolUsage.activeUsers}
+              />
+            )}
+
+            {/* Tool Response Time Area Chart */}
+            {data.toolUsage?.timeSeries && data.toolUsage.timeSeries.length > 0 && (
+              <ToolResponseAreaChart 
+                data={data.toolUsage.timeSeries}
+                hoursBack={parseInt(timeRange)}
               />
             )}
           </div>
