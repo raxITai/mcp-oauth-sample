@@ -1,0 +1,184 @@
+/* Custom styles for MCP OAuth Sample documentation */
+
+:root {
+  --md-primary-fg-color: #2563eb;
+  --md-primary-fg-color--light: #3b82f6;
+  --md-primary-fg-color--dark: #1d4ed8;
+  --md-accent-fg-color: #2563eb;
+}
+
+/* Custom admonition for OAuth flows */
+.md-typeset .admonition.oauth,
+.md-typeset details.oauth {
+  border-color: #2563eb;
+}
+
+.md-typeset .oauth > .admonition-title,
+.md-typeset .oauth > summary {
+  background-color: rgba(37, 99, 235, 0.1);
+  border-color: #2563eb;
+}
+
+.md-typeset .oauth > .admonition-title::before,
+.md-typeset .oauth > summary::before {
+  background-color: #2563eb;
+  -webkit-mask-image: var(--md-admonition-icon--note);
+  mask-image: var(--md-admonition-icon--note);
+}
+
+/* Custom styling for code blocks */
+.md-typeset .highlight .filename {
+  background-color: var(--md-code-bg-color);
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  font-size: 0.85em;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+
+/* Custom styling for API endpoints */
+.api-endpoint {
+  background: var(--md-code-bg-color);
+  border-left: 4px solid var(--md-primary-fg-color);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.2rem;
+}
+
+.api-endpoint .method {
+  font-weight: bold;
+  color: var(--md-primary-fg-color);
+}
+
+/* Environment variable styling */
+.env-var {
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  padding: 0.1rem 0.3rem;
+  font-family: var(--md-code-font);
+  font-size: 0.85em;
+}
+
+/* Security badge styling */
+.security-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.security-badge.critical {
+  background-color: #dc2626;
+  color: white;
+}
+
+.security-badge.high {
+  background-color: #ea580c;
+  color: white;
+}
+
+.security-badge.medium {
+  background-color: #ca8a04;
+  color: white;
+}
+
+.security-badge.low {
+  background-color: #16a34a;
+  color: white;
+}
+
+/* Custom grid for features */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
+}
+
+/* OAuth flow diagram styling */
+.oauth-flow {
+  background: var(--md-code-bg-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-indicator.online {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.status-indicator.offline {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.status-indicator.maintenance {
+  background-color: rgba(251, 191, 36, 0.1);
+  color: #d97706;
+}
+
+/* Custom table styling for API reference */
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.api-table th,
+.api-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.api-table th {
+  background-color: var(--md-code-bg-color);
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+}
+
+.api-table .param-name {
+  font-family: var(--md-code-font);
+  font-size: 0.9em;
+  color: var(--md-primary-fg-color);
+}
+
+.api-table .param-type {
+  font-family: var(--md-code-font);
+  font-size: 0.85em;
+  color: var(--md-default-fg-color--light);
+}
