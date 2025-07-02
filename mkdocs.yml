@@ -76,9 +76,9 @@ plugins:
   - minify:
       minify_html: true
 
-# Hooks
-hooks:
-  - docs/hooks.py
+# Hooks (commented out for now)
+# hooks:
+#   - docs/hooks.py
 
 # Extensions
 markdown_extensions:
@@ -96,9 +96,7 @@ markdown_extensions:
       smart_enable: all
   - pymdownx.caret
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.emoji
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -112,9 +110,7 @@ markdown_extensions:
       repo: mcp-oauth-sample
   - pymdownx.mark
   - pymdownx.smartsymbols
-  - pymdownx.snippets:
-      auto_append:
-        - includes/mkdocs.md
+  - pymdownx.snippets
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -123,9 +119,6 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
       combine_header_slug: true
-      slugify: !!python/object/apply:pymdownx.slugs.slugify
-        kwds:
-          case: lower
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
@@ -135,7 +128,6 @@ nav:
   - Home: index.md
   - Getting Started:
     - Setup Guide: setup.md
-    - Quick Start: index.md#quick-start
   - Architecture:
     - System Design: architecture.md
     - Security Model: security.md

@@ -1,0 +1,31 @@
+title: MCP OAuth Sample Documentation
+description: OAuth 2.1 server implementation with MCP integration
+theme: minima
+
+# Navigation
+navbar:
+  - title: Setup
+    url: /setup
+  - title: Architecture
+    url: /architecture
+  - title: Security
+    url: /security
+  - title: Analytics
+    url: /analytics
+  - title: API Reference
+    url: /api
+  - title: Deployment
+    url: /deployment
+  - title: Development
+    url: /development
+  - title: Troubleshooting
+    url: /troubleshooting
+
+# Enable plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Markdown settings
+markdown: kramdown
+highlighter: rouge

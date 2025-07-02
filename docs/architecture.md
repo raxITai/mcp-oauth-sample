@@ -36,9 +36,9 @@ graph TB
         end
         
         subgraph "OAuth 2.1 Server"
-            AR[/api/oauth/register]
-            AT[/api/oauth/token]
-            AZ[/oauth/authorize]
+            AR["Client Registration<br/>/api/oauth/register"]
+            AT["Token Endpoint<br/>/api/oauth/token"]
+            AZ["Authorization<br/>/oauth/authorize"]
         end
         
         subgraph "MCP Server"

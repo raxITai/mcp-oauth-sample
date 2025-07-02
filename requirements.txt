@@ -2,15 +2,8 @@
 mkdocs>=1.5.3
 mkdocs-material>=9.4.0
 
-# Plugins
+# Essential plugins
 mkdocs-minify-plugin>=0.7.1
-mkdocs-redirects>=1.2.1
 
 # Extensions
 pymdown-extensions>=10.3.1
-markdown-callouts>=0.3.0
-
-# Optional enhancements
-mkdocs-git-revision-date-localized-plugin>=1.2.0
-mkdocs-git-committers-plugin-2>=1.2.0
-mkdocs-awesome-pages-plugin>=2.9.2
