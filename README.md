@@ -60,6 +60,10 @@ pnpm dev
 
 ## Documentation
 
+**📚 [View Full Documentation](https://raxitai.github.io/mcp-oauth-sample/)** - Interactive Material for MkDocs site
+
+### Quick Reference
+
 | Topic | Description |
 |-------|-------------|
 | [🚀 Setup Guide](./docs/setup.md) | Complete installation and configuration |
@@ -70,6 +74,20 @@ pnpm dev
 | [🛠️ API Reference](./docs/api.md) | Complete API documentation |
 | [❓ Troubleshooting](./docs/troubleshooting.md) | Common issues and solutions |
 | [👨‍💻 Development](./docs/development.md) | Development guide and contributing |
+
+### Local Documentation Development
+
+```bash
+# Serve documentation locally with hot reload
+./docs-serve.sh
+
+# Or on Windows
+docs-serve.bat
+
+# Manual setup
+pip install -r requirements.txt
+mkdocs serve
+```
 
 ## MCP Specification Compliance
 
