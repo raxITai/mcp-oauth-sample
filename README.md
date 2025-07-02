@@ -1,10 +1,10 @@
-# MCP OAuth Sample - Enhanced Implementation
+# MCP OAuth Sample on Vercel and Analytics 
 
 A production-ready MCP (Model Context Protocol) OAuth 2.1 server implementation built with Next.js 15, providing secure authentication and analytics for MCP clients.
 
 ## Overview
 
-This project was built using [run-llama/mcp-nextjs](https://github.com/run-llama/mcp-nextjs) as a reference implementation and significantly enhanced to be fully compliant with the [MCP Authorization Specification](./SPEC_MCP_AUTHZ.md).
+This project was built using [run-llama/mcp-nextjs](https://github.com/run-llama/mcp-nextjs) as a reference implementation and significantly enhanced to be fully compliant with the [MCP Authorization Specification](./SPEC_MCP_AUTHZ.md) or [here](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization). 
 
 ### Key Enhancements
 
@@ -62,18 +62,6 @@ pnpm dev
 
 **📚 [View Full Documentation](https://raxitai.github.io/mcp-oauth-sample/)** - Interactive Material for MkDocs site
 
-### Quick Reference
-
-| Topic | Description |
-|-------|-------------|
-| [🚀 Setup Guide](./docs/setup.md) | Complete installation and configuration |
-| [🏗️ Architecture](./docs/architecture.md) | Technical architecture and design |
-| [🔒 Security](./docs/security.md) | Security features and threat monitoring |
-| [📊 Analytics](./docs/analytics.md) | Dashboard features and metrics |
-| [🚀 Deployment](./docs/deployment.md) | Production deployment guide |
-| [🛠️ API Reference](./docs/api.md) | Complete API documentation |
-| [❓ Troubleshooting](./docs/troubleshooting.md) | Common issues and solutions |
-| [👨‍💻 Development](./docs/development.md) | Development guide and contributing |
 
 ### Local Documentation Development
 
@@ -91,7 +79,7 @@ mkdocs serve
 
 ## MCP Specification Compliance
 
-This implementation is fully compliant with the MCP Authorization Specification. 
+We have attempted to implement all the mandatory requirements specified in the MCP Authorization Specification. 
 
 ### What Makes This Different
 
@@ -192,4 +180,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICE
 
 **Built with ❤️ by [raxIT AI](https://raxit.ai)**
 
-*Based on [run-llama/mcp-nextjs](https://github.com/run-llama/mcp-nextjs) with significant enhancements for production use.*
+*Based on [run-llama/mcp-nextjs](https://github.com/run-llama/mcp-nextjs) with enhancements to learn MCP authz.*
