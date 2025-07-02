@@ -9,9 +9,7 @@ interface OAuthOverviewProps {
   activeTokens: number
   recentAuthorizations: number
   tokenRefreshRate: number
-  pkceAdoption: number
   userActivity?: string
-  clientActivity?: string
 }
 
 export function OAuthOverview({
@@ -21,9 +19,7 @@ export function OAuthOverview({
   activeTokens,
   recentAuthorizations,
   tokenRefreshRate,
-  pkceAdoption,
-  userActivity,
-  clientActivity
+  userActivity
 }: OAuthOverviewProps) {
   const userActivityRate = totalUsers > 0 ? Math.round((activeUsers / totalUsers) * 100) : 0;
   
@@ -37,7 +33,7 @@ export function OAuthOverview({
           title="Total Users"
           value={totalUsers.toLocaleString()}
           icon={Users}
-          variant="primary"
+          variant="secondary"
           change={userActivity}
           changeType={userActivityRate >= 70 ? "positive" : userActivityRate >= 30 ? "neutral" : "negative"}
           subtitle="authorized MCP access"
@@ -46,7 +42,7 @@ export function OAuthOverview({
           title="Active Users"
           value={activeUsers.toLocaleString()}
           icon={UserCheck}
-          variant="primary"
+          variant="secondary"
           change={`${userActivityRate}% active`}
           changeType={userActivityRate >= 70 ? "positive" : userActivityRate >= 30 ? "neutral" : "negative"}
           subtitle="with valid tokens"

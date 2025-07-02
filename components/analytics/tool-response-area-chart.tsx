@@ -1,6 +1,7 @@
 "use client"
 
-import { TrendingUp, TrendingDown, Minus } from "lucide-react"
+import type React from "react"
+import { TrendingUp, TrendingDown, Minus, LineChart } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
@@ -33,6 +34,7 @@ interface ToolResponseAreaChartProps {
   description?: string
   className?: string
   hoursBack?: number
+  icon?: React.ElementType
 }
 
 // Color mapping for different tools using globals.css colors
@@ -55,12 +57,13 @@ export function ToolResponseAreaChart({
   title = "Tool Response Times",
   description = "Average response times over the last 24 hours",
   className,
-  hoursBack = 24
+  hoursBack = 24,
+  icon: Icon = LineChart
 }: ToolResponseAreaChartProps) {
   
   // Transform data for stacked area chart
   // Group by hour and create tools as columns
-  const hoursMap = new Map<string, any>()
+  const hoursMap = new Map<string, Record<string, number | string>>()
   const toolNames = new Set<string>()
   
   // Process data to extract unique tools and hours
@@ -91,7 +94,7 @@ export function ToolResponseAreaChart({
       }
     })
     return result
-  }).sort((a, b) => a.hour.localeCompare(b.hour))
+  }).sort((a, b) => String(a.hour).localeCompare(String(b.hour)))
   
   // Generate chart config for all tools
   const chartConfig: ChartConfig = {}
@@ -109,14 +112,14 @@ export function ToolResponseAreaChart({
   
   const recentAvg = recentData.length > 0 
     ? recentData.reduce((sum, item) => {
-        const toolValues = Array.from(toolNames).map(tool => item[tool] || 0)
+        const toolValues = Array.from(toolNames).map(tool => Number(item[tool]) || 0)
         return sum + toolValues.reduce((a, b) => a + b, 0) / toolValues.length
       }, 0) / recentData.length
     : 0
     
   const earlierAvg = earlierData.length > 0
     ? earlierData.reduce((sum, item) => {
-        const toolValues = Array.from(toolNames).map(tool => item[tool] || 0)
+        const toolValues = Array.from(toolNames).map(tool => Number(item[tool]) || 0)
         return sum + toolValues.reduce((a, b) => a + b, 0) / toolValues.length
       }, 0) / earlierData.length
     : 0
@@ -139,9 +142,21 @@ export function ToolResponseAreaChart({
 
   return (
     <Card className={`flex flex-col ${className}`}>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+      <CardHeader className="pb-0">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
+            {description && (
+              <CardDescription className="text-sm text-muted-foreground">{description}</CardDescription>
+            )}
+          </div>
+          {/* Icon Container - Design System: spacing.3, borderRadius.xl, semantic colors */}
+          {Icon && (
+            <div className="p-3 rounded-xl bg-primary-100 text-primary-600" aria-hidden="true">
+              <Icon className="w-6 h-6" />
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -177,7 +192,7 @@ export function ToolResponseAreaChart({
                 indicator="dot" 
                 labelFormatter={(value) => `Time: ${value}`}
                 formatter={(value, name) => [
-                  `${Math.round(Number(value))}ms`,
+                  `${Math.round(Number(value))}ms `,
                   chartConfig[name as string]?.label || name
                 ]}
               />}

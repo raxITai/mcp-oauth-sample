@@ -11,7 +11,6 @@ import {
   LoadingSkeleton,
   DashboardHeader,
   OAuthOverview,
-  OAuthSecurityPanel,
   OAuthClientActivity,
   TokenExpiration,
   ToolUsagePanel,
@@ -27,7 +26,7 @@ import {
   ChevronUp,
   Shield,
   TrendingUp,
-  Users,
+  Users
 } from "lucide-react"
 
 export default function AnalyticsPage() {
@@ -68,20 +67,6 @@ export default function AnalyticsPage() {
         type: string
         count: number
         percentage: number
-      }[]
-    }
-    oauthSecurity?: {
-      totalEvents: number
-      invalidClientAttempts: number
-      invalidGrantAttempts: number
-      unauthorizedScopes: number
-      events?: {
-        clientName: string
-        clientId: string
-        eventType: string
-        severity: string
-        count: number
-        lastOccurred: string
       }[]
     }
     toolUsage?: {
@@ -168,15 +153,27 @@ export default function AnalyticsPage() {
 
   const generateTestEvents = async () => {
     try {
-      const eventTypes = ["AUTH_FAILURE", "INVALID_TOKEN", "SUSPICIOUS_ACTIVITY", "RATE_LIMIT_EXCEEDED"]
-      for (const eventType of eventTypes) {
-        await fetch("/api/test/security-events", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ eventType, count: 2 }),
-        })
+      // Use the SecurityMonitor directly for more realistic threat detection
+      const response = await fetch("/api/analytics/generate-threats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          runDetection: true,
+          mockScenarios: [
+            "privilege_escalation",
+            "token_reuse", 
+            "rate_limit_exceeded",
+            "oauth_pkce_bypass"
+          ]
+        }),
+      })
+      
+      if (!response.ok) {
+        throw new Error("Failed to generate threats")
       }
-      alert("Test security events generated! Refresh data in 30 seconds to see them.")
+      
+      const result = await response.json()
+      alert(`Generated ${result.threatsDetected || 0} realistic security threats using SecurityMonitor! Refresh to see them.`)
     } catch (error) {
       console.error("Failed to generate test events:", error)
       alert("Failed to generate test events")
@@ -201,12 +198,6 @@ export default function AnalyticsPage() {
       else if (errorRate > 1 || avgResponseTime > 500) warningIssues++
     }
     
-    // Check OAuth security health
-    if (data?.oauthSecurity) {
-      const { invalidClientAttempts, invalidGrantAttempts, unauthorizedScopes } = data.oauthSecurity
-      if (invalidClientAttempts > 10 || invalidGrantAttempts > 20) criticalIssues++
-      else if (invalidClientAttempts > 5 || invalidGrantAttempts > 10 || unauthorizedScopes > 5) warningIssues++
-    }
     
     // Check PKCE adoption
     if (data?.oauth && data.oauth.pkceAdoption < 50) warningIssues++
@@ -264,12 +255,6 @@ export default function AnalyticsPage() {
   const getAlertSummary = () => {
     const alerts = []
     
-    if (data?.oauthSecurity) {
-      const { invalidClientAttempts, invalidGrantAttempts, unauthorizedScopes } = data.oauthSecurity
-      if (invalidClientAttempts > 10) alerts.push({ type: 'critical', message: `${invalidClientAttempts} invalid client attempts` })
-      if (invalidGrantAttempts > 20) alerts.push({ type: 'critical', message: `${invalidGrantAttempts} invalid grant attempts` })
-      if (unauthorizedScopes > 5) alerts.push({ type: 'warning', message: `${unauthorizedScopes} unauthorized scope requests` })
-    }
     
     if (data?.performance) {
       const { errorRate, avgResponseTime } = data.performance
@@ -392,22 +377,16 @@ export default function AnalyticsPage() {
                     activeTokens={data.oauth.activeTokens}
                     recentAuthorizations={data.oauth.recentAuthorizations}
                     tokenRefreshRate={data.oauth.tokenRefreshRate}
-                    pkceAdoption={data.oauth.pkceAdoption}
                     userActivity={data.oauth.userActivity}
-                    clientActivity={data.oauth.clientActivity}
                   />
                 )}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                  {data?.oauth?.clients && data.oauth.clients.length > 0 && (
-                    <OAuthClientActivity 
-                      clients={data.oauth.clients}
-                      title="Client-User Relationships"
-                      maxItems={6}
-                    />
-                  )}
-                  {data?.oauth?.expiringTokens && data.oauth.expiringTokens.length > 0 && (
-                    <TokenExpiration expiringTokens={data.oauth.expiringTokens} />
-                  )}
+                  <OAuthClientActivity 
+                    clients={data?.oauth?.clients || []}
+                    title="Client Activity"
+                    maxItems={6}
+                  />
+                  <TokenExpiration expiringTokens={data?.oauth?.expiringTokens || []} />
                   {data?.oauth?.grantTypes && data.oauth.grantTypes.length > 0 && (
                     <GrantTypeChart grantTypes={data.oauth.grantTypes} />
                   )}
@@ -433,11 +412,6 @@ export default function AnalyticsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {data?.oauthSecurity && (
-                      <Badge variant="outline" className="text-xs">
-                        {data.oauthSecurity.totalEvents} events
-                      </Badge>
-                    )}
                     {expandedSections.security ? (
                       <ChevronUp className="w-4 h-4" />
                     ) : (
@@ -449,24 +423,8 @@ export default function AnalyticsPage() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {data?.oauthSecurity && (
-                    <OAuthSecurityPanel
-                      totalEvents={data.oauthSecurity.totalEvents}
-                      oauthEvents={data.oauthSecurity.events}
-                      invalidClientAttempts={data.oauthSecurity.invalidClientAttempts}
-                      invalidGrantAttempts={data.oauthSecurity.invalidGrantAttempts}
-                      unauthorizedScopes={data.oauthSecurity.unauthorizedScopes}
-                    />
-                  )}
-                  {data?.security && !data.oauthSecurity && (
-                    <SecurityPanel
-                      eventCount={data.security.eventCount || 0}
-                      byOrganization={data.security.byOrganization}
-                      privilegeEscalations={data.security.privilegeEscalations}
-                    />
-                  )}
-                </div>
+                {/* Real-time Security Analytics Panel with comprehensive threat detection */}
+                <SecurityPanel />
               </CardContent>
             </CollapsibleContent>
           </Card>
@@ -504,22 +462,36 @@ export default function AnalyticsPage() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {data?.toolUsage && (
+                {data?.toolUsage && (
+                  <div className="space-y-6">
+                    {/* Tool Usage Panel - Handles overview, tools list, and geographic data */}
                     <ToolUsagePanel
                       toolUsage={data.toolUsage.tools}
                       geographicUsage={data.toolUsage.geographic}
                       totalCalls={data.toolUsage.totalCalls}
                       activeUsers={data.toolUsage.activeUsers}
                     />
-                  )}
-                  {data?.toolUsage?.timeSeries && data.toolUsage.timeSeries.length > 0 && (
-                    <ToolResponseAreaChart 
-                      data={data.toolUsage.timeSeries}
-                      hoursBack={parseInt(timeRange)}
-                    />
-                  )}
-                </div>
+                    
+                    {/* Time Series Charts */}
+                    {data.toolUsage.timeSeries && data.toolUsage.timeSeries.length > 0 && (
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <ToolResponseAreaChart 
+                          data={data.toolUsage.timeSeries}
+                          hoursBack={parseInt(timeRange)}
+                          title="Response Times (Last 12 Hours)"
+                          icon={TrendingUp}
+                        />
+                        <ToolResponseAreaChart 
+                          data={data.toolUsage.timeSeries.slice(-12)}
+                          hoursBack={12}
+                          title="Recent Response Times"
+                          description="Response times over the last 12 hours"
+                          icon={Activity}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </CollapsibleContent>
           </Card>

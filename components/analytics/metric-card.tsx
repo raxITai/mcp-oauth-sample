@@ -1,5 +1,6 @@
 import type React from "react"
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 interface MetricCardProps {
   title: string
@@ -28,10 +29,10 @@ export function MetricCard({
     secondary: "bg-secondary-300 text-secondary-600",
   }
 
-  const changeColors = {
-    positive: "text-primary-600 bg-primary-100",
-    negative: "text-destructive bg-muted",
-    neutral: "text-muted-foreground bg-muted",
+  const changeBadgeVariant = {
+    positive: "secondary" as const,
+    negative: "destructive" as const,
+    neutral: "outline" as const,
   }
 
   return (
@@ -67,17 +68,15 @@ export function MetricCard({
             )}
           </div>
 
-          {/* Change Indicator - Design System: fontSize.xs, semantic colors */}
+          {/* Change Indicator - Using Badge component */}
           {change && (
-            <div
-              className={cn(
-                "inline-flex items-center px-2 py-1 rounded-full text-xs font-medium",
-                changeColors[changeType]
-              )}
+            <Badge
+              variant={changeBadgeVariant[changeType]}
+              className="text-xs font-medium"
               aria-label={`Change indicator: ${change}, ${changeType} trend`}
             >
               {change}
-            </div>
+            </Badge>
           )}
         </div>
 

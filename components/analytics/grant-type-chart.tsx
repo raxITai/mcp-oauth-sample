@@ -1,5 +1,6 @@
 "use client"
 
+import { TrendingUp } from "lucide-react"
 import { AnalyticsPieChart } from "./analytics-pie-chart"
 
 interface GrantType {
@@ -59,10 +60,11 @@ export function GrantTypeChart({ grantTypes, className }: GrantTypeChartProps) {
   return (
     <AnalyticsPieChart
       title="OAuth Grant Types"
-      description="Distribution of OAuth 2.1 grant types used"
+      description="OAuth 2.1 grant types distribution"
       data={chartData}
       config={grantTypeConfig}
       nameKey="grantType" // This should match the data key for legend mapping
+      icon={TrendingUp}
       className={className}
     />
   )

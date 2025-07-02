@@ -89,6 +89,29 @@ pnpm prisma generate
 pnpm prisma db push
 ```
 
+#### Database Schema Overview
+
+The application uses PostgreSQL with the following main components:
+
+**Core OAuth 2.1 Tables:**
+- `User` - User accounts with Google OAuth authentication
+- `Account` - OAuth provider account linkages  
+- `Session` - User session management
+- `Client` - Registered OAuth clients with PKCE support
+- `AccessToken`, `AuthCode`, `RefreshToken` - OAuth 2.1 tokens
+
+**Analytics & Security Tables:**
+- `AnalyticsRequest` - Request tracking with **14-day TTL**
+- `AnalyticsSecurity` - Security events with **14-day TTL**
+- `MCPServer` - MCP server registry
+
+**Data Retention (TTL - Time To Live):**
+- Analytics data automatically expires after **14 days**
+- Database-level TTL using PostgreSQL `INTERVAL` defaults
+- Automatic cleanup via API endpoint `/api/cleanup`
+- Manual cleanup: `POST /api/cleanup`
+- Status monitoring: `GET /api/cleanup`
+
 ### 5. Start Development Server
 
 ```bash
@@ -184,6 +207,9 @@ Add to your `settings.json`:
 - **Authorization**: `GET /oauth/authorize`
 - **MCP HTTP**: `GET|POST /mcp/mcp`
 - **MCP SSE**: `GET /mcp/sse`
+- **Data Cleanup**: `POST /api/cleanup` - Manually trigger TTL cleanup
+- **Cleanup Status**: `GET /api/cleanup` - Check TTL status and expired records
+- **Security Analytics**: Analytics dashboard with real-time threat detection
 
 ## Project Structure
 
@@ -198,8 +224,11 @@ app/
 └── prisma.ts                   # Prisma client
 
 prisma/
-├── schema.prisma              # Database schema
+├── schema.prisma              # Database schema with TTL support
 └── migrations/                # Database migrations
+
+generated/
+└── prisma/                    # Generated Prisma client (custom location)
 ```
 
 ## Development Scripts
@@ -223,7 +252,156 @@ pnpm prisma studio          # Open Prisma Studio
 # Database management
 brew services start postgresql@14    # Start PostgreSQL
 brew services stop postgresql@14     # Stop PostgreSQL
+
+# Data cleanup (TTL management)
+curl -X POST http://localhost:3000/api/cleanup    # Manual cleanup
+curl http://localhost:3000/api/cleanup            # Check cleanup status
 ```
+
+## Security Monitoring & Threat Detection
+
+This MCP OAuth server implements comprehensive security monitoring based on OAuth 2.1 and MCP specification requirements. The system automatically detects and records security threats in real-time.
+
+### **OAuth & MCP Security Threats Detected**
+
+#### **Critical Threats (Risk Score 90-95)**
+
+**1. Token Audience Validation Failures**
+- **Detection**: Access tokens used across multiple MCP server boundaries
+- **Based on**: RFC 8707 Resource Indicators, RFC 9728 Protected Resource Metadata
+- **Risk**: Token reuse attacks, confused deputy vulnerabilities
+- **Recorded**: MCP server IDs, endpoints, token usage patterns
+
+**2. PKCE Bypass Attempts**
+- **Detection**: OAuth authorization code flows without PKCE protection
+- **Based on**: OAuth 2.1 Section 7.5.2 mandatory PKCE requirements
+- **Risk**: Authorization code interception attacks
+- **Recorded**: Grant types, PKCE usage patterns, client behaviors
+
+**3. OAuth Privilege Escalation**
+- **Detection**: Users requesting elevated scopes beyond historical patterns
+- **Based on**: OAuth scope analysis and permission escalation patterns
+- **Risk**: Unauthorized access to sensitive resources
+- **Recorded**: Current vs historical scopes, elevated scope patterns, user behavior
+
+**4. Token Passthrough Violations**
+- **Detection**: Rapid cross-service access suggesting token forwarding
+- **Based on**: MCP security best practices against confused deputy attacks
+- **Risk**: Tokens used for unintended services
+- **Recorded**: Cross-server access patterns, timing analysis, resource boundaries
+
+#### **High Risk Threats (Risk Score 70-85)**
+
+**5. Missing Resource Parameters**
+- **Detection**: OAuth requests without proper resource identification
+- **Based on**: RFC 8707 Resource Indicators requirements
+- **Risk**: Tokens not bound to intended resources
+- **Recorded**: Missing redirect URIs, grant type violations
+
+**6. Scope Explosion Attacks**
+- **Detection**: Unusual number of new OAuth scopes requested simultaneously
+- **Based on**: Permission escalation analysis
+- **Risk**: Bulk privilege escalation attempts
+- **Recorded**: New scope counts, scope patterns, user history
+
+#### **Medium Risk Threats (Risk Score 50-70)**
+
+**7. Rate Limiting Violations**
+- **Detection**: >30 requests per minute from single IP
+- **Risk**: DoS attacks, API abuse
+- **Recorded**: Request rates, IP patterns, endpoint targeting
+
+**8. Brute Force Attempts**
+- **Detection**: Multiple authentication failures from same IP
+- **Risk**: Credential guessing attacks
+- **Recorded**: Failure counts, IP addresses, timing patterns
+
+**9. Suspicious User Agents**
+- **Detection**: Non-human user agents (bots, scrapers) without MCP identification
+- **Risk**: Automated attacks, scraping attempts
+- **Recorded**: User agent strings, access patterns
+
+**10. Token Reuse Detection**
+- **Detection**: Same token used from different IP addresses within short timeframe
+- **Risk**: Credential theft, session hijacking
+- **Recorded**: IP changes, timing analysis, token patterns
+
+### **Data Recording & Analytics**
+
+#### **Analytics Tables Structure**
+
+**AnalyticsRequest Table:**
+```sql
+- timestamp, endpoint, method, statusCode, responseTime
+- userId, clientId, mcpServerId (foreign keys)
+- OAuth-specific: oauthGrantType, tokenScopes, usePKCE, redirectUri
+- MCP-specific: mcpMethod, toolName
+- Security context: ipAddress, userAgent, organization, ssoProvider
+- Geographic: country, city (async populated)
+- TTL: expiresAt (14-day auto-cleanup)
+```
+
+**AnalyticsSecurity Table:**
+```sql
+- timestamp, eventType (enum), severity, riskScore (0-100)
+- userId, clientId, mcpServerId (foreign keys)
+- Context: ipAddress, userAgent, endpoint, organization
+- Incident management: resolved, resolvedAt, resolvedBy
+- Details: JSON field with structured threat data
+- TTL: expiresAt (14-day auto-cleanup)
+```
+
+#### **Security Event Types**
+- `AUTH_FAILURE` - Authentication failures
+- `INVALID_TOKEN` - Token validation failures
+- `SUSPICIOUS_ACTIVITY` - Anomalous behavior patterns
+- `RATE_LIMIT_EXCEEDED` - API rate limit violations
+- `UNAUTHORIZED_ACCESS` - Access control violations
+- `TOKEN_REUSE` - Token reuse across IPs
+- `UNUSUAL_LOCATION` - Geographic anomalies
+- `PRIVILEGE_ESCALATION` - Scope/permission escalation
+- `MALFORMED_REQUEST` - Malformed OAuth/MCP requests
+- `BRUTE_FORCE_ATTEMPT` - Credential brute force
+- `OAUTH_INVALID_CLIENT` - Invalid OAuth clients
+- `OAUTH_INVALID_GRANT` - Invalid OAuth grants
+- `OAUTH_INVALID_SCOPE` - Invalid OAuth scopes
+
+#### **Real-Time Threat Analysis**
+
+**Risk Scoring Algorithm:**
+- **Critical (90-100)**: Immediate security response required
+- **High (70-89)**: Investigation and monitoring needed  
+- **Medium (50-69)**: Automated monitoring and logging
+- **Low (20-49)**: Basic logging only
+- **Informational (0-19)**: Filtered out of security analytics
+
+**Filtering & Display:**
+- Security dashboard shows only meaningful threats (risk score ≥ 50)
+- Privilege escalations filtered to high-risk only (≥ 70)
+- Organization-level aggregation for enterprise visibility
+- 14-day retention with automatic cleanup
+
+### **Compliance & Standards**
+
+The security monitoring system ensures compliance with:
+- **OAuth 2.1** IETF Draft (draft-ietf-oauth-v2-1-12)
+- **RFC 8707** Resource Indicators for OAuth 2.0
+- **RFC 9728** OAuth 2.0 Protected Resource Metadata  
+- **RFC 8414** OAuth 2.0 Authorization Server Metadata
+- **MCP Security Best Practices** (2025-06-18 specification)
+
+### **Enterprise Integration**
+
+**SIEM Integration Ready:**
+- Structured JSON logging for security events
+- Risk scoring for automated response systems
+- Geographic and organizational context
+- Real-time alerting for critical events
+
+**Monitoring Endpoints:**
+- `/api/cleanup` - Security data management
+- Analytics dashboard - Real-time threat visualization
+- Prisma Studio - Direct database investigation
 
 ## Deployment to Vercel
 

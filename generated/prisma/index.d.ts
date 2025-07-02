@@ -12192,6 +12192,7 @@ export namespace Prisma {
     method: string | null
     statusCode: number | null
     responseTime: number | null
+    expiresAt: Date | null
     clientId: string | null
     userId: string | null
     mcpServerId: string | null
@@ -12218,6 +12219,7 @@ export namespace Prisma {
     method: string | null
     statusCode: number | null
     responseTime: number | null
+    expiresAt: Date | null
     clientId: string | null
     userId: string | null
     mcpServerId: string | null
@@ -12244,6 +12246,7 @@ export namespace Prisma {
     method: number
     statusCode: number
     responseTime: number
+    expiresAt: number
     clientId: number
     userId: number
     mcpServerId: number
@@ -12284,6 +12287,7 @@ export namespace Prisma {
     method?: true
     statusCode?: true
     responseTime?: true
+    expiresAt?: true
     clientId?: true
     userId?: true
     mcpServerId?: true
@@ -12310,6 +12314,7 @@ export namespace Prisma {
     method?: true
     statusCode?: true
     responseTime?: true
+    expiresAt?: true
     clientId?: true
     userId?: true
     mcpServerId?: true
@@ -12336,6 +12341,7 @@ export namespace Prisma {
     method?: true
     statusCode?: true
     responseTime?: true
+    expiresAt?: true
     clientId?: true
     userId?: true
     mcpServerId?: true
@@ -12451,6 +12457,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt: Date
     clientId: string | null
     userId: string | null
     mcpServerId: string | null
@@ -12498,6 +12505,7 @@ export namespace Prisma {
     method?: boolean
     statusCode?: boolean
     responseTime?: boolean
+    expiresAt?: boolean
     clientId?: boolean
     userId?: boolean
     mcpServerId?: boolean
@@ -12529,6 +12537,7 @@ export namespace Prisma {
     method?: boolean
     statusCode?: boolean
     responseTime?: boolean
+    expiresAt?: boolean
     clientId?: boolean
     userId?: boolean
     mcpServerId?: boolean
@@ -12560,6 +12569,7 @@ export namespace Prisma {
     method?: boolean
     statusCode?: boolean
     responseTime?: boolean
+    expiresAt?: boolean
     clientId?: boolean
     userId?: boolean
     mcpServerId?: boolean
@@ -12591,6 +12601,7 @@ export namespace Prisma {
     method?: boolean
     statusCode?: boolean
     responseTime?: boolean
+    expiresAt?: boolean
     clientId?: boolean
     userId?: boolean
     mcpServerId?: boolean
@@ -12612,7 +12623,7 @@ export namespace Prisma {
     redirectUri?: boolean
   }
 
-  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "clientId" | "userId" | "mcpServerId" | "ssoProvider" | "userRole" | "scopes" | "organization" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform" | "mcpMethod" | "toolName" | "oauthGrantType" | "tokenScopes" | "usePKCE" | "redirectUri", ExtArgs["result"]["analyticsRequest"]>
+  export type AnalyticsRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "endpoint" | "method" | "statusCode" | "responseTime" | "expiresAt" | "clientId" | "userId" | "mcpServerId" | "ssoProvider" | "userRole" | "scopes" | "organization" | "ipAddress" | "userAgent" | "country" | "city" | "clientType" | "platform" | "mcpMethod" | "toolName" | "oauthGrantType" | "tokenScopes" | "usePKCE" | "redirectUri", ExtArgs["result"]["analyticsRequest"]>
   export type AnalyticsRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | AnalyticsRequest$clientArgs<ExtArgs>
     user?: boolean | AnalyticsRequest$userArgs<ExtArgs>
@@ -12643,6 +12654,7 @@ export namespace Prisma {
       method: string
       statusCode: number
       responseTime: number
+      expiresAt: Date
       clientId: string | null
       userId: string | null
       mcpServerId: string | null
@@ -13094,6 +13106,7 @@ export namespace Prisma {
     readonly method: FieldRef<"AnalyticsRequest", 'String'>
     readonly statusCode: FieldRef<"AnalyticsRequest", 'Int'>
     readonly responseTime: FieldRef<"AnalyticsRequest", 'Int'>
+    readonly expiresAt: FieldRef<"AnalyticsRequest", 'DateTime'>
     readonly clientId: FieldRef<"AnalyticsRequest", 'String'>
     readonly userId: FieldRef<"AnalyticsRequest", 'String'>
     readonly mcpServerId: FieldRef<"AnalyticsRequest", 'String'>
@@ -13609,6 +13622,7 @@ export namespace Prisma {
     timestamp: Date | null
     eventType: $Enums.SecurityEventType | null
     severity: string | null
+    expiresAt: Date | null
     userId: string | null
     clientId: string | null
     mcpServerId: string | null
@@ -13630,6 +13644,7 @@ export namespace Prisma {
     timestamp: Date | null
     eventType: $Enums.SecurityEventType | null
     severity: string | null
+    expiresAt: Date | null
     userId: string | null
     clientId: string | null
     mcpServerId: string | null
@@ -13651,6 +13666,7 @@ export namespace Prisma {
     timestamp: number
     eventType: number
     severity: number
+    expiresAt: number
     userId: number
     clientId: number
     mcpServerId: number
@@ -13683,6 +13699,7 @@ export namespace Prisma {
     timestamp?: true
     eventType?: true
     severity?: true
+    expiresAt?: true
     userId?: true
     clientId?: true
     mcpServerId?: true
@@ -13704,6 +13721,7 @@ export namespace Prisma {
     timestamp?: true
     eventType?: true
     severity?: true
+    expiresAt?: true
     userId?: true
     clientId?: true
     mcpServerId?: true
@@ -13725,6 +13743,7 @@ export namespace Prisma {
     timestamp?: true
     eventType?: true
     severity?: true
+    expiresAt?: true
     userId?: true
     clientId?: true
     mcpServerId?: true
@@ -13834,6 +13853,7 @@ export namespace Prisma {
     timestamp: Date
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt: Date
     userId: string | null
     clientId: string | null
     mcpServerId: string | null
@@ -13875,6 +13895,7 @@ export namespace Prisma {
     timestamp?: boolean
     eventType?: boolean
     severity?: boolean
+    expiresAt?: boolean
     userId?: boolean
     clientId?: boolean
     mcpServerId?: boolean
@@ -13900,6 +13921,7 @@ export namespace Prisma {
     timestamp?: boolean
     eventType?: boolean
     severity?: boolean
+    expiresAt?: boolean
     userId?: boolean
     clientId?: boolean
     mcpServerId?: boolean
@@ -13925,6 +13947,7 @@ export namespace Prisma {
     timestamp?: boolean
     eventType?: boolean
     severity?: boolean
+    expiresAt?: boolean
     userId?: boolean
     clientId?: boolean
     mcpServerId?: boolean
@@ -13950,6 +13973,7 @@ export namespace Prisma {
     timestamp?: boolean
     eventType?: boolean
     severity?: boolean
+    expiresAt?: boolean
     userId?: boolean
     clientId?: boolean
     mcpServerId?: boolean
@@ -13967,7 +13991,7 @@ export namespace Prisma {
     resolvedBy?: boolean
   }
 
-  export type AnalyticsSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "eventType" | "severity" | "userId" | "clientId" | "mcpServerId" | "ipAddress" | "userAgent" | "endpoint" | "country" | "city" | "organization" | "ssoProvider" | "details" | "riskScore" | "resolved" | "resolvedAt" | "resolvedBy", ExtArgs["result"]["analyticsSecurity"]>
+  export type AnalyticsSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "eventType" | "severity" | "expiresAt" | "userId" | "clientId" | "mcpServerId" | "ipAddress" | "userAgent" | "endpoint" | "country" | "city" | "organization" | "ssoProvider" | "details" | "riskScore" | "resolved" | "resolvedAt" | "resolvedBy", ExtArgs["result"]["analyticsSecurity"]>
   export type AnalyticsSecurityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | AnalyticsSecurity$userArgs<ExtArgs>
     client?: boolean | AnalyticsSecurity$clientArgs<ExtArgs>
@@ -13996,6 +14020,7 @@ export namespace Prisma {
       timestamp: Date
       eventType: $Enums.SecurityEventType
       severity: string
+      expiresAt: Date
       userId: string | null
       clientId: string | null
       mcpServerId: string | null
@@ -14441,6 +14466,7 @@ export namespace Prisma {
     readonly timestamp: FieldRef<"AnalyticsSecurity", 'DateTime'>
     readonly eventType: FieldRef<"AnalyticsSecurity", 'SecurityEventType'>
     readonly severity: FieldRef<"AnalyticsSecurity", 'String'>
+    readonly expiresAt: FieldRef<"AnalyticsSecurity", 'DateTime'>
     readonly userId: FieldRef<"AnalyticsSecurity", 'String'>
     readonly clientId: FieldRef<"AnalyticsSecurity", 'String'>
     readonly mcpServerId: FieldRef<"AnalyticsSecurity", 'String'>
@@ -15065,6 +15091,7 @@ export namespace Prisma {
     method: 'method',
     statusCode: 'statusCode',
     responseTime: 'responseTime',
+    expiresAt: 'expiresAt',
     clientId: 'clientId',
     userId: 'userId',
     mcpServerId: 'mcpServerId',
@@ -15094,6 +15121,7 @@ export namespace Prisma {
     timestamp: 'timestamp',
     eventType: 'eventType',
     severity: 'severity',
+    expiresAt: 'expiresAt',
     userId: 'userId',
     clientId: 'clientId',
     mcpServerId: 'mcpServerId',
@@ -15897,6 +15925,7 @@ export namespace Prisma {
     method?: StringFilter<"AnalyticsRequest"> | string
     statusCode?: IntFilter<"AnalyticsRequest"> | number
     responseTime?: IntFilter<"AnalyticsRequest"> | number
+    expiresAt?: DateTimeFilter<"AnalyticsRequest"> | Date | string
     clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
@@ -15928,6 +15957,7 @@ export namespace Prisma {
     method?: SortOrder
     statusCode?: SortOrder
     responseTime?: SortOrder
+    expiresAt?: SortOrder
     clientId?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     mcpServerId?: SortOrderInput | SortOrder
@@ -15962,6 +15992,7 @@ export namespace Prisma {
     method?: StringFilter<"AnalyticsRequest"> | string
     statusCode?: IntFilter<"AnalyticsRequest"> | number
     responseTime?: IntFilter<"AnalyticsRequest"> | number
+    expiresAt?: DateTimeFilter<"AnalyticsRequest"> | Date | string
     clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
@@ -15993,6 +16024,7 @@ export namespace Prisma {
     method?: SortOrder
     statusCode?: SortOrder
     responseTime?: SortOrder
+    expiresAt?: SortOrder
     clientId?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     mcpServerId?: SortOrderInput | SortOrder
@@ -16029,6 +16061,7 @@ export namespace Prisma {
     method?: StringWithAggregatesFilter<"AnalyticsRequest"> | string
     statusCode?: IntWithAggregatesFilter<"AnalyticsRequest"> | number
     responseTime?: IntWithAggregatesFilter<"AnalyticsRequest"> | number
+    expiresAt?: DateTimeWithAggregatesFilter<"AnalyticsRequest"> | Date | string
     clientId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
     mcpServerId?: StringNullableWithAggregatesFilter<"AnalyticsRequest"> | string | null
@@ -16058,6 +16091,7 @@ export namespace Prisma {
     timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
     severity?: StringFilter<"AnalyticsSecurity"> | string
+    expiresAt?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
@@ -16083,6 +16117,7 @@ export namespace Prisma {
     timestamp?: SortOrder
     eventType?: SortOrder
     severity?: SortOrder
+    expiresAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     clientId?: SortOrderInput | SortOrder
     mcpServerId?: SortOrderInput | SortOrder
@@ -16111,6 +16146,7 @@ export namespace Prisma {
     timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
     severity?: StringFilter<"AnalyticsSecurity"> | string
+    expiresAt?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
@@ -16136,6 +16172,7 @@ export namespace Prisma {
     timestamp?: SortOrder
     eventType?: SortOrder
     severity?: SortOrder
+    expiresAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     clientId?: SortOrderInput | SortOrder
     mcpServerId?: SortOrderInput | SortOrder
@@ -16166,6 +16203,7 @@ export namespace Prisma {
     timestamp?: DateTimeWithAggregatesFilter<"AnalyticsSecurity"> | Date | string
     eventType?: EnumSecurityEventTypeWithAggregatesFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
     severity?: StringWithAggregatesFilter<"AnalyticsSecurity"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"AnalyticsSecurity"> | Date | string
     userId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
     clientId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
     mcpServerId?: StringNullableWithAggregatesFilter<"AnalyticsSecurity"> | string | null
@@ -16871,6 +16909,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     ssoProvider?: string | null
     userRole?: string | null
     scopes?: AnalyticsRequestCreatescopesInput | string[]
@@ -16899,6 +16938,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     userId?: string | null
     mcpServerId?: string | null
@@ -16927,6 +16967,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: NullableStringFieldUpdateOperationsInput | string | null
     scopes?: AnalyticsRequestUpdatescopesInput | string[]
@@ -16955,6 +16996,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16983,6 +17025,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     userId?: string | null
     mcpServerId?: string | null
@@ -17011,6 +17054,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: NullableStringFieldUpdateOperationsInput | string | null
     scopes?: AnalyticsRequestUpdatescopesInput | string[]
@@ -17036,6 +17080,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17062,6 +17107,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     ipAddress: string
     userAgent: string
     endpoint?: string | null
@@ -17084,6 +17130,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     clientId?: string | null
     mcpServerId?: string | null
@@ -17106,6 +17153,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     endpoint?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17128,6 +17176,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17150,6 +17199,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     clientId?: string | null
     mcpServerId?: string | null
@@ -17172,6 +17222,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     endpoint?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17191,6 +17242,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17778,6 +17830,7 @@ export namespace Prisma {
     method?: SortOrder
     statusCode?: SortOrder
     responseTime?: SortOrder
+    expiresAt?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
     mcpServerId?: SortOrder
@@ -17811,6 +17864,7 @@ export namespace Prisma {
     method?: SortOrder
     statusCode?: SortOrder
     responseTime?: SortOrder
+    expiresAt?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
     mcpServerId?: SortOrder
@@ -17837,6 +17891,7 @@ export namespace Prisma {
     method?: SortOrder
     statusCode?: SortOrder
     responseTime?: SortOrder
+    expiresAt?: SortOrder
     clientId?: SortOrder
     userId?: SortOrder
     mcpServerId?: SortOrder
@@ -17925,6 +17980,7 @@ export namespace Prisma {
     timestamp?: SortOrder
     eventType?: SortOrder
     severity?: SortOrder
+    expiresAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
     mcpServerId?: SortOrder
@@ -17951,6 +18007,7 @@ export namespace Prisma {
     timestamp?: SortOrder
     eventType?: SortOrder
     severity?: SortOrder
+    expiresAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
     mcpServerId?: SortOrder
@@ -17972,6 +18029,7 @@ export namespace Prisma {
     timestamp?: SortOrder
     eventType?: SortOrder
     severity?: SortOrder
+    expiresAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
     mcpServerId?: SortOrder
@@ -19412,6 +19470,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     ssoProvider?: string | null
     userRole?: string | null
     scopes?: AnalyticsRequestCreatescopesInput | string[]
@@ -19439,6 +19498,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     mcpServerId?: string | null
     ssoProvider?: string | null
@@ -19474,6 +19534,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     ipAddress: string
     userAgent: string
     endpoint?: string | null
@@ -19495,6 +19556,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     clientId?: string | null
     mcpServerId?: string | null
     ipAddress: string
@@ -19727,6 +19789,7 @@ export namespace Prisma {
     method?: StringFilter<"AnalyticsRequest"> | string
     statusCode?: IntFilter<"AnalyticsRequest"> | number
     responseTime?: IntFilter<"AnalyticsRequest"> | number
+    expiresAt?: DateTimeFilter<"AnalyticsRequest"> | Date | string
     clientId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     userId?: StringNullableFilter<"AnalyticsRequest"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsRequest"> | string | null
@@ -19772,6 +19835,7 @@ export namespace Prisma {
     timestamp?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     eventType?: EnumSecurityEventTypeFilter<"AnalyticsSecurity"> | $Enums.SecurityEventType
     severity?: StringFilter<"AnalyticsSecurity"> | string
+    expiresAt?: DateTimeFilter<"AnalyticsSecurity"> | Date | string
     userId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     clientId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
     mcpServerId?: StringNullableFilter<"AnalyticsSecurity"> | string | null
@@ -20073,6 +20137,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     ssoProvider?: string | null
     userRole?: string | null
     scopes?: AnalyticsRequestCreatescopesInput | string[]
@@ -20100,6 +20165,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     userId?: string | null
     mcpServerId?: string | null
     ssoProvider?: string | null
@@ -20135,6 +20201,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     ipAddress: string
     userAgent: string
     endpoint?: string | null
@@ -20156,6 +20223,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     mcpServerId?: string | null
     ipAddress: string
@@ -20766,6 +20834,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     ssoProvider?: string | null
     userRole?: string | null
     scopes?: AnalyticsRequestCreatescopesInput | string[]
@@ -20793,6 +20862,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     userId?: string | null
     ssoProvider?: string | null
@@ -20828,6 +20898,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     ipAddress: string
     userAgent: string
     endpoint?: string | null
@@ -20849,6 +20920,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     clientId?: string | null
     ipAddress: string
@@ -21398,6 +21470,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     mcpServerId?: string | null
     ssoProvider?: string | null
@@ -21423,6 +21496,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     clientId?: string | null
     mcpServerId?: string | null
     ipAddress: string
@@ -21636,6 +21710,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: NullableStringFieldUpdateOperationsInput | string | null
     scopes?: AnalyticsRequestUpdatescopesInput | string[]
@@ -21663,6 +21738,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21690,6 +21766,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21715,6 +21792,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     endpoint?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21736,6 +21814,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
@@ -21757,6 +21836,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
@@ -21810,6 +21890,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     userId?: string | null
     mcpServerId?: string | null
     ssoProvider?: string | null
@@ -21835,6 +21916,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     mcpServerId?: string | null
     ipAddress: string
@@ -21948,6 +22030,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: NullableStringFieldUpdateOperationsInput | string | null
     scopes?: AnalyticsRequestUpdatescopesInput | string[]
@@ -21975,6 +22058,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22002,6 +22086,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22027,6 +22112,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     endpoint?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22048,6 +22134,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
@@ -22069,6 +22156,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     mcpServerId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
@@ -22092,6 +22180,7 @@ export namespace Prisma {
     method: string
     statusCode: number
     responseTime: number
+    expiresAt?: Date | string
     clientId?: string | null
     userId?: string | null
     ssoProvider?: string | null
@@ -22117,6 +22206,7 @@ export namespace Prisma {
     timestamp?: Date | string
     eventType: $Enums.SecurityEventType
     severity: string
+    expiresAt?: Date | string
     userId?: string | null
     clientId?: string | null
     ipAddress: string
@@ -22140,6 +22230,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: NullableStringFieldUpdateOperationsInput | string | null
     scopes?: AnalyticsRequestUpdatescopesInput | string[]
@@ -22167,6 +22258,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22194,6 +22286,7 @@ export namespace Prisma {
     method?: StringFieldUpdateOperationsInput | string
     statusCode?: IntFieldUpdateOperationsInput | number
     responseTime?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     ssoProvider?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22219,6 +22312,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: StringFieldUpdateOperationsInput | string
     endpoint?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22240,6 +22334,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string
@@ -22261,6 +22356,7 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: EnumSecurityEventTypeFieldUpdateOperationsInput | $Enums.SecurityEventType
     severity?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: StringFieldUpdateOperationsInput | string

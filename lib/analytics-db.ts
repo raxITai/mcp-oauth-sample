@@ -435,6 +435,7 @@ class OptimizedAnalyticsCollector {
       FROM "AnalyticsSecurity"
       WHERE timestamp >= ${cutoff}
         AND organization IS NOT NULL
+        AND "riskScore" >= 50
       GROUP BY organization, "eventType", severity
       ORDER BY event_count DESC
     ` as Array<{
@@ -621,13 +622,11 @@ class OptimizedAnalyticsCollector {
       `,
       
       // Active token statistics  
-      prisma.accessToken.count({
-        where: {
-          expiresAt: {
-            gt: new Date()
-          }
-        }
-      }),
+      prisma.$queryRaw<Array<{ active_tokens: bigint }>>`
+        SELECT COUNT(*) as active_tokens
+        FROM "AccessToken"
+        WHERE "expiresAt" > NOW()
+      `,
       
       // Recent OAuth authorization activity
       prisma.$queryRaw<Array<{
@@ -649,12 +648,14 @@ class OptimizedAnalyticsCollector {
 
     const userData = userStats[0];
     const clientData = clientStats[0];
+    const tokenData = tokenStats[0];
     const authData = authActivity[0];
     
     const totalUsers = Number(userData?.total_users || 0);
     const activeUsers = Number(userData?.active_users || 0);
     const totalClients = Number(clientData?.total_clients || 0);
     const activeClients = Number(clientData?.clients_with_active_tokens || 0);
+    const activeTokenCount = Number(tokenData?.active_tokens || 0);
     const recentAuthorizations = Number(authData?.recent_authorizations || 0);
     const recentRefreshes = Number(authData?.recent_token_refreshes || 0);
     const pkceUsage = Number(authData?.pkce_usage || 0);
@@ -674,7 +675,7 @@ class OptimizedAnalyticsCollector {
       clientActivity: `${activeClients}/${totalClients} clients active`,
       
       // Token metrics
-      activeTokens: tokenStats,
+      activeTokens: activeTokenCount,
       recentAuthorizations,
       tokenRefreshRate: recentRefreshes / hoursBack,
       
@@ -686,7 +687,7 @@ class OptimizedAnalyticsCollector {
   async getOAuthClientActivity(hoursBack = 24, limit = 10) {
     const cutoff = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
 
-    // Get meaningful client activity: which users are using which clients
+    // Get clients with active tokens and their user activity
     const result = await prisma.$queryRaw<Array<{
       client_name: string;
       client_id: string;
@@ -709,8 +710,8 @@ class OptimizedAnalyticsCollector {
       LEFT JOIN "User" u ON at."userId" = u.id
       LEFT JOIN "AnalyticsRequest" ar ON c.id = ar."clientId" AND ar.timestamp >= ${cutoff}
       GROUP BY c.id, c.name, c."clientId"
-      HAVING COUNT(DISTINCT at."userId") > 0  -- Only show clients with users
-      ORDER BY unique_users DESC, active_tokens DESC, last_activity DESC NULLS LAST
+      HAVING COUNT(CASE WHEN at."expiresAt" > NOW() THEN at.id END) > 0  -- Only show clients with active tokens
+      ORDER BY active_tokens DESC, unique_users DESC, last_activity DESC NULLS LAST
       LIMIT ${limit}
     `;
 
@@ -813,7 +814,7 @@ class OptimizedAnalyticsCollector {
       prisma.analyticsSecurity.count({
         where: {
           timestamp: { gte: cutoff },
-          eventType: { in: ['AUTH_FAILURE', 'INVALID_TOKEN'] }
+          eventType: { in: ['AUTH_FAILURE'] }
         }
       }),
 
@@ -900,5 +901,130 @@ export const analyticsDB = new OptimizedAnalyticsCollector();
 
 // Note: Graceful shutdown removed for Edge Runtime compatibility
 // In production, implement cleanup in your deployment process
+
+// Security Panel Data Functions for meaningful threats only
+export interface SecurityEventsByOrg {
+  organization: string;
+  eventType: string;
+  severity: string;
+  eventCount: number;
+  avgRiskScore: number;
+}
+
+export interface PrivilegeEscalation {
+  userName: string;
+  userEmail: string;
+  eventType: string;
+  riskScore: number;
+  timestamp: string;
+  details: Record<string, unknown>;
+}
+
+export interface SecurityAnalytics {
+  totalEvents: number;
+  eventsByOrganization: SecurityEventsByOrg[];
+  privilegeEscalations: PrivilegeEscalation[];
+  criticalEvents: number;
+  highRiskEvents: number;
+  resolvedEvents: number;
+  averageRiskScore: number;
+}
+
+// Get security analytics for SecurityPanel component - only meaningful threats
+export async function getSecurityAnalytics(
+  startDate: Date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+  endDate: Date = new Date()
+): Promise<SecurityAnalytics> {
+  try {
+    // Get total event count (only meaningful threats with risk score >= 50)
+    const totalEvents = await prisma.analyticsSecurity.count({
+      where: {
+        timestamp: { gte: startDate, lte: endDate },
+        riskScore: { gte: 50 }
+      }
+    });
+
+    // Get events grouped by organization - using the existing function but filtered
+    const eventsByOrg = await analyticsDB.getSecurityEventsByOrganization(
+      Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60))
+    );
+
+    // Get privilege escalations with user details - only high risk
+    const privilegeEscalationData = await prisma.analyticsSecurity.findMany({
+      where: {
+        timestamp: { gte: startDate, lte: endDate },
+        eventType: 'PRIVILEGE_ESCALATION',
+        userId: { not: null },
+        riskScore: { gte: 70 } // Only high-risk privilege escalations
+      },
+      include: {
+        user: { select: { name: true, email: true } }
+      },
+      orderBy: { riskScore: 'desc' }
+    });
+
+    const privilegeEscalations: PrivilegeEscalation[] = privilegeEscalationData.map(event => ({
+      userName: event.user?.name || 'Unknown User',
+      userEmail: event.user?.email || 'unknown@example.com',
+      eventType: event.eventType,
+      riskScore: event.riskScore,
+      timestamp: event.timestamp.toISOString(),
+      details: event.details as Record<string, unknown>
+    }));
+
+    // Get additional statistics
+    const [criticalEvents, highRiskEvents, resolvedEvents, avgRiskScore] = await Promise.all([
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: startDate, lte: endDate },
+          severity: 'critical',
+          riskScore: { gte: 50 }
+        }
+      }),
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: startDate, lte: endDate },
+          riskScore: { gte: 70 }
+        }
+      }),
+      prisma.analyticsSecurity.count({
+        where: {
+          timestamp: { gte: startDate, lte: endDate },
+          resolved: true,
+          riskScore: { gte: 50 }
+        }
+      }),
+      prisma.analyticsSecurity.aggregate({
+        where: {
+          timestamp: { gte: startDate, lte: endDate },
+          riskScore: { gte: 50 }
+        },
+        _avg: { riskScore: true }
+      })
+    ]);
+
+    return {
+      totalEvents,
+      eventsByOrganization: eventsByOrg,
+      privilegeEscalations,
+      criticalEvents,
+      highRiskEvents,
+      resolvedEvents,
+      averageRiskScore: Math.round(avgRiskScore._avg.riskScore || 0)
+    };
+  } catch (error) {
+    console.error('Error fetching security analytics:', error);
+    // Return empty analytics on error
+    return {
+      totalEvents: 0,
+      eventsByOrganization: [],
+      privilegeEscalations: [],
+      criticalEvents: 0,
+      highRiskEvents: 0,
+      resolvedEvents: 0,
+      averageRiskScore: 0
+    };
+  }
+}
 
 export type { RequestAnalytics, SecurityEvent };

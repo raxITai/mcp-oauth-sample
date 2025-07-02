@@ -150,6 +150,9 @@ model AnalyticsRequest {
   statusCode   Int
   responseTime Int      // milliseconds
   
+  // TTL field - automatically set to 14 days from creation
+  expiresAt    DateTime @default(dbgenerated("NOW() + INTERVAL '14 days'"))
+  
   // Enhanced client/user tracking with proper relations
   clientId     String?
   client       Client?  @relation(fields: [clientId], references: [id])
@@ -202,6 +205,7 @@ model AnalyticsRequest {
   @@index([ssoProvider])
   @@index([oauthGrantType])
   @@index([usePKCE])
+  @@index([expiresAt])
 }
 
 enum SecurityEventType {
@@ -225,6 +229,9 @@ model AnalyticsSecurity {
   timestamp  DateTime @default(now())
   eventType  SecurityEventType
   severity   String   // "low", "medium", "high", "critical"
+  
+  // TTL field - automatically set to 14 days from creation
+  expiresAt  DateTime @default(dbgenerated("NOW() + INTERVAL '14 days'"))
   
   // Enhanced context
   userId     String?
@@ -271,4 +278,5 @@ model AnalyticsSecurity {
   @@index([organization])
   @@index([resolved])
   @@index([riskScore])
+  @@index([expiresAt])
 }

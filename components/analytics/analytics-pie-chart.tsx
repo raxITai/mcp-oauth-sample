@@ -1,6 +1,7 @@
 "use client"
 
-import { Pie, PieChart, Cell, ResponsiveContainer } from "recharts"
+import type React from "react"
+import { Pie, PieChart, Cell } from "recharts"
 import {
   Card,
   CardContent,
@@ -12,7 +13,6 @@ import {
   ChartConfig,
   ChartContainer,
   ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart"
 
 interface PieChartData {
@@ -30,6 +30,7 @@ interface AnalyticsPieChartProps {
   nameKey?: string
   className?: string
   config?: ChartConfig
+  icon?: React.ComponentType<{ className?: string }>
 }
 
 // Default color palette using your globals.css colors
@@ -51,7 +52,8 @@ export function AnalyticsPieChart({
   dataKey = "value",
   nameKey = "name",
   className,
-  config
+  config,
+  icon: Icon
 }: AnalyticsPieChartProps) {
   
   // Add colors to data if not provided
@@ -72,11 +74,21 @@ export function AnalyticsPieChart({
 
   return (
     <Card className={`flex flex-col ${className}`}>
-      <CardHeader className="items-center pb-0">
-        <CardTitle>{title}</CardTitle>
-        {description && (
-          <CardDescription>{description}</CardDescription>
-        )}
+      <CardHeader className="pb-0">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
+            {description && (
+              <CardDescription className="text-sm text-muted-foreground">{description}</CardDescription>
+            )}
+          </div>
+          {/* Icon Container - Design System: spacing.3, borderRadius.xl, semantic colors */}
+          {Icon && (
+            <div className="p-3 rounded-xl bg-secondary-300 text-secondary-600" aria-hidden="true">
+              <Icon className="w-6 h-6" />
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -97,7 +109,6 @@ export function AnalyticsPieChart({
               ))}
             </Pie>
             <ChartLegend
-              content={<ChartLegendContent nameKey={nameKey} />}
               className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
             />
           </PieChart>

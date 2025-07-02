@@ -1,5 +1,6 @@
 import type React from "react"
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 interface DataTableItem {
   primary: string
@@ -11,6 +12,7 @@ interface DataTableItem {
 
 interface DataTableProps {
   title: string
+  subtitle?: string
   icon: React.ComponentType<{ className?: string }>
   data: DataTableItem[]
   emptyMessage?: string
@@ -20,6 +22,7 @@ interface DataTableProps {
 
 export function DataTable({ 
   title, 
+  subtitle,
   icon: Icon, 
   data, 
   emptyMessage = "No data available",
@@ -35,15 +38,26 @@ export function DataTable({
     >
       {/* Header - Design System: spacing.6, typography.lg */}
       <div className="p-6 pb-4">
-        <h3 
-          className="flex items-center gap-3 text-lg font-semibold text-foreground"
-          id={`table-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
-        >
-          <div className="p-2 bg-muted rounded-lg" aria-hidden="true">
-            <Icon className="w-5 h-5 text-muted-foreground" />
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <h3 
+              className="text-lg font-semibold text-foreground"
+              id={`table-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
+            >
+              {title}
+            </h3>
+            {/* Subtitle - Design System: fontSize.sm, color.muted-foreground */}
+            {subtitle && (
+              <p className="text-sm text-muted-foreground">
+                {subtitle}
+              </p>
+            )}
           </div>
-          {title}
-        </h3>
+          {/* Icon Container - Design System: spacing.3, borderRadius.xl, semantic colors */}
+          <div className="p-3 rounded-xl bg-secondary-300 text-secondary-600" aria-hidden="true">
+            <Icon className="w-6 h-6" />
+          </div>
+        </div>
       </div>
 
       {/* Content */}
@@ -70,10 +84,10 @@ export function DataTable({
                 aria-label={`Rank ${index + 1}: ${item.primary}${item.secondary ? `, ${item.secondary}` : ''}, value: ${item.value}${item.badge ? `, ${item.badge}` : ''}`}
               >
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-start gap-3">
                     {/* Rank - Design System: fontSize.xs, spacing.2 */}
                     <span 
-                      className="text-xs font-medium text-muted-foreground bg-background px-2 py-1 rounded border"
+                      className="text-xs font-medium text-muted-foreground bg-background px-2 py-1 rounded border shrink-0 mt-0.5"
                       aria-label={`Rank ${index + 1}`}
                     >
                       #{index + 1}
@@ -81,14 +95,14 @@ export function DataTable({
 
                     <div className="min-w-0 flex-1">
                       {/* Primary Text - Design System: fontWeight.medium, color.foreground */}
-                      <p className="font-medium text-foreground truncate" title={item.primary}>
+                      <p className="font-medium text-foreground leading-tight" title={item.primary}>
                         {item.primary}
                       </p>
 
                       {/* Secondary Text - Design System: fontSize.sm, color.muted-foreground, fontFamily.mono */}
                       {item.secondary && (
                         <p 
-                          className="text-sm text-muted-foreground truncate font-mono" 
+                          className="text-sm text-muted-foreground mt-1 leading-tight break-words" 
                           title={item.secondary}
                           aria-label={`Secondary info: ${item.secondary}`}
                         >
@@ -99,19 +113,20 @@ export function DataTable({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 ml-4">
-                  {/* Badge - Design System: fontSize.xs */}
+                <div className="flex flex-col items-end gap-2 ml-4 shrink-0">
+                  {/* Badge - Design System: using proper Badge component */}
                   {item.badge && (
-                    <span 
-                      className="text-xs bg-muted border text-muted-foreground px-2 py-1 rounded"
+                    <Badge 
+                      variant={item.badgeVariant || "outline"} 
+                      className="text-xs whitespace-nowrap"
                       aria-label={`Badge: ${item.badge}`}
                     >
                       {item.badge}
-                    </span>
+                    </Badge>
                   )}
 
                   {/* Value - Design System: fontWeight.semibold, color.foreground */}
-                  <span className="font-semibold text-foreground" aria-label={`Value: ${item.value}`}>
+                  <span className="font-semibold text-foreground text-lg whitespace-nowrap" aria-label={`Value: ${item.value}`}>
                     {item.value}
                   </span>
                 </div>

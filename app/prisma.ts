@@ -17,6 +17,84 @@ const prisma = global.prisma || new PrismaClient({
 
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 
+// TTL Cleanup function - removes data older than 14 days
+export async function cleanupExpiredData() {
+  const now = new Date();
+  
+  try {
+    const result = await prisma.$transaction([
+      // Cleanup expired analytics requests
+      prisma.analyticsRequest.deleteMany({
+        where: { expiresAt: { lt: now } }
+      }),
+      
+      // Cleanup expired security events
+      prisma.analyticsSecurity.deleteMany({
+        where: { expiresAt: { lt: now } }
+      }),
+      
+      // Cleanup expired OAuth tokens
+      prisma.accessToken.deleteMany({
+        where: { expiresAt: { lt: now } }
+      }),
+      
+      prisma.authCode.deleteMany({
+        where: { expiresAt: { lt: now } }
+      }),
+      
+      prisma.refreshToken.deleteMany({
+        where: { expiresAt: { lt: now } }
+      })
+    ]);
+    
+    const totalDeleted = result.reduce((sum, res) => sum + res.count, 0);
+    
+    console.log(`TTL Cleanup completed: ${totalDeleted} records deleted`);
+    return { success: true, deletedCount: totalDeleted };
+  } catch (error) {
+    console.error('TTL Cleanup failed:', error);
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+// Get TTL status for monitoring
+export async function getTTLStatus() {
+  const now = new Date();
+  const oneDayFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  
+  try {
+    const [expiredAnalytics, expiringSoonAnalytics, expiredSecurity, expiringSoonSecurity] = await Promise.all([
+      prisma.analyticsRequest.count({
+        where: { expiresAt: { lt: now } }
+      }),
+      prisma.analyticsRequest.count({
+        where: { expiresAt: { lt: oneDayFromNow, gte: now } }
+      }),
+      prisma.analyticsSecurity.count({
+        where: { expiresAt: { lt: now } }
+      }),
+      prisma.analyticsSecurity.count({
+        where: { expiresAt: { lt: oneDayFromNow, gte: now } }
+      })
+    ]);
+    
+    return {
+      analyticsRequests: {
+        expired: expiredAnalytics,
+        expiringSoon: expiringSoonAnalytics
+      },
+      securityEvents: {
+        expired: expiredSecurity,
+        expiringSoon: expiringSoonSecurity
+      },
+      timestamp: now
+    };
+  } catch (error) {
+    console.error('Failed to get TTL status:', error);
+    return { error: (error as Error).message };
+  }
+}
+
 export { prisma };
 
 declare global {

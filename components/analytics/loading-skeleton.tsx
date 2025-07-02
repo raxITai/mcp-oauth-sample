@@ -4,171 +4,183 @@ interface LoadingSkeletonProps {
   className?: string
 }
 
-export function LoadingSkeleton({ className }: LoadingSkeletonProps) {
+export function MetricCardSkeleton() {
   return (
-    <div className={cn("min-h-screen bg-muted/30", className)}>
-      {/* Header Skeleton */}
-      <div className="bg-background border-b border-border sticky top-0 z-10">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex justify-between items-center">
-            <div className="space-y-3">
-              {/* Title Skeleton - Design System: height 2rem, width 16rem */}
-              <div className="h-8 bg-muted rounded-lg w-64 animate-pulse"></div>
-              <div className="h-4 bg-muted rounded w-48 animate-pulse"></div>
-            </div>
-            <div className="flex gap-3">
-              <div className="h-9 bg-muted rounded w-32 animate-pulse"></div>
-              <div className="h-9 bg-muted rounded w-24 animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-6 py-8 space-y-8">
-        {/* Metrics Skeleton - Design System: patterns.cardGrid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-background border border-border rounded-lg p-6 shadow-sm">
-              <div className="flex justify-between items-start">
-                <div className="space-y-3">
-                  <div className="h-4 bg-muted rounded w-24 animate-pulse"></div>
-                  <div className="h-8 bg-muted rounded w-16 animate-pulse"></div>
-                  <div className="h-3 bg-muted rounded w-20 animate-pulse"></div>
-                </div>
-                <div className="h-12 w-12 bg-muted rounded-xl animate-pulse"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Content Grid Skeleton - Design System: patterns.contentGrid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="space-y-8">
-            <div className="bg-background border border-border rounded-lg shadow-sm p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-8 w-8 bg-muted rounded-lg animate-pulse"></div>
-                <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
-              </div>
-              <div className="space-y-4">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="h-6 w-8 bg-muted rounded animate-pulse"></div>
-                      <div className="h-4 bg-muted rounded w-32 animate-pulse"></div>
-                    </div>
-                    <div className="h-4 bg-muted rounded w-12 animate-pulse"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Middle Column */}
-          <div className="space-y-8">
-            <div className="bg-background border border-border rounded-lg shadow-sm p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-8 w-8 bg-muted rounded-lg animate-pulse"></div>
-                <div className="h-6 bg-muted rounded w-40 animate-pulse"></div>
-              </div>
-              <div className="space-y-4">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="p-4 bg-muted/50 rounded-lg">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="space-y-2">
-                        <div className="h-4 bg-muted rounded w-28 animate-pulse"></div>
-                        <div className="h-3 bg-muted rounded w-36 animate-pulse"></div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="h-3 bg-muted rounded w-20 animate-pulse"></div>
-                        <div className="h-3 bg-muted rounded w-16 animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-8">
-            <div className="bg-background border border-border rounded-lg shadow-sm p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-8 w-8 bg-muted rounded-lg animate-pulse"></div>
-                <div className="h-6 bg-muted rounded w-36 animate-pulse"></div>
-              </div>
-              
-              {/* Security Overview Skeleton */}
-              <div className="p-6 bg-muted/50 rounded-lg mb-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <div className="h-4 bg-muted rounded w-32 animate-pulse"></div>
-                    <div className="h-8 bg-muted rounded w-16 animate-pulse"></div>
-                  </div>
-                  <div className="h-10 w-10 bg-muted rounded-full animate-pulse"></div>
-                </div>
-              </div>
-
-              {/* Security Events Skeleton */}
-              <div className="space-y-4">
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} className="p-4 bg-muted/50 rounded-lg border">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="h-4 bg-muted rounded w-24 animate-pulse"></div>
-                      <div className="h-5 bg-muted rounded w-16 animate-pulse"></div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="h-6 bg-muted rounded w-28 animate-pulse"></div>
-                      <div className="space-y-1">
-                        <div className="h-3 bg-muted rounded w-16 animate-pulse"></div>
-                        <div className="h-3 bg-muted rounded w-12 animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Skeleton for individual components
-export function MetricCardSkeleton({ className }: { className?: string }) {
-  return (
-    <div className={cn("bg-background border border-border rounded-lg p-6 shadow-sm", className)}>
-      <div className="flex justify-between items-start">
-        <div className="space-y-3">
-          <div className="h-4 bg-muted rounded w-24 animate-pulse"></div>
-          <div className="h-8 bg-muted rounded w-16 animate-pulse"></div>
-          <div className="h-3 bg-muted rounded w-20 animate-pulse"></div>
-        </div>
-        <div className="h-12 w-12 bg-muted rounded-xl animate-pulse"></div>
-      </div>
-    </div>
-  )
-}
-
-export function DataTableSkeleton({ className }: { className?: string }) {
-  return (
-    <div className={cn("bg-background border border-border rounded-lg shadow-sm p-6", className)}>
-      <div className="flex items-center gap-3 mb-6">
-        <div className="h-8 w-8 bg-muted rounded-lg animate-pulse"></div>
-        <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
-      </div>
+    <div className="p-6 bg-muted/5 rounded-lg border border-border">
       <div className="space-y-4">
+        <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
+        <div className="h-8 bg-muted rounded w-24 animate-pulse"></div>
+        <div className="h-4 bg-muted rounded w-full animate-pulse"></div>
+      </div>
+    </div>
+  )
+}
+
+export function DataTableSkeleton() {
+  return (
+    <div className="bg-background border border-border rounded-lg shadow-sm">
+      <div className="p-6 pb-4">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
+            <div className="h-4 bg-muted rounded w-48 animate-pulse"></div>
+          </div>
+          <div className="p-3 rounded-xl bg-muted animate-pulse">
+            <div className="w-6 h-6"></div>
+          </div>
+        </div>
+      </div>
+      <div className="px-6 pb-6">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-            <div className="flex items-center gap-3">
-              <div className="h-6 w-8 bg-muted rounded animate-pulse"></div>
-              <div className="h-4 bg-muted rounded w-32 animate-pulse"></div>
-            </div>
-            <div className="h-4 bg-muted rounded w-12 animate-pulse"></div>
+          <div key={i} className="py-3 space-y-2">
+            <div className="h-5 bg-muted rounded w-full animate-pulse"></div>
+            <div className="h-4 bg-muted rounded w-1/2 animate-pulse"></div>
           </div>
         ))}
       </div>
     </div>
   )
 }
+
+export function LoadingSkeleton({ className }: LoadingSkeletonProps) {
+  return (
+    <main className={cn("min-h-screen bg-background", className)} aria-labelledby="dashboard-title">
+      {/* Header Skeleton */}
+      <div className="bg-background border-b border-border">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex justify-between items-center">
+            <div className="space-y-3">
+              <div className="h-8 bg-muted rounded-lg w-64 animate-pulse"></div>
+              <div className="h-4 bg-muted rounded w-48 animate-pulse"></div>
+            </div>
+            <div className="flex gap-3">
+              <div className="h-9 bg-muted rounded w-[180px] animate-pulse"></div>
+              <div className="h-9 bg-muted rounded w-24 animate-pulse"></div>
+              <div className="h-9 bg-muted rounded w-36 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-6 max-w-7xl space-y-6">
+        {/* Priority Alert Bar Skeleton */}
+        <div className="border border-destructive/20 bg-destructive/5 rounded-lg p-4">
+          <div className="flex items-center gap-2 pb-3">
+            <div className="h-5 w-5 bg-muted rounded animate-pulse"></div>
+            <div className="h-5 bg-muted rounded w-24 animate-pulse"></div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-5 bg-muted rounded w-32 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+
+        {/* OAuth Metrics Section */}
+        <div className="border border-primary-300 dark:border-primary-600 rounded-lg">
+          <div className="p-6 cursor-pointer hover:bg-muted/50 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary-600/10 rounded-lg">
+                  <div className="h-5 w-5 bg-muted rounded animate-pulse"></div>
+                </div>
+                <div>
+                  <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-48 mt-1 animate-pulse"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-5 bg-muted rounded w-24 animate-pulse"></div>
+                <div className="h-4 w-4 bg-muted rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          <div className="px-6 pb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="p-6 bg-muted/5 rounded-lg border border-border">
+                  <div className="space-y-4">
+                    <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
+                    <div className="h-8 bg-muted rounded w-24 animate-pulse"></div>
+                    <div className="h-4 bg-muted rounded w-full animate-pulse"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Security Overview Section */}
+        <div className="border border-destructive/20 dark:border-destructive/40 rounded-lg">
+          <div className="p-6 cursor-pointer hover:bg-muted/50 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-destructive/10 rounded-lg">
+                  <div className="h-5 w-5 bg-muted rounded animate-pulse"></div>
+                </div>
+                <div>
+                  <div className="h-6 bg-muted rounded w-36 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-52 mt-1 animate-pulse"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-5 bg-muted rounded w-20 animate-pulse"></div>
+                <div className="h-4 w-4 bg-muted rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          <div className="px-6 pb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="p-6 bg-muted/5 rounded-lg border border-border">
+                  <div className="space-y-4">
+                    <div className="h-6 bg-muted rounded w-36 animate-pulse"></div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="h-20 bg-muted rounded animate-pulse"></div>
+                      <div className="h-20 bg-muted rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Performance & Tools Section */}
+        <div className="border border-secondary-300 dark:border-secondary-600 rounded-lg">
+          <div className="p-6 cursor-pointer hover:bg-muted/50 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-secondary-600/10 rounded-lg">
+                  <div className="h-5 w-5 bg-muted rounded animate-pulse"></div>
+                </div>
+                <div>
+                  <div className="h-6 bg-muted rounded w-40 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-44 mt-1 animate-pulse"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-5 bg-muted rounded w-20 animate-pulse"></div>
+                <div className="h-4 w-4 bg-muted rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          <div className="px-6 pb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="p-6 bg-muted/5 rounded-lg border border-border">
+                  <div className="space-y-4">
+                    <div className="h-6 bg-muted rounded w-32 animate-pulse"></div>
+                    <div className="h-[200px] bg-muted rounded animate-pulse"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+}
+
+// Remove unused component exports since they're not used in the main page

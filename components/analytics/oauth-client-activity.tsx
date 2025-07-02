@@ -1,5 +1,5 @@
 import type React from "react"
-import { Smartphone, Calendar, TrendingUp } from "lucide-react"
+import { TrendingUp, Users, Key } from "lucide-react"
 import { DataTable } from "./data-table"
 
 interface OAuthClient {
@@ -28,18 +28,19 @@ export function OAuthClientActivity({
     return clients.slice(0, maxItems).map(client => ({
       primary: client.name,
       secondary: `${client.uniqueUsers} user${client.uniqueUsers !== 1 ? 's' : ''} • ${client.userNames}`,
-      value: `${client.activeTokens} active tokens`,
+      value: `${client.recentRequests} requests`,
       badge: client.status,
-      badgeVariant: (client.status === "Active" ? "secondary" : "outline") as "secondary" | "outline"
+      badgeVariant: (client.status === "Active" ? "default" : "outline") as "default" | "outline"
     }))
   }
 
   return (
     <DataTable
       title={title}
-      icon={Smartphone}
+      subtitle="OAuth clients with active user sessions"
+      icon={Users}
       data={formatData(clients)}
-      emptyMessage="No OAuth clients found"
+      emptyMessage="No active clients"
       maxItems={maxItems}
     />
   )
@@ -54,20 +55,44 @@ interface TokenExpirationProps {
 }
 
 export function TokenExpiration({ expiringTokens }: TokenExpirationProps) {
+  const formatTimeRemaining = (hours: number) => {
+    if (hours < 1) {
+      const minutes = Math.floor(hours * 60)
+      const seconds = Math.floor((hours * 60 - minutes) * 60)
+      return `${minutes}m ${seconds}s remaining`
+    } else if (hours < 24) {
+      const wholeHours = Math.floor(hours)
+      const minutes = Math.floor((hours - wholeHours) * 60)
+      return `${wholeHours}h ${minutes}m remaining`
+    } else {
+      const days = Math.floor(hours / 24)
+      const remainingHours = Math.floor(hours % 24)
+      return `${days}d ${remainingHours}h remaining`
+    }
+  }
+
+  const getBadgeText = (hours: number) => {
+    if (hours < 0.5) return "About to expire"
+    if (hours < 1) return "Expiring soon"
+    if (hours < 24) return "Expires today"
+    return "Active"
+  }
+
   const formatData = (tokens: typeof expiringTokens) => {
     return tokens.map(token => ({
       primary: token.clientName,
-      secondary: `${token.hoursUntilExpiry}h remaining`,
+      secondary: formatTimeRemaining(token.hoursUntilExpiry),
       value: `${token.tokenCount} tokens`,
-      badge: token.hoursUntilExpiry < 1 ? "Critical" : token.hoursUntilExpiry < 24 ? "Warning" : "Normal",
-      badgeVariant: (token.hoursUntilExpiry < 1 ? "destructive" : token.hoursUntilExpiry < 24 ? "outline" : "secondary") as "destructive" | "outline" | "secondary"
+      badge: getBadgeText(token.hoursUntilExpiry),
+      badgeVariant: (token.hoursUntilExpiry < 1 ? "destructive" : token.hoursUntilExpiry < 24 ? "outline" : "default") as "destructive" | "outline" | "default"
     }))
   }
 
   return (
     <DataTable
       title="Token Expiration"
-      icon={Calendar}
+      subtitle="Access tokens nearing expiration"
+      icon={Key}
       data={formatData(expiringTokens)}
       emptyMessage="No expiring tokens"
       maxItems={5}
@@ -89,7 +114,8 @@ export function GrantTypeDistribution({ grantTypes }: GrantTypeDistributionProps
       primary: grant.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
       secondary: `${grant.percentage}% of total`,
       value: grant.count.toLocaleString(),
-      badge: grant.type === 'authorization_code' ? "Standard" : grant.type === 'refresh_token' ? "Refresh" : "Other"
+      badge: grant.type === 'authorization_code' ? "Standard" : grant.type === 'refresh_token' ? "Refresh" : "Other",
+      badgeVariant: (grant.type === 'authorization_code' ? "default" : "outline") as "default" | "outline"
     }))
   }
 
