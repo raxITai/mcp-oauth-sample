@@ -2,6 +2,7 @@ import type React from "react"
 import { CheckCircle, AlertTriangle, Shield, TrendingUp, RefreshCw, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
+import { Badge } from "@/components/ui/badge"
 import {
   Accordion,
   AccordionContent,
@@ -38,28 +39,29 @@ interface SecurityAnalytics {
 
 interface SecurityPanelProps {
   className?: string
+  securityData?: SecurityAnalytics
 }
 
-function getSeverityColor(severity: string) {
+function getSeverityBadgeVariant(severity: string): "default" | "secondary" | "destructive" | "outline" {
   switch (severity.toLowerCase()) {
     case "low":
-      return "bg-background text-primary border-primary/20"
+      return "outline"
     case "medium":
-      return "bg-background text-secondary border-secondary/20"
+      return "secondary"
     case "high":
-      return "bg-background text-destructive border-destructive/20"
+      return "destructive"
     case "critical":
-      return "bg-background text-destructive border-destructive/20"
+      return "destructive"
     default:
-      return "bg-background text-muted-foreground border-border"
+      return "outline"
   }
 }
 
-export function SecurityPanel({ className }: SecurityPanelProps) {
-  const [analytics, setAnalytics] = useState<SecurityAnalytics | null>(null)
-  const [loading, setLoading] = useState(true)
+export function SecurityPanel({ className, securityData }: SecurityPanelProps) {
+  const [analytics, setAnalytics] = useState<SecurityAnalytics | null>(securityData || null)
+  const [loading, setLoading] = useState(!securityData)
   const [error, setError] = useState<string | null>(null)
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(securityData ? new Date() : null)
 
   const fetchSecurityAnalytics = async () => {
     try {
@@ -87,11 +89,20 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
   }
 
   useEffect(() => {
-    fetchSecurityAnalytics()
-    // Refresh every 5 minutes
-    const interval = setInterval(fetchSecurityAnalytics, 5 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
+    if (securityData) {
+      setAnalytics(securityData)
+      setLastUpdated(new Date())
+      setLoading(false)
+      setError(null)
+    } else {
+      fetchSecurityAnalytics()
+    }
+    // Refresh every 5 minutes only if no prefetched data
+    if (!securityData) {
+      const interval = setInterval(fetchSecurityAnalytics, 5 * 60 * 1000)
+      return () => clearInterval(interval)
+    }
+  }, [securityData])
 
   const isSecure = analytics?.totalEvents === 0
   const hasSecurityEvents = (analytics?.eventsByOrganization.length || 0) > 0
@@ -99,80 +110,97 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
 
   if (loading && !analytics) {
     return (
-      <section className={cn("bg-background border border-border rounded-lg shadow-sm", className)}>
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-muted rounded-lg">
-              <Shield className="w-5 h-5 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold text-foreground">Security Monitor</h3>
-            <RefreshCw className="w-4 h-4 text-muted-foreground animate-spin ml-auto" />
+      <div className={className}>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <RefreshCw className="w-3 h-3 animate-spin" />
+            <span>Loading security analytics...</span>
           </div>
-          <div className="text-sm text-muted-foreground">Loading security analytics...</div>
+          {lastUpdated && (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock className="w-3 h-3" />
+              <span>Updated {lastUpdated.toLocaleTimeString()}</span>
+            </div>
+          )}
         </div>
-      </section>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-background border border-border rounded-lg shadow-sm p-6">
+              <div className="animate-pulse">
+                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                <div className="h-3 bg-muted rounded w-1/2 mb-4"></div>
+                <div className="h-20 bg-muted rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     )
   }
 
   if (error) {
     return (
-      <section className={cn("bg-background border border-border rounded-lg shadow-sm", className)}>
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-muted rounded-lg">
-              <Shield className="w-5 h-5 text-destructive" />
-            </div>
-            <h3 className="text-lg font-semibold text-foreground">Security Monitor</h3>
+      <div className={className}>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2 text-xs text-destructive">
+            <span>Error: {error}</span>
+            <button 
+              onClick={fetchSecurityAnalytics}
+              className="ml-2 px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90"
+            >
+              Retry
+            </button>
           </div>
-          <div className="text-sm text-destructive">Error: {error}</div>
-          <button 
-            onClick={fetchSecurityAnalytics}
-            className="mt-3 px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90"
-          >
-            Retry
-          </button>
+          {lastUpdated && (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock className="w-3 h-3" />
+              <span>Updated {lastUpdated.toLocaleTimeString()}</span>
+            </div>
+          )}
         </div>
-      </section>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-background border border-destructive/20 rounded-lg shadow-sm p-6">
+              <div className="text-center text-destructive">
+                <Shield className="w-8 h-8 mx-auto mb-2" />
+                <div className="text-sm">Failed to load</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     )
   }
 
   return (
-    <section 
-      className={cn("bg-background border border-border rounded-lg shadow-sm", className)}
+    <div 
+      className={className}
       aria-labelledby="security-monitor-title"
       role="region"
     >
-      {/* Header */}
-      <div className="p-6 pb-4">
-        <div className="flex items-center justify-between">
-          <h3 
-            className="flex items-center gap-3 text-lg font-semibold text-foreground"
-            id="security-monitor-title"
+      {/* Header with refresh functionality */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          {/* <span>Security data</span> */}
+        </div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          {lastUpdated && (
+            <>
+              <Clock className="w-3 h-3" />
+              <span>Updated {lastUpdated.toLocaleTimeString()}</span>
+            </>
+          )}
+          <button 
+            onClick={fetchSecurityAnalytics}
+            className="p-1 hover:bg-muted rounded"
+            disabled={loading}
           >
-            <div className="p-2 bg-muted rounded-lg" aria-hidden="true">
-              <Shield className="w-5 h-5 text-destructive" />
-            </div>
-            Security Monitor
-          </h3>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            {lastUpdated && (
-              <>
-                <Clock className="w-3 h-3" />
-                <span>Updated {lastUpdated.toLocaleTimeString()}</span>
-              </>
-            )}
-            <button 
-              onClick={fetchSecurityAnalytics}
-              className="p-1 hover:bg-muted rounded"
-              disabled={loading}
-            >
-              <RefreshCw className={cn("w-3 h-3", loading && "animate-spin")} />
-            </button>
-          </div>
+            <RefreshCw className={cn("w-3 h-3", loading && "animate-spin")} />
+          </button>
         </div>
       </div>
 
-      <div className="px-6 pb-6 space-y-6">
+      <div className="space-y-6">
         {/* Three Cards Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
@@ -253,17 +281,17 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
                       <span className="text-sm font-medium text-foreground truncate">
                         {item.organization || 'Unknown Org'}
                       </span>
-                      <span className={cn(
-                        "px-2 py-0.5 rounded text-xs font-medium border",
-                        getSeverityColor(item.severity)
-                      )}>
+                      <Badge
+                        variant={getSeverityBadgeVariant(item.severity)}
+                        className="text-xs"
+                      >
                         {item.severity}
-                      </span>
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center text-xs text-muted-foreground">
-                      <span className="font-mono bg-background px-2 py-1 rounded">
+                      <Badge variant="outline" className="font-mono text-xs">
                         {item.eventType}
-                      </span>
+                      </Badge>
                       <div className="text-right">
                         <div>{item.eventCount} events</div>
                         <div>Risk: {item.avgRiskScore}</div>
@@ -371,31 +399,33 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
                                 {item.organization || 'Unknown Organization'}
                               </td>
                               <td className="p-3 text-sm text-muted-foreground">
-                                <code className="bg-muted px-2 py-1 rounded text-xs font-mono">
+                                <Badge variant="outline" className="font-mono text-xs">
                                   {item.eventType}
-                                </code>
+                                </Badge>
                               </td>
                               <td className="p-3">
-                                <span className={cn(
-                                  "px-2 py-1 rounded text-xs font-medium border",
-                                  getSeverityColor(item.severity)
-                                )}>
+                                <Badge
+                                  variant={getSeverityBadgeVariant(item.severity)}
+                                  className="text-xs"
+                                >
                                   {item.severity}
-                                </span>
+                                </Badge>
                               </td>
                               <td className="p-3 text-sm text-foreground font-medium text-right">
                                 {item.eventCount}
                               </td>
                               <td className="p-3 text-sm text-foreground font-medium text-right">
-                                <span className={cn(
-                                  "px-2 py-1 rounded",
-                                  item.avgRiskScore >= 90 ? "bg-destructive/10 text-destructive" :
-                                  item.avgRiskScore >= 70 ? "bg-secondary/20 text-secondary" :
-                                  item.avgRiskScore >= 50 ? "bg-secondary/10 text-secondary" :
-                                  "bg-primary/10 text-primary"
-                                )}>
+                                <Badge
+                                  variant={
+                                    item.avgRiskScore >= 90 ? "destructive" :
+                                    item.avgRiskScore >= 70 ? "secondary" :
+                                    item.avgRiskScore >= 50 ? "outline" :
+                                    "default"
+                                  }
+                                  className="text-xs"
+                                >
                                   {item.avgRiskScore}
-                                </span>
+                                </Badge>
                               </td>
                             </tr>
                           ))}
@@ -427,20 +457,22 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
                                 </div>
                               </div>
                               <div className="text-sm text-muted-foreground">
-                                <code className="bg-background px-2 py-1 rounded text-xs font-mono border">
+                                <Badge variant="outline" className="font-mono text-xs">
                                   {item.eventType}
-                                </code>
+                                </Badge>
                               </div>
                               <div className="text-sm">
-                                <span className={cn(
-                                  "px-2 py-1 rounded font-medium",
-                                  item.riskScore >= 90 ? "bg-destructive/10 text-destructive" :
-                                  item.riskScore >= 70 ? "bg-secondary/20 text-secondary" :
-                                  item.riskScore >= 50 ? "bg-secondary/10 text-secondary" :
-                                  "bg-primary/10 text-primary"
-                                )}>
+                                <Badge
+                                  variant={
+                                    item.riskScore >= 90 ? "destructive" :
+                                    item.riskScore >= 70 ? "secondary" :
+                                    item.riskScore >= 50 ? "outline" :
+                                    "default"
+                                  }
+                                  className="text-xs"
+                                >
                                   Risk: {item.riskScore}
-                                </span>
+                                </Badge>
                               </div>
                               <div className="text-sm text-muted-foreground text-right">
                                 {new Date(item.timestamp).toLocaleString()}
@@ -498,6 +530,6 @@ export function SecurityPanel({ className }: SecurityPanelProps) {
           </AccordionItem>
         </Accordion>
       </div>
-    </section>
+    </div>
   )
 }

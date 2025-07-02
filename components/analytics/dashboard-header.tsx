@@ -54,17 +54,17 @@ export function DashboardHeader({
       )}
       role="banner"
     >
-      <div className="container mx-auto px-6 py-6 max-w-7xl">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div className="space-y-4">
-            {/* Title - Design System: fontSize.3xl, fontWeight.bold, color.foreground */}
-            <h1 className="text-3xl font-bold text-foreground" id="dashboard-main-title">
+      <div className="container mx-auto px-6 py-4 max-w-7xl">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="space-y-2">
+            {/* Title - Design System: fontSize.2xl, fontWeight.bold, color.foreground */}
+            <h1 className="text-2xl font-bold text-foreground" id="dashboard-main-title">
               {title}
             </h1>
             
             {/* Subtitle */}
             {subtitle && (
-              <p className="text-lg text-muted-foreground" aria-describedby="dashboard-main-title">
+              <p className="text-base text-muted-foreground" aria-describedby="dashboard-main-title">
                 {subtitle}
               </p>
             )}
@@ -73,14 +73,14 @@ export function DashboardHeader({
             
             {/* Status and Meta Information */}
             <div 
-              className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground"
+              className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
               role="group"
               aria-label="Dashboard status and metadata"
             >
               {/* Last Updated */}
               {lastUpdated && (
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" aria-hidden="true" />
+                  <Clock className="w-3 h-3" aria-hidden="true" />
                   <span aria-label={`Last updated ${new Date(lastUpdated).toLocaleString()}`}>
                     Last updated: {new Date(lastUpdated).toLocaleString()}
                   </span>
@@ -90,7 +90,7 @@ export function DashboardHeader({
               {/* Time Range */}
               {timeRange && (
                 <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4" aria-hidden="true" />
+                  <Activity className="w-3 h-3" aria-hidden="true" />
                   <span aria-label={`Time range ${timeRange}`}>
                     Time Range: {timeRange}
                   </span>
@@ -100,7 +100,7 @@ export function DashboardHeader({
               {/* MCP Server Info */}
               {serverName && (
                 <div className="flex items-center gap-2">
-                  <Server className="w-4 h-4" aria-hidden="true" />
+                  <Server className="w-3 h-3" aria-hidden="true" />
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -135,7 +135,7 @@ export function DashboardHeader({
           {/* Controls */}
           {children && (
             <div 
-              className="flex flex-wrap items-center gap-3"
+              className="flex flex-wrap items-center gap-2"
               role="group"
               aria-label="Dashboard controls"
             >

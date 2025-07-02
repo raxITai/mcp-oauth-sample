@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyticsDB } from '@/lib/analytics-db';
+import { analyticsDB, getSecurityAnalytics } from '@/lib/analytics-db';
 import { auth } from '@/app/auth';
 
 export async function GET(request: NextRequest) {
@@ -33,15 +33,17 @@ async function getEnhancedAnalytics(hours = 24) {
       return NextResponse.json({ error: 'Hours must be between 1 and 168' }, { status: 400 });
     }
 
+    // Calculate date range for security analytics
+    const startDate = new Date(Date.now() - hours * 60 * 60 * 1000);
+    const endDate = new Date();
+
     // Efficient parallel queries for enhanced analytics
     const [
       performance, 
       endpoints, 
       geography, 
-      securityEvents, 
+      securityAnalytics,
       usersByMCP, 
-      securityByOrg, 
-      privilegeEscalations, 
       toolUsage,
       toolGeography,
       toolResponseTimeSeries,
@@ -54,10 +56,8 @@ async function getEnhancedAnalytics(hours = 24) {
       analyticsDB.getPerformanceMetrics(hours),
       analyticsDB.getTopEndpoints(hours, 10),
       analyticsDB.getGeographyStats(hours),
-      analyticsDB.getSecurityEvents(hours),
+      getSecurityAnalytics(startDate, endDate),
       analyticsDB.getUsersByMCPServer(hours),
-      analyticsDB.getSecurityEventsByOrganization(hours),
-      analyticsDB.getUserPrivilegeEscalations(168), // Last 7 days
       analyticsDB.getMCPToolUsage(hours),
       analyticsDB.getToolGeographyStats(hours),
       analyticsDB.getToolResponseTimeTimeSeries(hours),
@@ -87,10 +87,10 @@ async function getEnhancedAnalytics(hours = 24) {
         activeUsers: toolUsage.reduce((sum, tool) => sum + tool.uniqueUsers, 0)
       },
       security: {
-        events: securityEvents,
-        eventCount: securityEvents.length,
-        byOrganization: securityByOrg,
-        privilegeEscalations
+        ...securityAnalytics,
+        // Include basic security events for the SecurityPanel component
+        events: await analyticsDB.getSecurityEvents(hours),
+        eventCount: securityAnalytics.totalEvents
       },
       enterprise: {
         usersByMCPServer: usersByMCP,

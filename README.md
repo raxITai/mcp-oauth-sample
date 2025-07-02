@@ -68,6 +68,9 @@ GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
 # Redis (optional, for SSE transport support)
 REDIS_URL="rediss://user:pass@host:6379"
+
+# Admin access (for analytics dashboard)
+ADMIN_EMAIL="admin@gmail.com"
 ```
 
 #### Setting up Google OAuth:
@@ -418,6 +421,7 @@ Make sure to set these in your Vercel dashboard:
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `REDIS_URL` (optional, for SSE support)
+- `ADMIN_EMAIL` (required for analytics dashboard access)
 
 ## Contributing
 

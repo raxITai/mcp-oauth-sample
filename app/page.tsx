@@ -5,6 +5,10 @@ import { BarChart3, LogOut, LogIn } from "lucide-react";
 
 export default async function Home() {
   const session = await auth();
+  
+  // Check if user is admin
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const isAdmin = session?.user?.email === adminEmail;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-50 via-primary-100 to-secondary-300 dark:from-base-950 dark:via-base-800 dark:to-base-800 flex items-center justify-center">
@@ -17,15 +21,23 @@ export default async function Home() {
             </div>
             
             <div className="space-y-4">
-              <Link href="/analytics" className="block">
-                <Button className="w-full bg-primary hover:bg-primary-800 text-primary-foreground">
-                  <BarChart3 className="w-5 h-5 mr-2" />
-                  View Analytics Dashboard
-                </Button>
-              </Link>
+              {isAdmin ? (
+                <Link href="/analytics" className="block">
+                  <Button className="w-full bg-primary hover:bg-primary-800 text-primary-foreground">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    View Analytics Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <div className="bg-muted/50 border border-border rounded-lg p-4 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Analytics dashboard is only available to administrators.
+                  </p>
+                </div>
+              )}
               
               <form action={async () => { 'use server'; await signOut(); }}>
-                <Button variant="outline" className="w-full border-destructive/20 text-destructive hover:bg-destructive/10">
+                <Button type="submit" variant="outline" className="w-full border-destructive/20 text-destructive hover:bg-destructive/10">
                   <LogOut className="w-4 h-4 mr-2" />
                   Sign Out
                 </Button>
