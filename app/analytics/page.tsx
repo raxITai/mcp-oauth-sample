@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 import AnalyticsClient from './analytics-client'
 import { redirect } from 'next/navigation'
+import { isAdminEmail, hasAdminEmailsConfigured } from '@/lib/admin-utils'
 
 export default async function AnalyticsPage() {
   const session = await auth()
@@ -12,25 +13,23 @@ export default async function AnalyticsPage() {
     redirect('/api/auth/signin')
   }
 
-  // Check if user is admin
-  const adminEmail = process.env.ADMIN_EMAIL
-  const userEmail = session.user.email
-  
-  if (!adminEmail) {
+  // Check if admin emails are configured
+  if (!hasAdminEmailsConfigured()) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <div className="bg-background border border-destructive rounded-lg shadow-lg p-8 max-w-md w-full text-center space-y-6">
           <AlertTriangle className="w-16 h-16 text-destructive mx-auto" />
           <div className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">Configuration Error</h2>
-            <p className="text-muted-foreground">Admin email not configured. Please contact your system administrator.</p>
+            <p className="text-muted-foreground">Admin emails not configured. Please contact your system administrator.</p>
           </div>
         </div>
       </div>
     )
   }
 
-  if (userEmail !== adminEmail) {
+  // Check if user is admin
+  if (!isAdminEmail(session.user.email)) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <div className="bg-background border border-destructive rounded-lg shadow-lg p-8 max-w-md w-full text-center space-y-6">

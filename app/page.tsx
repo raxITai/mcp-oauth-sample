@@ -2,13 +2,13 @@ import { auth, signIn, signOut } from "./auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BarChart3, LogOut, LogIn } from "lucide-react";
+import { isAdminEmail } from "@/lib/admin-utils";
 
 export default async function Home() {
   const session = await auth();
   
   // Check if user is admin
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const isAdmin = session?.user?.email === adminEmail;
+  const isAdmin = isAdminEmail(session?.user?.email);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-50 via-primary-100 to-secondary-300 dark:from-base-950 dark:via-base-800 dark:to-base-800 flex items-center justify-center">

@@ -32,7 +32,21 @@ pnpm dev
 
 ## Screenshots
 
-*// TODO: Add screenshots of analytics dashboard, OAuth flow, etc.*
+### Dashboard
+<!-- Add screenshot of the main analytics dashboard -->
+![Dashboard](./assets/screenshots/analytics-dashboard.png)
+
+### OAuth Usage Metrics
+<!-- Add screenshot of the OAuth consent screen -->
+![OAuth Usage](./assets/screenshots/oauth-flow.png)
+
+### DIY Security Monitoring
+<!-- Add screenshot of security events and monitoring -->
+![Security Monitoring](./assets/screenshots/security-monitoring.png)
+
+### MCP Clients Tools Usage
+<!-- Add screenshot showing MCP client connection -->
+![MCP Integration](./assets/screenshots/mcp-integration.png)
 
 ## Features
 
@@ -59,7 +73,7 @@ pnpm dev
 
 ## MCP Specification Compliance
 
-This implementation is fully compliant with the MCP Authorization Specification. For detailed analysis of the implementation and differences from the reference project, see [MCP_IMPLEMENTATION_ANALYSIS.md](./MCP_IMPLEMENTATION_ANALYSIS.md).
+This implementation is fully compliant with the MCP Authorization Specification. 
 
 ### What Makes This Different
 
@@ -72,8 +86,8 @@ This implementation is fully compliant with the MCP Authorization Specification.
 
 ## Quick Links
 
-- **Live Demo**: [mcp-oauth-sample.vercel.app](https://mcp-oauth-sample.vercel.app)
-- **Analytics Dashboard**: `/analytics` (requires admin access)
+- **Live Demo**: [mcp-oauth-sample.vercel.app](https://mcp-oauth-sample.vercel.app) *(Analytics dashboard requires Gmail address allowlist)*
+- **Analytics Dashboard**: `/analytics` (supports multiple Gmail addresses)
 - **MCP Endpoints**: 
   - SSE: `/mcp/sse`
   - HTTP: `/mcp/mcp`
@@ -107,23 +121,54 @@ This implementation is fully compliant with the MCP Authorization Specification.
 
 ## Contributing
 
-This project is actively maintained by raxIT AI. We welcome contributions and feedback.
+We warmly welcome contributions from the community! This project is open source and we encourage developers to help make it even better.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+### Ways to Contribute
+
+🐛 **Report Bugs** - Found an issue? [Open a bug report](https://github.com/raxITai/mcp-oauth-sample/issues/new?template=bug_report.md)  
+✨ **Request Features** - Have an idea? [Submit a feature request](https://github.com/raxITai/mcp-oauth-sample/issues/new?template=feature_request.md)  
+📝 **Improve Documentation** - Help make our docs clearer and more comprehensive  
+🔧 **Submit Code** - Fix bugs, add features, or improve performance  
+🧪 **Add Tests** - Help us increase test coverage and reliability  
+🎨 **Enhance UI/UX** - Make the analytics dashboard even better  
+
+### Getting Started
+
+1. **Fork** the repository to your GitHub account
+2. **Clone** your fork: `git clone https://github.com/your-username/mcp-oauth-sample.git`
+3. **Install dependencies**: `pnpm install`
+4. **Set up environment**: Follow our [Setup Guide](./docs/setup.md)
+5. **Create a branch**: `git checkout -b feature/your-feature-name`
+6. **Make your changes** and test thoroughly
+7. **Commit**: Use [Conventional Commits](https://conventionalcommits.org/) format
+8. **Push** and create a Pull Request
+
+### Development Guidelines
+
+- **Code Style**: Follow existing patterns and use ESLint/Prettier
+- **Testing**: Add tests for new features and ensure existing tests pass
+- **Documentation**: Update relevant docs for any changes
+- **Security**: Follow security best practices, especially for OAuth flows
+- **Performance**: Consider analytics and monitoring impact
+
+### Community
+
+- 💬 **Discussions**: Join conversations in [GitHub Discussions](https://github.com/raxITai/mcp-oauth-sample/discussions)
+- 💼 **LinkedIn**: Follow us on [LinkedIn](https://www.linkedin.com/company/raxit-ai)
+- 🐦 **X (Twitter)**: Follow [@raxit_ai](https://x.com/raxit_ai) for updates
+- 🦋 **Bluesky**: Connect on [Bluesky](https://bsky.app/profile/raxit.ai)
+
+**All contributors are welcome!** Whether you're fixing typos, adding major features, or helping with docs - every contribution matters. 🙏
 
 ## License
 
-MIT License - See [LICENSE](./LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-org/mcp-oauth-sample/issues)
+- **Issues**: [GitHub Issues](https://github.com/raxITai/mcp-oauth-sample/issues)
 - **Documentation**: [docs/](./docs/)
-- **Implementation Analysis**: [MCP_IMPLEMENTATION_ANALYSIS.md](./MCP_IMPLEMENTATION_ANALYSIS.md)
+
 
 ---
 
